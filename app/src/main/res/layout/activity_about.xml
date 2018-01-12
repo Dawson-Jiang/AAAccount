@@ -1,0 +1,64 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/top"
+        layout="@layout/common_title" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/top"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical">
+
+        <com.dawson.aaaccount.util.IconView
+            android:layout_width="48dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/tv_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dip"
+            android:text="1.0"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/tv_statement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="20dp"
+            android:lineSpacingMultiplier="1.5"
+            android:text="@string/str_about_statement"
+            android:typeface="monospace" />
+
+        <TextView
+            android:id="@+id/tv_contact_qq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="20dp"
+            android:drawableLeft="@drawable/ic_faces"
+            android:drawablePadding="8dp"
+            android:drawableTint="@color/colorPrimary"
+            android:lineSpacingMultiplier="1.5"
+            android:text="@string/str_about_contact_qq"
+            android:typeface="monospace" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp"
+        android:text="@string/str_about_copyright" />
+</RelativeLayout>

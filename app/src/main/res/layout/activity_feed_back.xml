@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.dawson.aaaccount.activity.FeedBackActivity">
+
+    <include layout="@layout/common_title" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="标题" />
+
+    <EditText
+        android:id="@+id/etTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/mutil_edit_background"
+        android:padding="4dp"
+        android:textSize="16dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="内容" />
+
+    <EditText
+        android:id="@+id/etContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/mutil_edit_background"
+        android:gravity="left|top"
+        android:maxLines="8"
+        android:minLines="4"
+        android:padding="4dp"
+        android:textSize="16dp" />
+
+    <TextView
+        android:id="@+id/tv_contact_qq"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="4dp"
+        android:drawableLeft="@drawable/ic_faces"
+        android:drawablePadding="8dp"
+        android:drawableTint="@color/colorPrimary"
+        android:text="@string/str_about_contact_qq" />
+</LinearLayout>

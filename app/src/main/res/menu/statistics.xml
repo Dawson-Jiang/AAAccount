@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_filter"
+        android:icon="@drawable/ic_filter"
+        android:orderInCategory="100"
+        android:title=""
+        app:showAsAction="ifRoom" />
+    <!--<item-->
+        <!--android:id="@+id/action_settle"-->
+        <!--android:icon="@drawable/ic_settle"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:title="结算"-->
+        <!--app:showAsAction="never" />-->
+    <item
+        android:id="@+id/action_sync"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_swap_vert"
+        android:title=""
+        app:showAsAction="ifRoom" />
+</menu>

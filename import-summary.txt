@@ -1,0 +1,492 @@
+ECLIPSE ANDROID PROJECT IMPORT SUMMARY
+======================================
+
+Ignored Files:
+--------------
+The following files were *not* copied into the new Gradle project; you
+should evaluate whether these are still needed in your project and if
+so manually move them:
+
+* .gitignore
+* .gradle\
+* .gradle\2.10\
+* .gradle\2.10\taskArtifacts\
+* .gradle\2.10\taskArtifacts\cache.properties
+* .gradle\2.10\taskArtifacts\cache.properties.lock
+* .gradle\2.10\taskArtifacts\fileHashes.bin
+* .gradle\2.10\taskArtifacts\fileSnapshots.bin
+* .gradle\2.10\taskArtifacts\outputFileStates.bin
+* .gradle\2.10\taskArtifacts\taskArtifacts.bin
+* .idea\
+* .idea\.name
+* .idea\compiler.xml
+* .idea\copyright\
+* .idea\copyright\profiles_settings.xml
+* .idea\encodings.xml
+* .idea\gradle.xml
+* .idea\misc.xml
+* .idea\modules.xml
+* .idea\runConfigurations.xml
+* .idea\vcs.xml
+* .idea\workspace.xml
+* MyAAAccount.iml
+* app\
+* app\app.iml
+* app\build\
+* app\build\generated\
+* app\build\generated\source\
+* app\build\generated\source\buildConfig\
+* app\build\generated\source\buildConfig\androidTest\
+* app\build\generated\source\buildConfig\androidTest\debug\
+* app\build\generated\source\buildConfig\androidTest\debug\com\
+* app\build\generated\source\buildConfig\androidTest\debug\com\jd\
+* app\build\generated\source\buildConfig\androidTest\debug\com\jd\myaaaccount\
+* app\build\generated\source\buildConfig\androidTest\debug\com\jd\myaaaccount\test\
+* app\build\generated\source\buildConfig\androidTest\debug\com\jd\myaaaccount\test\BuildConfig.java
+* app\build\generated\source\buildConfig\debug\
+* app\build\generated\source\buildConfig\debug\com\
+* app\build\generated\source\buildConfig\debug\com\jd\
+* app\build\generated\source\buildConfig\debug\com\jd\myaaaccount\
+* app\build\generated\source\buildConfig\debug\com\jd\myaaaccount\BuildConfig.java
+* app\build\generated\source\r\
+* app\build\generated\source\r\debug\
+* app\build\generated\source\r\debug\com\
+* app\build\generated\source\r\debug\com\jd\
+* app\build\generated\source\r\debug\com\jd\myaaaccount\
+* app\build\generated\source\r\debug\com\jd\myaaaccount\R.java
+* app\build\intermediates\
+* app\build\intermediates\blame\
+* app\build\intermediates\blame\res\
+* app\build\intermediates\blame\res\debug\
+* app\build\intermediates\blame\res\debug\multi\
+* app\build\intermediates\blame\res\debug\multi\values-sw720dp-land-v13.json
+* app\build\intermediates\blame\res\debug\multi\values-v11.json
+* app\build\intermediates\blame\res\debug\multi\values-v14.json
+* app\build\intermediates\blame\res\debug\multi\values.json
+* app\build\intermediates\blame\res\debug\single\
+* app\build\intermediates\blame\res\debug\single\animator.json
+* app\build\intermediates\blame\res\debug\single\drawable-hdpi-v4.json
+* app\build\intermediates\blame\res\debug\single\drawable-mdpi-v4.json
+* app\build\intermediates\blame\res\debug\single\drawable.json
+* app\build\intermediates\blame\res\debug\single\layout.json
+* app\build\intermediates\blame\res\debug\single\menu.json
+* app\build\intermediates\classes\
+* app\build\intermediates\classes\debug\
+* app\build\intermediates\classes\debug\com\
+* app\build\intermediates\classes\debug\com\jd\
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\AboutActivity.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\AccountAplication.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\AddDayBookPage$1$1.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\AddDayBookPage$1.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\AddDayBookPage$2$1.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\AddDayBookPage$2$2.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\AddDayBookPage$2.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\AddDayBookPage$3$1.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\AddDayBookPage$3$2.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\AddDayBookPage$3.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\AddDayBookPage$4.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\AddDayBookPage$5$1.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\AddDayBookPage$5.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\AddDayBookPage$6.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\AddDayBookPage$7.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\AddDayBookPage$8.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\AddDayBookPage$9.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\AddDayBookPage$MyLocationListener.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\AddDayBookPage.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\BaseActivity.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\BasePage.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\BuildConfig.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\CaptureActivity$1.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\CaptureActivity$2.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\CaptureActivity$3.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\CaptureActivity$4.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\CaptureActivity$5.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\CaptureActivity$6.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\CaptureActivity$7.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\CaptureActivity.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\DayBookPage$1.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\DayBookPage$2.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\DayBookPage$3$1.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\DayBookPage$3$2.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\DayBookPage$3.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\DayBookPage$4.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\DayBookPage$5.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\DayBookPage$6.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\DayBookPage$DaybookAdapter.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\DayBookPage$DownLoadTask.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\DayBookPage$ViewHolder.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\DayBookPage.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\EditFamilyActivity$1$1.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\EditFamilyActivity$1$2.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\EditFamilyActivity$1.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\EditFamilyActivity$2.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\EditFamilyActivity$3.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\EditFamilyActivity$4.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\EditFamilyActivity$5.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\EditFamilyActivity.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\FamilyActivity$1.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\FamilyActivity$2.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\FamilyActivity$3.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\FamilyActivity$4.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\FamilyActivity$5.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\FamilyActivity$6.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\FamilyActivity.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\LoginActivity$1.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\LoginActivity$2.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\LoginActivity$3.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\LoginActivity$4.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\LoginActivity$5.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\LoginActivity.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\MainActivity$1.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\MainActivity$2.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\MainActivity$3.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\MainActivity$4.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\MainActivity$5.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\MainActivity$6.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\MainActivity$7.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\MainActivity$8.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\MainActivity.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\MapTestActivity$1.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\MapTestActivity$MyLocationListener.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\MapTestActivity.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\MePage$1.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\MePage$2$1.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\MePage$2.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\MePage$3.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\MePage$4.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\MePage.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\R$animator.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\R$attr.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\R$color.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\R$dimen.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\R$drawable.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\R$id.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\R$layout.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\R$menu.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\R$string.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\R$style.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\R.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\RegistActivity$1$1.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\RegistActivity$1.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\RegistActivity$2.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\RegistActivity$3$1.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\RegistActivity$3.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\RegistActivity$4.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\RegistActivity$5.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\RegistActivity.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\ScanCodeActivity$1$1.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\ScanCodeActivity$1.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\ScanCodeActivity$2.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\ScanCodeActivity.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\SettlePage$1.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\SettlePage$2$1.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\SettlePage$2$2.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\SettlePage$2.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\SettlePage$3.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\SettlePage$4.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\SettlePage$5.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\SettlePage.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\capture\
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\capture\DecodeFormatManager.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\capture\DecodeHintManager.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\capture\Intents$Encode.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\capture\Intents$History.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\capture\Intents$Scan.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\capture\Intents$SearchBookContents.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\capture\Intents$Share.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\capture\Intents$WifiConnect.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\capture\Intents.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\capture\ViewfinderResultPointCallback.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\capture\ViewfinderView.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\entity\
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\entity\BaseEntity.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\entity\ConsumptionCategory.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\entity\DayBook.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\entity\Family.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\entity\Host.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\entity\Location.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\entity\Settle$SettleDetail.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\entity\Settle.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\entity\User.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\entity\parameter\
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\entity\parameter\AddDayBookParameter.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\entity\parameter\BaseParameter.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\entity\parameter\CreateFamilyParameter.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\entity\parameter\JoinFamilyParameter.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\entity\parameter\UploadFileParameter.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\entity\result\
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\entity\result\BaseResult.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\entity\result\CommonIntResult.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\entity\result\CommonNullResult.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\entity\result\CommonStringResult.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\entity\result\GetCategoryResult.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\entity\result\GetDayBookResult.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\entity\result\GetFamilyResult.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\entity\result\LoginResult.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\entity\result\RegistOrCreateResult.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\entity\result\SettleResult.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\model\
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\model\Common$1.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\model\Common.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\model\DayBookModel.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\model\FamilyModel.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\model\UserModel.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\service\
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\service\SubscribeService$1.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\service\SubscribeService$2.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\service\SubscribeService.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\util\
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\util\AlertDialogHelper.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\util\BitmapHelper.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\util\DateTimeHelper.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\util\ErrorCode.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\util\HttpHelper.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\util\JsonHelper.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\util\MD5Helper.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\util\OperateCode.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\util\PushMessageHelper.class
+* app\build\intermediates\classes\debug\com\jd\myaaaccount\util\QRCodeHelper.class
+* app\build\intermediates\exploded-aar\
+* app\build\intermediates\exploded-aar\com.android.support\
+* app\build\intermediates\exploded-aar\com.android.support\support-v4\
+* app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\
+* app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\AndroidManifest.xml
+* app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\aapt\
+* app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\aapt\AndroidManifest.xml
+* app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\aidl\
+* app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\aidl\android\
+* app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\aidl\android\support\
+* app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\aidl\android\support\v4\
+* app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\aidl\android\support\v4\media\
+* app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\aidl\android\support\v4\media\MediaMetadataCompat.aidl
+* app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\aidl\android\support\v4\media\RatingCompat.aidl
+* app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\aidl\android\support\v4\media\session\
+* app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\aidl\android\support\v4\media\session\MediaSessionCompat.aidl
+* app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\aidl\android\support\v4\media\session\ParcelableVolumeInfo.aidl
+* app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\aidl\android\support\v4\media\session\PlaybackStateCompat.aidl
+* app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\annotations.zip
+* app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\jars\
+* app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\jars\classes.jar
+* app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\jars\libs\
+* app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\jars\libs\internal_impl-22.2.1.jar
+* app\build\intermediates\incremental\
+* app\build\intermediates\incremental\compileDebugAidl\
+* app\build\intermediates\incremental\compileDebugAidl\dependency.store
+* app\build\intermediates\incremental\compileDebugAndroidTestAidl\
+* app\build\intermediates\incremental\compileDebugAndroidTestAidl\dependency.store
+* app\build\intermediates\incremental\mergeDebugAndroidTestAssets\
+* app\build\intermediates\incremental\mergeDebugAndroidTestAssets\merger.xml
+* app\build\intermediates\incremental\mergeDebugAndroidTestResources\
+* app\build\intermediates\incremental\mergeDebugAndroidTestResources\merger.xml
+* app\build\intermediates\incremental\mergeDebugAssets\
+* app\build\intermediates\incremental\mergeDebugAssets\merger.xml
+* app\build\intermediates\incremental\mergeDebugJniLibFolders\
+* app\build\intermediates\incremental\mergeDebugJniLibFolders\merger.xml
+* app\build\intermediates\incremental\mergeDebugResources\
+* app\build\intermediates\incremental\mergeDebugResources\merger.xml
+* app\build\intermediates\jniLibs\
+* app\build\intermediates\jniLibs\debug\
+* app\build\intermediates\jniLibs\debug\armeabi\
+* app\build\intermediates\jniLibs\debug\armeabi\liblocSDK6a.so
+* app\build\intermediates\manifest\
+* app\build\intermediates\manifest\androidTest\
+* app\build\intermediates\manifest\androidTest\debug\
+* app\build\intermediates\manifest\androidTest\debug\AndroidManifest.xml
+* app\build\intermediates\manifests\
+* app\build\intermediates\manifests\full\
+* app\build\intermediates\manifests\full\debug\
+* app\build\intermediates\manifests\full\debug\AndroidManifest.xml
+* app\build\intermediates\pre-dexed\
+* app\build\intermediates\pre-dexed\debug\
+* app\build\intermediates\pre-dexed\debug\avoscloud-sdk-v3.13.6_2e935b275b53d7b9fd408ab2d48d574ff932cf21.jar
+* app\build\intermediates\pre-dexed\debug\com.android.support-support-v4-22.2.1_43c1594ac4e3f2db84d7502b48418eaf7a3c14cc.jar
+* app\build\intermediates\pre-dexed\debug\core-3.2.1_48f88fa04559fe2f9394b1515a6826b8217826a8.jar
+* app\build\intermediates\pre-dexed\debug\debug_21fbbdfdfa92110bc94394acb6b91772a8973e6b.jar
+* app\build\intermediates\pre-dexed\debug\fastjson_231e88bfe0bd5599af8dc3041d7507e893bec82d.jar
+* app\build\intermediates\pre-dexed\debug\gson-2.2.4_720670d0cdd737c4a181fe2f53a5b4e747febfce.jar
+* app\build\intermediates\pre-dexed\debug\httpcore-4.4_0f95cfdabbe5958d5600b79f5d8a0b9a4a6425fb.jar
+* app\build\intermediates\pre-dexed\debug\httpmime-4.3.1_e4d30f0c2d48859ecd71de949a98345aa2c7f1be.jar
+* app\build\intermediates\pre-dexed\debug\internal_impl-22.2.1_4f998cedfff92d3e352679fceda8bbd6af5d5d38.jar
+* app\build\intermediates\pre-dexed\debug\locSDK_6.13_12fd2201294ed470ad397c7faf53f50869768186.jar
+* app\build\intermediates\pre-dexed\debug\mqttv3_cb3d7a73ab444d314cfde66ead0b11901a9e02b6.jar
+* app\build\intermediates\pre-dexed\debug\support-annotations-22.2.1_2cb8b78926283dfc33dea140227daf9b5215b98d.jar
+* app\build\intermediates\pre-dexed\debug\zxing-capture_068593531b240dfbb71cead78e61ae7cceb3afa7.jar
+* app\build\intermediates\res\
+* app\build\intermediates\res\merged\
+* app\build\intermediates\res\merged\debug\
+* app\build\intermediates\res\merged\debug\animator\
+* app\build\intermediates\res\merged\debug\animator\picture_anim.xml
+* app\build\intermediates\res\merged\debug\drawable-hdpi-v4\
+* app\build\intermediates\res\merged\debug\drawable-hdpi-v4\add_pictur.png
+* app\build\intermediates\res\merged\debug\drawable-hdpi-v4\add_picture.png
+* app\build\intermediates\res\merged\debug\drawable-hdpi-v4\back.png
+* app\build\intermediates\res\merged\debug\drawable-hdpi-v4\create.png
+* app\build\intermediates\res\merged\debug\drawable-hdpi-v4\default_home_photo.png
+* app\build\intermediates\res\merged\debug\drawable-hdpi-v4\default_photo.png
+* app\build\intermediates\res\merged\debug\drawable-hdpi-v4\filter.png
+* app\build\intermediates\res\merged\debug\drawable-hdpi-v4\girl.jpg
+* app\build\intermediates\res\merged\debug\drawable-hdpi-v4\ic_launcher.png
+* app\build\intermediates\res\merged\debug\drawable-hdpi-v4\join.png
+* app\build\intermediates\res\merged\debug\drawable-hdpi-v4\location.png
+* app\build\intermediates\res\merged\debug\drawable-hdpi-v4\no_image.png
+* app\build\intermediates\res\merged\debug\drawable-hdpi-v4\refresh.png
+* app\build\intermediates\res\merged\debug\drawable-hdpi-v4\scan_code.png
+* app\build\intermediates\res\merged\debug\drawable-hdpi-v4\simplephoto.jpg
+* app\build\intermediates\res\merged\debug\drawable-mdpi-v4\
+* app\build\intermediates\res\merged\debug\drawable-mdpi-v4\add_picture.png
+* app\build\intermediates\res\merged\debug\drawable-mdpi-v4\back.png
+* app\build\intermediates\res\merged\debug\drawable-mdpi-v4\create.png
+* app\build\intermediates\res\merged\debug\drawable-mdpi-v4\default_home_photo.png
+* app\build\intermediates\res\merged\debug\drawable-mdpi-v4\default_photo.png
+* app\build\intermediates\res\merged\debug\drawable-mdpi-v4\filter.png
+* app\build\intermediates\res\merged\debug\drawable-mdpi-v4\girl.jpg
+* app\build\intermediates\res\merged\debug\drawable-mdpi-v4\ic_launcher.png
+* app\build\intermediates\res\merged\debug\drawable-mdpi-v4\join.png
+* app\build\intermediates\res\merged\debug\drawable-mdpi-v4\location.png
+* app\build\intermediates\res\merged\debug\drawable-mdpi-v4\no_image.png
+* app\build\intermediates\res\merged\debug\drawable-mdpi-v4\refresh.png
+* app\build\intermediates\res\merged\debug\drawable-mdpi-v4\scan_code.png
+* app\build\intermediates\res\merged\debug\drawable-mdpi-v4\simplephoto.jpg
+* app\build\intermediates\res\merged\debug\drawable\
+* app\build\intermediates\res\merged\debug\drawable\background.xml
+* app\build\intermediates\res\merged\debug\drawable\button_background.xml
+* app\build\intermediates\res\merged\debug\drawable\button_pressed_background.xml
+* app\build\intermediates\res\merged\debug\drawable\button_selector.xml
+* app\build\intermediates\res\merged\debug\drawable\imgbtn_seletor.xml
+* app\build\intermediates\res\merged\debug\drawable\login_background.xml
+* app\build\intermediates\res\merged\debug\drawable\teststroke.xml
+* app\build\intermediates\res\merged\debug\drawable\textview_background.xml
+* app\build\intermediates\res\merged\debug\layout\
+* app\build\intermediates\res\merged\debug\layout\activity_about.xml
+* app\build\intermediates\res\merged\debug\layout\activity_add_daybook.xml
+* app\build\intermediates\res\merged\debug\layout\activity_capture.xml
+* app\build\intermediates\res\merged\debug\layout\activity_daybook.xml
+* app\build\intermediates\res\merged\debug\layout\activity_edit_family.xml
+* app\build\intermediates\res\merged\debug\layout\activity_family.xml
+* app\build\intermediates\res\merged\debug\layout\activity_login.xml
+* app\build\intermediates\res\merged\debug\layout\activity_main.xml
+* app\build\intermediates\res\merged\debug\layout\activity_map_test.xml
+* app\build\intermediates\res\merged\debug\layout\activity_me.xml
+* app\build\intermediates\res\merged\debug\layout\activity_register.xml
+* app\build\intermediates\res\merged\debug\layout\activity_scan_code.xml
+* app\build\intermediates\res\merged\debug\layout\activity_settle.xml
+* app\build\intermediates\res\merged\debug\layout\layout_daybook_list_item.xml
+* app\build\intermediates\res\merged\debug\layout\layout_family_list_item.xml
+* app\build\intermediates\res\merged\debug\layout\layout_settle_detail_list_item.xml
+* app\build\intermediates\res\merged\debug\layout\testlayout.xml
+* app\build\intermediates\res\merged\debug\menu\
+* app\build\intermediates\res\merged\debug\menu\about.xml
+* app\build\intermediates\res\merged\debug\menu\capture.xml
+* app\build\intermediates\res\merged\debug\menu\create_home.xml
+* app\build\intermediates\res\merged\debug\menu\main.xml
+* app\build\intermediates\res\merged\debug\menu\map_test.xml
+* app\build\intermediates\res\merged\debug\menu\my_home.xml
+* app\build\intermediates\res\merged\debug\menu\scan_code.xml
+* app\build\intermediates\res\merged\debug\values-sw720dp-land-v13\
+* app\build\intermediates\res\merged\debug\values-sw720dp-land-v13\values-sw720dp-land-v13.xml
+* app\build\intermediates\res\merged\debug\values-v11\
+* app\build\intermediates\res\merged\debug\values-v11\values-v11.xml
+* app\build\intermediates\res\merged\debug\values-v14\
+* app\build\intermediates\res\merged\debug\values-v14\values-v14.xml
+* app\build\intermediates\res\merged\debug\values\
+* app\build\intermediates\res\merged\debug\values\values.xml
+* app\build\intermediates\res\resources-debug-androidTest.ap_
+* app\build\intermediates\res\resources-debug.ap_
+* app\build\intermediates\symbols\
+* app\build\intermediates\symbols\debug\
+* app\build\intermediates\symbols\debug\R.txt
+* app\build\intermediates\transforms\
+* app\build\intermediates\transforms\dex\
+* app\build\intermediates\transforms\dex\debug\
+* app\build\intermediates\transforms\dex\debug\folders\
+* app\build\intermediates\transforms\dex\debug\folders\1000\
+* app\build\intermediates\transforms\dex\debug\folders\1000\1f\
+* app\build\intermediates\transforms\dex\debug\folders\1000\1f\main\
+* app\build\intermediates\transforms\dex\debug\folders\1000\1f\main\classes.dex
+* app\build\intermediates\transforms\mergeJavaRes\
+* app\build\intermediates\transforms\mergeJavaRes\debug\
+* app\build\intermediates\transforms\mergeJavaRes\debug\jars\
+* app\build\intermediates\transforms\mergeJavaRes\debug\jars\2\
+* app\build\intermediates\transforms\mergeJavaRes\debug\jars\2\1f\
+* app\build\intermediates\transforms\mergeJavaRes\debug\jars\2\1f\main.jar
+* app\build\intermediates\transforms\mergeJniLibs\
+* app\build\intermediates\transforms\mergeJniLibs\debug\
+* app\build\intermediates\transforms\mergeJniLibs\debug\folders\
+* app\build\intermediates\transforms\mergeJniLibs\debug\folders\2000\
+* app\build\intermediates\transforms\mergeJniLibs\debug\folders\2000\1f\
+* app\build\intermediates\transforms\mergeJniLibs\debug\folders\2000\1f\main\
+* app\build\intermediates\transforms\mergeJniLibs\debug\folders\2000\1f\main\lib\
+* app\build\intermediates\transforms\mergeJniLibs\debug\folders\2000\1f\main\lib\armeabi\
+* app\build\intermediates\transforms\mergeJniLibs\debug\folders\2000\1f\main\lib\armeabi\liblocSDK6a.so
+* app\build\outputs\
+* app\build\outputs\apk\
+* app\build\outputs\apk\app-debug-unaligned.apk
+* app\build\outputs\apk\app-debug.apk
+* app\build\outputs\logs\
+* app\build\outputs\logs\manifest-merger-debug-report.txt
+* build\
+* build\generated\
+* build\generated\mockable-android-22.jar
+* build\intermediates\
+* build\intermediates\dex-cache\
+* build\intermediates\dex-cache\cache.xml
+* ic_launcher-web.png
+* proguard-project.txt
+
+Replaced Jars with Dependencies:
+--------------------------------
+The importer recognized the following .jar files as third party
+libraries and replaced them with Gradle dependencies instead. This has
+the advantage that more explicit version information is known, and the
+libraries can be updated automatically. However, it is possible that
+the .jar file in your project was of an older version than the
+dependency we picked, which could render the project not compileable.
+You can disable the jar replacement in the import wizard and try again:
+
+android-support-v4.jar => com.android.support:support-v4:22.2.1
+gson-2.2.4.jar => com.google.code.gson:gson:2.2.4
+
+Potentially Missing Dependency:
+-------------------------------
+When we replaced the following .jar files with a Gradle dependency, we
+inferred the dependency version number from the filename. This
+specific version may not actually be available from the repository.
+If you get a build error stating that the dependency is missing, edit
+the version number to for example "+" to pick up the latest version
+instead. (This may require you to update your code if the library APIs
+have changed.)
+
+gson-2.2.4.jar => version 2.2.4 in com.google.code.gson:gson:2.2.4
+
+Moved Files:
+------------
+Android Gradle projects use a different directory structure than ADT
+Eclipse projects. Here's how the projects were restructured:
+
+* AndroidManifest.xml => app\src\main\AndroidManifest.xml
+* libs\armeabi\liblocSDK6a.so => app\src\main\jniLibs\armeabi\liblocSDK6a.so
+* libs\core-3.2.1.jar => app\libs\core-3.2.1.jar
+* libs\httpcore-4.4.jar => app\libs\httpcore-4.4.jar
+* libs\httpmime-4.3.1.jar => app\libs\httpmime-4.3.1.jar
+* libs\locSDK_6.13.jar => app\libs\locSDK_6.13.jar
+* libs\mqttv3.jar => app\libs\mqttv3.jar
+* libs\zxing-capture.jar => app\libs\zxing-capture.jar
+* lint.xml => app\lint.xml
+* res\ => app\src\main\res\
+* src\ => app\src\main\java\
+
+Next Steps:
+-----------
+You can now build the project. The Gradle project needs network
+connectivity to download dependencies.
+
+Bugs:
+-----
+If for some reason your project does not build, and you determine that
+it is due to a bug or limitation of the Eclipse to Gradle importer,
+please file a bug at http://b.android.com with category
+Component-Tools.
+
+(This import summary is for your information only, and can be deleted
+after import once you are satisfied with the results.)

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/ivPhoto"
+        android:layout_width="60dip"
+        android:layout_height="60dip"
+        android:layout_margin="8dip"
+        android:scaleType="centerCrop"
+        android:src="@drawable/no_image" />
+
+    <RelativeLayout
+        android:id="@+id/rlRight"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:gravity="center_vertical"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="我的家"
+            android:textSize="20dp" />
+
+        <!--家庭人数-->
+        <TextView
+            android:id="@+id/tvMeberCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvName"
+            android:layout_marginTop="8dip"
+            android:text="1" />
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="title_background">#393A3F</color>
+    <color name="title_press_background">#303032</color>
+    <color name="text_white">#FFFFFF</color>
+    <color name="text_black">#FF000000</color>
+    <color name="text_gray">#999999</color>
+    <color name="text_gray_light">#aaffffff</color>
+    <color name="text_red">#FF0000</color>
+    <color name="line">#D2D2D2</color>
+    <color name="viewfinder_laser">#ffcc0000</color>
+    <color name="btn_background">#FD9742</color>
+    <color name="btn_press_background">#FCCE34</color>
+    <color name="main_background">#EBEBEB</color>
+    <color name="activity_background">#FFFFFF</color>
+    <color name="bar_background">#FEFEFE</color>
+    <!-- Android standard ICS color -->
+    <color name="viewfinder_mask">#60000000</color>
+    <color name="result_view">#b0000000</color>
+    <color name="possible_result_points">#c0ffbd21</color>
+
+    <color name="colorPrimary">#FD9742</color>
+    <color name="colorAccent">#FCBE34</color>
+    <color name="colorPrimaryDark">#C0FFBD21</color>
+
+</resources>

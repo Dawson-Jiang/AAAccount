@@ -1,0 +1,84 @@
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:id="@+id/v_top"
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
+            android:background="@color/colorPrimary" />
+
+        <LinearLayout
+            android:id="@+id/layoutTitle"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/v_top"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/ivOperate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_menu_operate" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="16dp"
+                android:layout_weight="1"
+                android:text="账单"
+                android:textColor="@color/text_white"
+                android:textSize="16dp" />
+
+            <ImageView
+                android:id="@+id/ivFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_arrow_right" />
+        </LinearLayout>
+
+        <fragment
+            android:id="@+id/fg_daybook"
+            android:name="com.dawson.aaaccount.fragment.DayBookFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/layoutTitle"
+            tools:layout="@layout/fragment_daybook" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/main_floatbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_add"
+            app:layout_behavior="abc"
+            app:layout_scrollFlags="scroll|enterAlways" />
+
+    </RelativeLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/text_white"
+        android:clickable="true"
+        android:fitsSystemWindows="true" />
+
+</android.support.v4.widget.DrawerLayout>

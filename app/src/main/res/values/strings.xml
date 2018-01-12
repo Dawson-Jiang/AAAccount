@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">AA账单</string>
+
+    <!-- 注册 -->
+    <string name="register_title">注  册</string>
+    <string name="register_phone_label">账  号</string>
+    <string name="register_phone_hint">手机号码</string>
+    <string name="register_password_label">密  码</string>
+    <string name="register_password_hint">密码</string>
+    <string name="register_verify_label">验证码</string>
+    <string name="register_verify_hint">验证码</string>
+    <string name="register_btn_sent_verify">发送验证码</string>
+    <string name="register_btn_register">注  册</string>
+    <string name="register_null_phone_notice">手机号码不能为空</string>
+    <string name="register_null_password_notice">密码不能为空</string>
+    <string name="register_null_verify_notice">验证码不能为空</string>
+    <string name="registering">注册中…</string>
+    <string name="register_success">注册成功</string>
+    <string name="register_fail">注册失败</string>
+    <!-- 登录 -->
+    <string name="login_title">登  录</string>
+    <string name="login_register">注册</string>
+    <string name="login_phone_label">帐  号</string>
+    <string name="login_phone_hint">手机号码</string>
+    <string name="login_password_label">密  码</string>
+    <string name="login_password_hint">密码</string>
+    <string name="login_verify_label">验证码</string>
+    <string name="login_verify_hint">验证码</string>
+    <string name="login_btn_login">登  录</string>
+    <string name="login_null_phone_notice">手机号码不能为空</string>
+    <string name="login_null_password_notice">密码不能为空</string>
+    <string name="login_null_verify_notice">验证码不能为空</string>
+    <string name="login_login_method_pwd">密码登录</string>
+    <string name="login_login_method_verify_code">验证码登录</string>
+    <string name="login_findpassword_link"><u>忘记密码</u></string>
+    <!-- 主页 -->
+    <string name="main_title">AA账单</string>
+    <string name="main_btn_save">保存</string>
+    <string name="main_tv_filter">筛选</string>
+
+    <!-- 编辑 流水账 -->
+    <string name="edit_daybook_money_label">金额</string>
+    <string name="edit_daybook_family_label">家庭</string>
+    <string name="edit_daybook_family_hint">请选择家庭</string>
+    <string name="edit_daybook_type_label">消费类别</string>
+    <string name="edit_daybook_type_hint">请选择消费类别</string>
+    <string name="edit_daybook_payer_label">付 款 人</string>
+    <string name="edit_daybook_payer_hint">请选择付款人</string>
+    <string name="edit_daybook_consumer_label">消费人员</string>
+    <string name="edit_daybook_consumer_hint">请选择消费人员</string>
+    <string name="edit_daybook_date_label">消费日期</string>
+    <string name="edit_daybook_date_hint">请选择消费日期</string>
+    <string name="edit_daybook_remark_label">备注</string>
+    <string name="edit_daybook_remark_hint">备注</string>
+    <string name="edit_daybook_location_label">位置</string>
+    <string name="edit_daybook_location_hint">正在定位…</string>
+    <string name="edit_daybook_location_fail">定位失败</string>
+    <string name="edit_daybook_picture_label">图片</string>
+    <string name="edit_daybook_delete_notice">确定删除该账单吗?</string>
+    <!-- 我的 -->
+
+    <!-- 编辑家庭 -->
+    <string name="family_disjoin_notice">确定退出该家庭吗?</string>
+
+    <!-- Business Common -->
+    <string name="select_family_title">选择家庭</string>
+    <string name="select_payer_title">选择付款人</string>
+    <string name="select_member_title">选择消费人员</string>
+    <string name="select_type_title">选择消费类别</string>
+    <string name="locate_fail">定位失败,点击重试</string>
+    <string name="select_locate_title">选择位置</string>
+
+    <!-- Common -->
+    <string name="title_notice">提示</string>
+    <string name="title_ask">询问</string>
+    <string name="confirm">确定</string>
+    <string name="cancel">取消</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="save">保    存</string>
+    <string name="photo">相册</string>
+    <string name="camera">拍照</string>
+    <string name="permission_warning_camara">使用该功能需要摄像头权限, 请在应用详情中允许该权限</string>
+    <string name="permission_warning_storage">使用该功能需要SD卡权限, 请在应用详情中允许该权限</string>
+    <string name="btn_delete">删    除</string>
+    <string name="handling">正在处理…</string>
+    <string name="operate_success">操作成功</string>
+    <string name="operate_fail">操作失败</string>
+
+    <!-- 错误消息 -->
+    <string name="system_error">系统错误</string>
+    <string name="complete">完成</string>
+    <string name="str_about_statement">&#160;&#160;&#160;&#160;欢迎使用AA账单，该系统主要用于个人，家庭(如家庭成员，合租室友，同事，合伙人等)和临时家庭(如何旅行团，集体出差，自驾游等)记录日常消费，能够随时随地快速记账，统计和结算，操作简单方便快捷。</string>
+    <string name="str_about_contact_qq" formatted="false">
+    <![CDATA[
+    欢迎添加客服QQ进行反馈和讨论<br/> <u><font color=\'#FCBE34\'>点击添加客服QQ</font></u>
+    ]]>
+    </string>
+    <string name="str_about_copyright">Copyright©2017-2018 Dawson\n\t\t\t\tAll Rights Reserved</string>
+    <string name="login_txt_qqlogin">QQ登录</string>
+
+    <string name="del_notice">确定删除?</string>
+    <string name="settle_notice">统计数据包含已结算数据，无法结算\r\n请在筛选页'包含结算数据'项选择'否'</string>
+    <string name="settle_notice2"> 请先点击右上角同步按钮同步数据再结算</string>
+</resources>
