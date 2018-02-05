@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.dawson.aaaccount"
-    android:versionCode="1"
-    android:versionName="1.0">
-
-    <uses-sdk
-        android:minSdkVersion="18"
-        android:targetSdkVersion="22" />
+    package="com.dawson.aaaccount">
 
     <!-- <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> -->
     <!-- <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> -->
@@ -17,7 +11,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!--<uses-permission android:name="android.permission.READ_PHONE_STATE" />-->
     <!-- <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> -->
     <!-- <uses-permission android:name="com.android.browser.permission.READ_HISTORY_BOOKMARKS" /> -->
     <!-- <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" /> -->
@@ -28,9 +22,8 @@
     <!-- <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> -->
     <!-- <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> -->
     <!-- <uses-permission android:name="android.permission.READ_PHONE_STATE" /> -->
-     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
+    <!--<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />-->
+    <!--<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />-->
 
 
     <application
@@ -44,6 +37,18 @@
         <!-- <meta-data -->
         <!-- android:name="com.baidu.lbsapi.API_KEY" -->
         <!-- android:value="6aGLkjt0lsRf8cNfLj4ZgkCw" /> -->
+
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.dawson.aaaccount.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
 
         <activity
             android:name=".activity.MainActivity"
@@ -73,8 +78,10 @@
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="101412765" />
             </intent-filter>
         </activity>

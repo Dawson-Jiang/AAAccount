@@ -101,39 +101,4 @@ object FilePathConstants {
         }
         return data
     }
-
-    fun recordLog(msg: String, fileName: String) {
-        val filePath = exceptionLogPath + File.separator + fileName
-        val file = File(filePath)
-        try {
-            if (!file.exists()) file.createNewFile()
-            val fileWriter = FileWriter(file, true)
-            fileWriter.write(msg)
-            fileWriter.flush()
-            fileWriter.close()
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-
-    }
-
-    /**
-     * 读取日志文件列表
-
-     * @param context
-     * *
-     * @return
-     */
-    fun getLogs(): Array<String>? {
-        val path = exceptionLogPath
-        val file = File(path)
-        try {
-            if (file.exists())
-                return file.list()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-        return null
-    }
 }

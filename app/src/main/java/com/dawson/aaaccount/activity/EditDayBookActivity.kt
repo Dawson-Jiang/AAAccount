@@ -318,7 +318,6 @@ class EditDayBookActivity : BaseActivity() {
             tv_category.text = categories[selectedCategoryIndex]
                     .name
         } else if (requestCode == OperateCode.CAPTURE ||
-                requestCode == OperateCode.SELECT_PICTURE_KK ||
                 requestCode == OperateCode.SELECT_PICTURE) {
             photoChoose.onActivityResult(requestCode, resultCode, data)
                     .observeOn(AndroidSchedulers.mainThread())

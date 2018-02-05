@@ -81,7 +81,7 @@ object OperateCode {
     /**
      * 浏览  4.4版本以上
      */
-    val SELECT_PICTURE_KK = 27
+//    val SELECT_PICTURE_KK = 27
 
     /**
      * 拍照
