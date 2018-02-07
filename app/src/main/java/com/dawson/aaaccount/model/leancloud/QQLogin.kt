@@ -69,8 +69,11 @@ class QQLogin(val activity: Activity) {
                                 val userTemp = User()
                                 userTemp.id = avUser.objectId
                                 if (System.currentTimeMillis() - avUser.createdAt.time < 60 * 1000) {   //新用户更新昵称和头像
-                                    userTemp.name = snsRes.authorizedData().getString("nickname")
-                                    userTemp.headUrl = snsRes.authorizedData().getString("figureurl_qq_2")
+                                    if (snsRes.authorizedData().has("nickname"))
+                                        userTemp.name = snsRes.authorizedData().getString("nickname")
+                                    else userTemp.name = userTemp.id
+                                    if (snsRes.authorizedData().has("figureurl_qq_2"))
+                                        userTemp.headUrl = snsRes.authorizedData().getString("figureurl_qq_2")
                                 } else userTemp.headUrl = "has"
                                 em.onNext(userTemp)
                                 em.onComplete()

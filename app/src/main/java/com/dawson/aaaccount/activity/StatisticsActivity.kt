@@ -111,7 +111,7 @@ class StatisticsActivity : BaseActivity() {
                 return@setOnClickListener
             }
             if (settle == null || settle?.settleDetails == null || settle?.settleDetails?.size!! <= 0) {
-                Toast.makeText(this@StatisticsActivity,"没有需要结算数据", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@StatisticsActivity, "没有需要结算数据", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             mProgressDialog = AlertDialogHelper.showWaitProgressDialog(this,
@@ -146,6 +146,7 @@ class StatisticsActivity : BaseActivity() {
         f.id = userModel.currentUser!!.id
         f.name = userModel.currentUser!!.name
         families.add(f)
+        familyNames = listOfNotNull("自己")
         selectedFamilyIndex = 0
         familyModel.getMyFamily().observeOn(AndroidSchedulers.mainThread())
                 .doOnError { onGetFamily(OperateResult()) }
@@ -226,7 +227,7 @@ class StatisticsActivity : BaseActivity() {
             }.toList()
         } else {
             Common.showErrorInfo(this, result.errorCode,
-                    R.string.operate_fail, 0)
+                    "加载失败", 0)
         }
         if (selectedFamilyIndex <= 0) nav_toolbar.menu.getItem(1).isEnabled = false
     }
