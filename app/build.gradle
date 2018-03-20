@@ -10,8 +10,8 @@ android {
 
     defaultConfig {
         applicationId "com.dawson.aaaccount"
-        versionCode 43
-        versionName "4.3"
+        versionCode 44
+        versionName "4.4"
         minSdkVersion 19
         targetSdkVersion 25
         flavorDimensions "release"

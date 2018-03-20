@@ -36,9 +36,9 @@ class MainActivity : FragmentActivity() {
         initDrawerLayout()
         SettleModel().syncData(applicationContext, true).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnError { DLog.i("syncData", it.message!!) }
                 .doOnComplete { DLog.i("syncData", "syncData complete") }
-                .subscribe { DLog.i("syncData", "syncData subscribe") }
+                .subscribe({ DLog.i("syncData", "syncData subscribe") },
+                        { DLog.i("syncData", it.message!!) })
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {

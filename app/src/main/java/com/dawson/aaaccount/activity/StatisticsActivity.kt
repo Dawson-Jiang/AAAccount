@@ -87,8 +87,7 @@ class StatisticsActivity : BaseActivity() {
                     mProgressDialog = AlertDialogHelper.showWaitProgressDialog(this,
                             R.string.handling)
                     settleModel.syncData(this.applicationContext, false).observeOn(AndroidSchedulers.mainThread())
-                            .doOnError { onSyncCompleted(OperateResult()) }
-                            .subscribe { result -> onSyncCompleted(result) }
+                            .subscribe({ result -> onSyncCompleted(result) }, { onSyncCompleted(OperateResult()) })
                 }
             }
             true
@@ -149,8 +148,7 @@ class StatisticsActivity : BaseActivity() {
         familyNames = listOfNotNull("自己")
         selectedFamilyIndex = 0
         familyModel.getMyFamily().observeOn(AndroidSchedulers.mainThread())
-                .doOnError { onGetFamily(OperateResult()) }
-                .subscribe { result -> onGetFamily(result) }
+                .subscribe ({ result -> onGetFamily(result) },{ onGetFamily(OperateResult()) })
     }
 
     private fun showStatistic() {
