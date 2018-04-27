@@ -6,7 +6,8 @@ import com.dawson.aaaccount.util.ErrorCode
 
 /**
  * 所有网络接收结果基类
- *
+ *服务端返回的结果 [com.dawson.aaaccount.util.ErrorCode] SUCCESS表示成功 FAIL表示失败
+ * 如果失败查看 [.errorCode] 获得详细错误码和 [.errorMsg] 获取错误消息
  * @author JD
  */
 class OperateResult<T> {

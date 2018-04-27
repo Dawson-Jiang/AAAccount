@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.*
 import android.widget.AdapterView
 import android.widget.Toast
@@ -57,6 +59,7 @@ class DayBookFragment : BaseFragment() {
         rootView = inflater.inflate(R.layout.fragment_daybook, null)
         initComponent()
         rootView?.lvRecord?.adapter = mDaybookAdapter
+        rootView?.lvRecord?.layoutManager= LinearLayoutManager(activity)
         rootView?.lvRecord?.addItemDecoration(DividerItemDecoration(activity,DividerItemDecoration.HORIZONTAL))
         mDaybookAdapter.setClick { position ->
             val intent = Intent()
@@ -197,7 +200,7 @@ class DayBookFragment : BaseFragment() {
             if (currentPage == 0) mDayBooks.clear()
             mDayBooks.addAll(result.content!!)
             rootView?.refRecord?.isNeedLoadMore = (result.content!!.size > limit)
-            mDaybookAdapter?.notifyDataSetChanged()
+            mDaybookAdapter.notifyDataSetChanged()
             if (mDayBooks.size <= 0) {
                 rootView?.lvRecord?.visibility = View.GONE
                 rootView?.tvNoData?.visibility = View.VISIBLE
