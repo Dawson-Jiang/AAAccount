@@ -3,6 +3,9 @@ package com.dawson.aaaccount.fragment
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.widget.DividerItemDecoration
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.*
 import android.widget.AdapterView
 import android.widget.Toast
@@ -38,7 +41,7 @@ class DayBookFragment : BaseFragment() {
     private var mDayBooks: MutableList<DayBook> = ArrayList()
     private var currentPage = -1
     private val limit = 10
-    private var mDaybookAdapter: DaybookAdapter? = null
+    private lateinit var mDaybookAdapter: DaybookAdapter
 
     private var familyModel: IFamilyModel = FamilyModel()
     private var dayBookModel: IDayBookModel = DayBookModel()
@@ -56,7 +59,9 @@ class DayBookFragment : BaseFragment() {
         rootView = inflater.inflate(R.layout.fragment_daybook, null)
         initComponent()
         rootView?.lvRecord?.adapter = mDaybookAdapter
-        rootView?.lvRecord?.setOnItemClickListener { _, _, position, _ ->
+        rootView?.lvRecord?.layoutManager= LinearLayoutManager(activity)
+        rootView?.lvRecord?.addItemDecoration(DividerItemDecoration(activity,DividerItemDecoration.HORIZONTAL))
+        mDaybookAdapter.setClick { position ->
             val intent = Intent()
             intent.setClass(activity, EditDayBookActivity::class.java)
             intent.putExtra("daybook_id", mDayBooks[position].id)
@@ -85,11 +90,7 @@ class DayBookFragment : BaseFragment() {
                         activity, R.string.handling)
                 dayBookModel.delete(tempDayBook?.id!!)
                         .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                        .doOnError {
-                            cancelDialog()
-                            Toast.makeText(activity, "删除失败", Toast.LENGTH_SHORT).show()
-                        }
-                        .subscribe { res ->
+                        .subscribe({ res ->
                             cancelDialog()
                             if (res.result == ErrorCode.SUCCESS) {
                                 Toast.makeText(activity, "删除成功", Toast.LENGTH_SHORT).show()
@@ -97,7 +98,10 @@ class DayBookFragment : BaseFragment() {
                             } else {
                                 Toast.makeText(activity, "删除失败", Toast.LENGTH_SHORT).show()
                             }
-                        }
+                        }, {
+                            cancelDialog()
+                            Toast.makeText(activity, "删除失败", Toast.LENGTH_SHORT).show()
+                        })
             }, { _, _ -> })
         }
         return super.onContextItemSelected(item)
@@ -134,11 +138,7 @@ class DayBookFragment : BaseFragment() {
         familyNames = listOfNotNull(f.name)
         familyModel.getMyFamily()
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnError { _ ->
-                    Common.showErrorInfo(activity, ErrorCode.FAIL,
-                            R.string.operate_fail, 0)
-                }
-                .subscribe { result ->
+                .subscribe({ result ->
                     if (result.result == ErrorCode.SUCCESS) {
                         families.addAll(result.content!!)
                         familyNames = families.indices.map {
@@ -151,7 +151,10 @@ class DayBookFragment : BaseFragment() {
                         Common.showErrorInfo(activity, result.errorCode,
                                 R.string.operate_fail, 0)
                     }
-                }
+                }, {
+                    Common.showErrorInfo(activity, ErrorCode.FAIL,
+                            R.string.operate_fail, 0)
+                })
     }
 
     /**
@@ -197,7 +200,7 @@ class DayBookFragment : BaseFragment() {
             if (currentPage == 0) mDayBooks.clear()
             mDayBooks.addAll(result.content!!)
             rootView?.refRecord?.isNeedLoadMore = (result.content!!.size > limit)
-            mDaybookAdapter?.notifyDataSetChanged()
+            mDaybookAdapter.notifyDataSetChanged()
             if (mDayBooks.size <= 0) {
                 rootView?.lvRecord?.visibility = View.GONE
                 rootView?.tvNoData?.visibility = View.VISIBLE

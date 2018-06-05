@@ -63,21 +63,19 @@ class EditFamilyActivity : BaseActivity() {
                 //到服务器获取家庭信息
                 familyModel.getFamilyById(applicationContext, id)
                         .observeOn(AndroidSchedulers.mainThread())
-                        .doOnError { ex ->
-                            Toast.makeText(this, "获取家庭信息失败", Toast.LENGTH_SHORT).show()
-                            finish()
-                            DLog.error("edfamily_getFamilyById", ex)
-                        }
-                        .subscribe { result ->
+                        .subscribe( { result ->
                             cancelDialog()
                             editFamily = result.content
                             showFamily()
-                        }
+                        },{ ex ->
+                            Toast.makeText(this, "获取家庭信息失败", Toast.LENGTH_SHORT).show()
+                            finish()
+                            DLog.error("edfamily_getFamilyById", ex)
+                        })
             } else {
                 finish()
             }
         } else if (requestCode == OperateCode.CAPTURE ||
-                requestCode == OperateCode.SELECT_PICTURE_KK ||
                 requestCode == OperateCode.SELECT_PICTURE) {
             photoChoose.onActivityResult(requestCode, resultCode, data).observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ b ->

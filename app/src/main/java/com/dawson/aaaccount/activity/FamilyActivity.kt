@@ -95,8 +95,7 @@ class FamilyActivity : BaseActivity() {
     private fun initFamily() {
         srefreshRecord.isRefreshing = true
         familyModel.getMyFamily().observeOn(AndroidSchedulers.mainThread())
-                .doOnError { DLog.error("family_init", it) }
-                .subscribe { result -> onGetFamily(result) }
+                .subscribe({ result -> onGetFamily(result) }, { DLog.error("family_init", it) })
     }
 
     private fun editFamily(index: Int, type: Int) {
@@ -153,17 +152,16 @@ class FamilyActivity : BaseActivity() {
                     this, R.string.handling)
             familyModel.disJoin(CommonCach.families[index])
                     .observeOn(AndroidSchedulers.mainThread())
-                    .doOnError {
-                        cancelDialog()
-                        Toast.makeText(this, R.string.operate_fail, Toast.LENGTH_SHORT).show()
-                        DLog.error("family_disjoin", it)
-                    }
-                    .subscribe { _ ->
+                    .subscribe({ _ ->
                         cancelDialog()
                         CommonCach.families.removeAt(index)
                         familyAdapter.notifyDataSetChanged()
                         Toast.makeText(this, R.string.operate_success, Toast.LENGTH_SHORT).show()
-                    }
+                    }, {
+                        cancelDialog()
+                        Toast.makeText(this, R.string.operate_fail, Toast.LENGTH_SHORT).show()
+                        DLog.error("family_disjoin", it)
+                    })
         }, { _, _ -> })
     }
 
@@ -176,17 +174,16 @@ class FamilyActivity : BaseActivity() {
                     this, R.string.handling)
             familyModel.del(CommonCach.families[index])
                     .observeOn(AndroidSchedulers.mainThread())
-                    .doOnError {
-                        cancelDialog()
-                        Toast.makeText(this, "删除失败", Toast.LENGTH_SHORT).show()
-                        DLog.error("family_del", it)
-                    }
-                    .subscribe { _ ->
+                    .subscribe({ _ ->
                         cancelDialog()
                         CommonCach.families.removeAt(index)
                         familyAdapter.notifyDataSetChanged()
                         Toast.makeText(this, "删除成功", Toast.LENGTH_SHORT).show()
-                    }
+                    }, {
+                        cancelDialog()
+                        Toast.makeText(this, "删除失败", Toast.LENGTH_SHORT).show()
+                        DLog.error("family_del", it)
+                    })
         }, { _, _ -> })
     }
 

@@ -17,6 +17,7 @@ import com.dawson.aaaccount.util.DLog
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_welcome.*
+import java.net.UnknownHostException
 
 class WelcomeActivity : Activity() {
     private var animationSet: AnimationSet = AnimationSet(true)
@@ -51,18 +52,17 @@ class WelcomeActivity : Activity() {
         hasInit = false
         userModel.initUser(applicationContext)
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnError {
-                    it.printStackTrace()
-                    DLog.error("initUser", it)
-                    Toast.makeText(this@WelcomeActivity, "启动失败", Toast.LENGTH_SHORT).show()
-                    finish()
-                }
-                .subscribe { _ ->
+                .subscribe({ _ ->
                     if (!isFinishing) {
                         hasInit = true
                         goTo()
                     }
-                }
+                }, {
+                    it.printStackTrace()
+                    if (it !is UnknownHostException) DLog.error("initUser", it)
+                    Toast.makeText(this@WelcomeActivity, "启动失败", Toast.LENGTH_SHORT).show()
+                    finish()
+                })
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {

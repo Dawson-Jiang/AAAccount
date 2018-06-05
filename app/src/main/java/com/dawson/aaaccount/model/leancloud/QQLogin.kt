@@ -1,25 +1,17 @@
 package com.dawson.aaaccount.model.leancloud
 
 import android.app.Activity
-import android.os.Handler
-import android.os.Looper
-import android.text.TextUtils
 import com.avos.avoscloud.AVException
 import com.avos.avoscloud.AVUser
 import com.avos.avoscloud.LogInCallback
 import com.avos.sns.*
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.FutureTarget
-import com.bumptech.glide.request.RequestFutureTarget
-import com.bumptech.glide.request.target.Target
 import com.dawson.aaaccount.bean.User
 import com.dawson.aaaccount.bean.result.OperateResult
 import com.dawson.aaaccount.util.DLog
-import com.dawson.aaaccount.util.GlideWrapper
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import java.io.File
 
 /**
  * QQ登陆
@@ -43,8 +35,8 @@ class QQLogin(val activity: Activity) {
      */
     private fun auth(): Observable<SNSBase> {
         return Observable.create<SNSBase> { em ->
-            SNS.setupPlatform(activity.applicationContext, SNSType.AVOSCloudSNSQQ, "101412765",
-                    "f83ceb68b5166e63673b0b08f09e1c0f", "https://leancloud.cn/1.1/sns/callback/v0ieo7rkabppf3ac")
+            SNS.setupPlatform(activity.applicationContext, SNSType.AVOSCloudSNSQQ, "1106203415",
+                    "22f23c91bb5e4af78eef7943638e3e29", "https://leancloud.cn/1.1/sns/callback/v0ieo7rkabppf3ac")
             SNS.loginWithCallback(activity, SNSType.AVOSCloudSNSQQ,
                     object : SNSCallback() {   // 第三方授权callback
                         override fun done(res: SNSBase, ex: SNSException?) {
@@ -77,8 +69,11 @@ class QQLogin(val activity: Activity) {
                                 val userTemp = User()
                                 userTemp.id = avUser.objectId
                                 if (System.currentTimeMillis() - avUser.createdAt.time < 60 * 1000) {   //新用户更新昵称和头像
-                                    userTemp.name = snsRes.authorizedData().getString("nickname")
-                                    userTemp.headUrl = snsRes.authorizedData().getString("figureurl_qq_2")
+                                    if (snsRes.authorizedData().has("nickname"))
+                                        userTemp.name = snsRes.authorizedData().getString("nickname")
+                                    else userTemp.name = userTemp.id
+                                    if (snsRes.authorizedData().has("figureurl_qq_2"))
+                                        userTemp.headUrl = snsRes.authorizedData().getString("figureurl_qq_2")
                                 } else userTemp.headUrl = "has"
                                 em.onNext(userTemp)
                                 em.onComplete()
@@ -112,8 +107,8 @@ class QQLogin(val activity: Activity) {
     }
 
     fun logout() {
-        SNS.setupPlatform(activity.applicationContext, SNSType.AVOSCloudSNSQQ, "101412765",
-                "f83ceb68b5166e63673b0b08f09e1c0f", "https://leancloud.cn/1.1/sns/callback/v0ieo7rkabppf3ac")
+        SNS.setupPlatform(activity.applicationContext, SNSType.AVOSCloudSNSQQ, "1106203415",
+                "22f23c91bb5e4af78eef7943638e3e29", "https://leancloud.cn/1.1/sns/callback/v0ieo7rkabppf3ac")
         SNS.logout(activity, SNSType.AVOSCloudSNSQQ)
     }
 }

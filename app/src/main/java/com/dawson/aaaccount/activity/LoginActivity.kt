@@ -74,12 +74,7 @@ class LoginActivity : Activity() {
 //                    Observable.just(OperateResult())
                 }
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnError { ex ->
-                    ex.printStackTrace()
-                    btn_send_vercode.isEnabled = true
-                    Toast.makeText(this@LoginActivity, "验证码发送失败", Toast.LENGTH_SHORT).show()
-                }
-                .subscribe { result ->
+                .subscribe( { result ->
                     if (result.result == ErrorCode.SUCCESS) {
                         btn_send_vercode.isEnabled = false
                         btn_send_vercode.text = "发送成功"
@@ -87,7 +82,11 @@ class LoginActivity : Activity() {
                         btn_send_vercode.isEnabled = true
                         Toast.makeText(this@LoginActivity, "验证码发送失败", Toast.LENGTH_SHORT).show()
                     }
-                }
+                } ,{ ex ->
+                    ex.printStackTrace()
+                    btn_send_vercode.isEnabled = true
+                    Toast.makeText(this@LoginActivity, "验证码发送失败", Toast.LENGTH_SHORT).show()
+                })
     }
 
     private fun loginByPhone() {
@@ -113,13 +112,12 @@ class LoginActivity : Activity() {
                     cancelDialog()
                     userModel.initUser(this@LoginActivity.applicationContext).subscribeOn(Schedulers.newThread())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .doOnError { it.printStackTrace() }
-                            .subscribe { _ ->
+                            .subscribe ({ _ ->
                                 val intent = Intent()
                                 intent.setClass(this@LoginActivity, MainActivity::class.java)
                                 startActivity(intent)
                                 finish()
-                            }
+                            },{ it.printStackTrace() })
                     Toast.makeText(this@LoginActivity, "登录成功", Toast.LENGTH_SHORT).show()
                 }, { e ->
                     cancelDialog()

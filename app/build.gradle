@@ -5,15 +5,15 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 26
     buildToolsVersion "26.0.2"
 
     defaultConfig {
         applicationId "com.dawson.aaaccount"
-        versionCode 41
-        versionName "4.1"
+        versionCode 44
+        versionName "4.4"
         minSdkVersion 19
-        targetSdkVersion 25
+        targetSdkVersion 26
         flavorDimensions "release"
         multiDexEnabled true
     }
@@ -60,7 +60,7 @@ android {
     //指定打包后应用名称
     android.applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "aaaccount_${buildType.name} _v${defaultConfig.versionCode}.apk"
+            outputFileName = "aaaccount_${buildType.name}_v${defaultConfig.versionCode}.apk"
         }
     }
 

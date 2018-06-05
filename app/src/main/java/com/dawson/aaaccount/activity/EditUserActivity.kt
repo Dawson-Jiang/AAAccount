@@ -97,7 +97,6 @@ class EditUserActivity : BaseActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == OperateCode.CAPTURE ||
-                requestCode == OperateCode.SELECT_PICTURE_KK ||
                 requestCode == OperateCode.SELECT_PICTURE) {
             photoChoose.onActivityResult(requestCode, resultCode, data).observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ b ->

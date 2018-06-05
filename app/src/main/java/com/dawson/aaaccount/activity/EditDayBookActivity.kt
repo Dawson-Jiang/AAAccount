@@ -102,7 +102,7 @@ class EditDayBookActivity : BaseActivity() {
                 }, { ex ->
                     cancelDialog()
                     Common.showErrorInfo(this, ErrorCode.FAIL,
-                            R.string.operate_fail, 0)
+                            "加载失败", 0)
                     DLog.error("edbook_getMyFamily", ex)
                 })
     }
@@ -218,6 +218,10 @@ class EditDayBookActivity : BaseActivity() {
         initCommonTitle()
 
         tv_family.setOnClickListener { _ ->
+            if (familyNames.isEmpty()) {
+                Toast.makeText(this@EditDayBookActivity, "数据加载失败！", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             val intent = Intent(this, BaseSimpleSelectActivity::class.java)
             intent.putExtra("select_string", familyNames.toTypedArray())
             intent.putExtra("select_index", selectedFamilyIndex)
@@ -226,6 +230,10 @@ class EditDayBookActivity : BaseActivity() {
         }
 
         tv_category.setOnClickListener { _ ->
+            if (categoryNames.isEmpty()) {
+                Toast.makeText(this@EditDayBookActivity, "数据加载失败！", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             val intent = Intent(this, BaseSimpleSelectActivity::class.java)
             intent.putExtra("select_string", categoryNames.toTypedArray())
             intent.putExtra("select_index", selectedCategoryIndex)
@@ -235,6 +243,10 @@ class EditDayBookActivity : BaseActivity() {
 
         tv_payer.setOnClickListener { _ ->
             if (selectedFamilyIndex == 0) return@setOnClickListener
+            if (consumerStrs.isEmpty()) {
+                Toast.makeText(this@EditDayBookActivity, "数据加载失败！", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             val intent = Intent(this, BaseSimpleSelectActivity::class.java)
             intent.putExtra("select_string", consumerStrs.toTypedArray())
             intent.putExtra("select_index", selectedPayerIndex)
@@ -246,6 +258,10 @@ class EditDayBookActivity : BaseActivity() {
         tv_consumer.setOnClickListener { _ ->
             if (selectedFamilyIndex == 0)
                 return@setOnClickListener
+            if (consumerStrs.isEmpty()) {
+                Toast.makeText(this@EditDayBookActivity, "数据加载失败！", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             val intent = Intent(this, BaseSimpleSelectActivity::class.java)
             intent.putExtra("select_string", consumerStrs.toTypedArray())
             intent.putExtra("select_index", selectedConsumers)
@@ -318,7 +334,6 @@ class EditDayBookActivity : BaseActivity() {
             tv_category.text = categories[selectedCategoryIndex]
                     .name
         } else if (requestCode == OperateCode.CAPTURE ||
-                requestCode == OperateCode.SELECT_PICTURE_KK ||
                 requestCode == OperateCode.SELECT_PICTURE) {
             photoChoose.onActivityResult(requestCode, resultCode, data)
                     .observeOn(AndroidSchedulers.mainThread())

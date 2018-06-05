@@ -38,8 +38,7 @@ class SettleListActivity : BaseActivity() {
             startActivity(intent)
         }
         settleModel.getByFamilyId(family?.id!!).observeOn(AndroidSchedulers.mainThread())
-                .doOnError { onGetSettle(OperateResult()) }
-                .subscribe { onGetSettle(it) }
+                .subscribe ({ onGetSettle(it) },{ onGetSettle(OperateResult()) })
     }
 
     private fun initComponent() {

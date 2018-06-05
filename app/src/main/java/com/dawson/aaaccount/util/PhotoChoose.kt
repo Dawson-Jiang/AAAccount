@@ -11,8 +11,10 @@ import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.support.v4.app.Fragment
+import android.support.v4.content.FileProvider
 import android.util.Log
 import android.widget.Toast
+import com.dawson.aaaccount.BuildConfig
 import com.dawson.aaaccount.R
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
@@ -76,54 +78,36 @@ class PhotoChoose {
                 + File.separator + System.currentTimeMillis().toString()
                 + ".jpg")
         try {
-            val isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
-            if (isKitKat) {
-                val intent = Intent(
-                        Intent.ACTION_PICK,
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-                startActivityForResult(intent,
-                        OperateCode.SELECT_PICTURE_KK)
-            } else {
-                val intent = Intent(Intent.ACTION_GET_CONTENT, null)
-                intent.type = "image/*"
-                intent.putExtra("crop", "true")
-                intent.putExtra("aspectX", 1)
-                intent.putExtra("aspectY", 1)
-                intent.putExtra("outputX", out_putx)
-                intent.putExtra("outputY", out_puty)
-                intent.putExtra("scale", true)
-                intent.putExtra("return-data", false)
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
-                intent.putExtra("outputFormat",
-                        Bitmap.CompressFormat.JPEG.toString())
-                intent.putExtra("noFaceDetection", true)
-                startActivityForResult(intent, OperateCode.SELECT_PICTURE)
-            }
+            val intent = Intent(Intent.ACTION_PICK,
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(intent, OperateCode.SELECT_PICTURE)
         } catch (e: ActivityNotFoundException) {
             Toast.makeText(mActivity, "没有相册", Toast.LENGTH_SHORT).show()
         }
-
     }
 
     /**
      * 拍照
      */
     private fun camera() {
-        imageUri = Uri.parse("file://"
-                + FilePathConstants.avatarPhotosPath
-                + File.separator + System.currentTimeMillis().toString()
-                + ".jpg")
+        val fn = FilePathConstants.avatarPhotosPath + File.separator + System.currentTimeMillis().toString() + ".jpg"
+        imageUri = Uri.parse("file://" + fn)
 
         if (Common.checkPermissions(mActivity, Manifest.permission.CAMERA)) {
             try {
                 val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
-                startActivityForResult(intent,
-                        OperateCode.CAPTURE)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    val pof = File(fn)
+                    val imguri = FileProvider.getUriForFile(mActivity,
+                            mActivity.packageName + ".fileprovider", pof)
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, imguri)
+                }else {
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
+                }
+                startActivityForResult(intent, OperateCode.CAPTURE)
             } catch (e: ActivityNotFoundException) {
                 Toast.makeText(mActivity, "没有找到相机", Toast.LENGTH_LONG).show()
             }
-
         } else {
             AlertDialogHelper.showOKCancelAlertDialog(mActivity, R.string.permission_warning_camara,
                     { _, _ -> Common.startAppSettings(mActivity) }, { _, _ -> })
@@ -137,7 +121,7 @@ class PhotoChoose {
                 e.onComplete()
                 return@create
             }
-            if (requestCode == OperateCode.SELECT_PICTURE_KK)
+            if (requestCode == OperateCode.SELECT_PICTURE)
                 imageUri = data?.data
             if (imageUri == null) {
                 e.onError(Exception("操作出错"))
