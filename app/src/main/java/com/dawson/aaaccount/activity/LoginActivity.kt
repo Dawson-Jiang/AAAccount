@@ -7,18 +7,15 @@ import android.os.Bundle
 import android.view.View
 import android.view.Window
 import android.widget.Toast
-import com.avos.sns.SNS
-import com.avos.sns.SNSException
-import com.avos.sns.SNSType
 import com.dawson.aaaccount.R
 import com.dawson.aaaccount.bean.result.OperateResult
-import com.dawson.aaaccount.util.Common
 import com.dawson.aaaccount.model.IUserModel
-import com.dawson.aaaccount.model.leancloud.UserModel
+import com.dawson.aaaccount.model.myaliyun.UserModel
+import com.dawson.aaaccount.model.myaliyun.QQLogin
 import com.dawson.aaaccount.util.AlertDialogHelper
-import com.dawson.aaaccount.util.DLog
+import com.dawson.aaaccount.util.Common
 import com.dawson.aaaccount.util.ErrorCode
-import io.reactivex.Observable
+import com.tencent.tauth.Tencent
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_login.*
@@ -74,7 +71,7 @@ class LoginActivity : Activity() {
 //                    Observable.just(OperateResult())
                 }
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe( { result ->
+                .subscribe({ result ->
                     if (result.result == ErrorCode.SUCCESS) {
                         btn_send_vercode.isEnabled = false
                         btn_send_vercode.text = "发送成功"
@@ -82,7 +79,7 @@ class LoginActivity : Activity() {
                         btn_send_vercode.isEnabled = true
                         Toast.makeText(this@LoginActivity, "验证码发送失败", Toast.LENGTH_SHORT).show()
                     }
-                } ,{ ex ->
+                }, { ex ->
                     ex.printStackTrace()
                     btn_send_vercode.isEnabled = true
                     Toast.makeText(this@LoginActivity, "验证码发送失败", Toast.LENGTH_SHORT).show()
@@ -112,12 +109,12 @@ class LoginActivity : Activity() {
                     cancelDialog()
                     userModel.initUser(this@LoginActivity.applicationContext).subscribeOn(Schedulers.newThread())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe ({ _ ->
+                            .subscribe({ _ ->
                                 val intent = Intent()
                                 intent.setClass(this@LoginActivity, MainActivity::class.java)
                                 startActivity(intent)
                                 finish()
-                            },{ it.printStackTrace() })
+                            }, { it.printStackTrace() })
                     Toast.makeText(this@LoginActivity, "登录成功", Toast.LENGTH_SHORT).show()
                 }, { e ->
                     cancelDialog()
@@ -129,30 +126,31 @@ class LoginActivity : Activity() {
         mProgressDialog = AlertDialogHelper.showWaitProgressDialog(
                 this@LoginActivity, R.string.handling)
         userModel.loginByQQ(this)
-                .observeOn(AndroidSchedulers.mainThread())
+                .flatMap {
+                    userModel.initUser(this@LoginActivity.applicationContext)
+                }.observeOn(AndroidSchedulers.mainThread())
+                .doOnComplete {
+                    cancelDialog()
+                    Common.showErrorInfo(this@LoginActivity, ErrorCode.FAIL, "")
+                }
                 .subscribe({ _ ->
                     cancelDialog()
-                    userModel.initUser(this@LoginActivity.applicationContext)
-                            .subscribeOn(Schedulers.newThread())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe { _ ->
-                                val intent = Intent()
-                                intent.setClass(this@LoginActivity, MainActivity::class.java)
-                                startActivity(intent)
-                                finish()
-                            }
                     Toast.makeText(this@LoginActivity, "登录成功", Toast.LENGTH_SHORT).show()
+                    val intent = Intent()
+                    intent.setClass(this@LoginActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
                 }, { e ->
                     e.printStackTrace()
                     cancelDialog()
-                    val snse = e as? SNSException
-                    if (snse == null || snse.code != SNSException.USER_CANCEL)
-                        Common.showErrorInfo(this@LoginActivity, ErrorCode.FAIL, e.message)
+//                    if (snse == null || snse.code != SNSException.USER_CANCEL)
+                    Common.showErrorInfo(this@LoginActivity, ErrorCode.FAIL, e.message)
                 })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        SNS.onActivityResult(requestCode, resultCode, data, SNSType.AVOSCloudSNSQQ)
+//        SNS.onActivityResult(requestCode, resultCode, data, SNSType.AVOSCloudSNSQQ)
+        Tencent.onActivityResultData(requestCode, resultCode, data, null)
     }
 }

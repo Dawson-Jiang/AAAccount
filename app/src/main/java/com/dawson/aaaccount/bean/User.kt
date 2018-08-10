@@ -1,5 +1,7 @@
 package com.dawson.aaaccount.bean
 
+import com.google.gson.annotations.SerializedName
+
 open class User : BaseEntity() {
     var number: Int = 0
     var name: String? = null
@@ -10,6 +12,7 @@ open class User : BaseEntity() {
     /**
      * 头像url
      */
+    @SerializedName("headPic")
     var headUrl: String? = null
     /**
      * 头像缩略图url

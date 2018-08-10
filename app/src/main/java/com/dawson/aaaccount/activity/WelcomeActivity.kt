@@ -11,11 +11,9 @@ import android.view.animation.AnimationSet
 import android.widget.Toast
 import com.dawson.aaaccount.R
 import com.dawson.aaaccount.model.IUserModel
-import com.dawson.aaaccount.model.leancloud.FeedBackModel
-import com.dawson.aaaccount.model.leancloud.UserModel
+import com.dawson.aaaccount.model.myaliyun.UserModel
 import com.dawson.aaaccount.util.DLog
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_welcome.*
 import java.net.UnknownHostException
 
@@ -80,7 +78,6 @@ class WelcomeActivity : Activity() {
     }
 
     @Synchronized private fun goTo() {
-//        if (!hasInit) return
         if (animationState != 0 || !hasInit) return
         if (userModel.isLogin(this@WelcomeActivity.applicationContext)) {
             startActivity(Intent(this@WelcomeActivity, MainActivity::class.java))

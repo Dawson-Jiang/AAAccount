@@ -4,24 +4,25 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
-import android.text.TextUtils
-import com.avos.avoscloud.AVSMS
-import com.avos.avoscloud.AVUser
+import android.os.Build
+import com.dawson.aaaccount.BuildConfig
 import com.dawson.aaaccount.activity.LoginActivity
 import com.dawson.aaaccount.bean.User
 import com.dawson.aaaccount.bean.result.OperateResult
+import com.dawson.aaaccount.dao.GreenDaoUtil
+import com.dawson.aaaccount.dao.bean.DBUser
+import com.dawson.aaaccount.dao.bean.withDBUser
+import com.dawson.aaaccount.dao.bean.withUser
 import com.dawson.aaaccount.model.IUserModel
-import com.dawson.aaaccount.model.leancloud.bean.withAVUser
-import com.dawson.aaaccount.util.ErrorCode
+import com.dawson.aaaccount.net.RetrofitHelper
+import com.dawson.aaaccount.net.UserService
 import com.dawson.aaaccount.util.PhoneHelper
 import com.dawson.aaaccount.util.format
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.*
-import com.avos.avoscloud.AVException
-import com.avos.avoscloud.LogInCallback
-import com.dawson.aaaccount.BuildConfig
+import kotlin.collections.HashMap
 
 
 object UserInstance {
@@ -38,51 +39,34 @@ class UserModel : IUserModel {
         get() = UserInstance.current_user
 
     override fun checkRegUser(context: Context, phone: String): Observable<OperateResult<Boolean>> {
-        return Observable.create<Boolean> { e ->
-            try {
-                AVUser.loginByMobilePhoneNumber(phone, "defaultpwd31415926535897932384626")
-                e.onNext(true)
-            } catch (ex: AVException) {
-                when {
-                    ex.code == 211 -> e.onNext(false)
-                    ex.code == 210 -> e.onNext(true)
-                    else -> e.onError(ex)
-                }
-            }
-            e.onComplete()
-        }.subscribeOn(Schedulers.io())
-                .map<OperateResult<Boolean>> {
-                    OperateResult(it)
-                }
+        return Observable.just(OperateResult())
     }
 
     override fun sendLoginVerify(context: Context, phone: String): Observable<OperateResult<Any>> {
-        return Observable.create<OperateResult<Any>> { e ->
-            AVSMS.requestSMSCode(phone, null)
-            e.onNext(OperateResult(null))
-            e.onComplete()
-        }.subscribeOn(Schedulers.io())
+        return Observable.just(OperateResult())
     }
 
     override fun loginByPhoneVerify(context: Context, phone: String, verify: String): Observable<OperateResult<User>> {
-        return Observable.create<AVUser> { e ->
-            e.onNext(AVUser.signUpOrLoginByMobilePhone(phone, verify))
-            e.onComplete()
-        }.subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.newThread())
-                .map<OperateResult<User>> { avuser ->
-                    UserInstance.current_user = User().withAVUser(avuser)
-                    OperateResult(UserInstance.current_user)
-                }
+        return Observable.just(OperateResult())
     }
 
     override fun loginByQQ(activity: Activity): Observable<OperateResult<Any>> {
         return QQLogin(activity).login()
+                .doOnNext {
+                    val users = GreenDaoUtil.daoSession?.dbUserDao?.loadAll()
+                    if (users != null && !users.isEmpty()) {//已经登录
+                        UserInstance.current_user = User().withDBUser(users[0])
+                    }
+                }.observeOn(Schedulers.io())
+                .flatMap {
+                    getService().update(UserInstance.current_user!!)
+                }.flatMap {
+                    updateLoginInfo(1)
+                }
     }
 
     override fun logout(activity: Activity): Observable<OperateResult<Any>> {
         return Observable.create<OperateResult<Any>> { e ->
-            AVUser.logOut()
             val qqLogin = QQLogin(activity)
             qqLogin.logout()
             // 清除本地缓存
@@ -115,44 +99,57 @@ class UserModel : IUserModel {
     }
 
     override fun cleanLoginInfo(context: Context) {
+        GreenDaoUtil.daoSession?.dbUserDao?.deleteAll()
         UserInstance.current_user = null
     }
 
     override fun initUser(context: Context): Observable<OperateResult<Any>> {
-        return Observable.create<OperateResult<Any>> { e ->
-            if (currentUser != null) {
-                updateInfo()
-                e.onNext(OperateResult(null))
-                e.onComplete()
-                return@create
+        if (currentUser != null) {
+            return updateLoginInfo()
+        }
+
+        return Observable.create<Any> { e ->
+            val users = GreenDaoUtil.daoSession?.dbUserDao?.loadAll()
+            if (users != null && !users.isEmpty()) {//已经登录
+                UserInstance.current_user = User().withDBUser(users[0])
             }
-            val avUser = AVUser.getCurrentUser()
-            if (avUser == null) {//初始化失败
-                e.onNext(OperateResult(ErrorCode.FAIL, ""))
-                e.onComplete()
-                return@create
-            }
-            UserInstance.current_user = User().withAVUser(avUser)
-            updateInfo()
-            e.onNext(OperateResult(UserInstance.current_user))
+            e.onNext("")
             e.onComplete()
+        }.flatMap {
+            if (currentUser != null)
+                updateLoginInfo()
+            else Observable.just(OperateResult())
         }.subscribeOn(Schedulers.io())
     }
 
-    private fun updateInfo() {
-        //更新登录信息
-        val info = StringBuilder()
-        info.append(Date(System.currentTimeMillis()).format("yyyy-MM-dd HH:mm:ss"))
-        info.append("|")
-        info.append(BuildConfig.VERSION_CODE)
-        info.append("|")
-        info.append(PhoneHelper.phoneType)
-        info.append("|")
-        info.append(BuildConfig.FLAVOR)
+    /**
+     * 更新登录信息
+     */
+    private fun updateLoginInfo(flag: Int = 0): Observable<OperateResult<Any>> {
+        val info = HashMap<String, String>()
+        if (flag == 1) {
+            info["date"] = Date(System.currentTimeMillis()).format("yyyy-MM-dd HH:mm:ss")
+            info["version"] = BuildConfig.VERSION_CODE.toString()
+            info["phone"] = Build.BRAND
+            info["phoneType"] = PhoneHelper.phoneType
+            info["flavor"] = BuildConfig.FLAVOR
+            info["platform"] = "Android"
+            info["operate"] = "Android " + Build.VERSION.RELEASE
+        }
+        info["userId"] = currentUser?.id!!
+        return getService().updateLoginInfo(info)
     }
 
     override fun update(user: User): Observable<OperateResult<User>> {
-        return   Observable.just(OperateResult())
+        return getService().update(user).map {
+            GreenDaoUtil.daoSession?.dbUserDao?.update(DBUser().withUser(user))
+            OperateResult(user)
+        }
+    }
 
+    private var service: UserService? = null
+    private fun getService(): UserService {
+        if (service == null) service = RetrofitHelper.getService(UserService::class.java)
+        return service!!
     }
 }

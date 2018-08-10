@@ -34,11 +34,11 @@ class MainActivity : FragmentActivity() {
         layoutTitle.setOnClickListener { _ -> (fg_daybook as DayBookFragment).gotoSelectFamily() }
         main_floatbtn.setOnClickListener { _ -> (fg_daybook as DayBookFragment).gotoAdd() }
         initDrawerLayout()
-        SettleModel().syncData(applicationContext, true).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnComplete { DLog.i("syncData", "syncData complete") }
-                .subscribe({ DLog.i("syncData", "syncData subscribe") },
-                        { DLog.i("syncData", it.message!!) })
+//        SettleModel().syncData(applicationContext, true).subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .doOnComplete { DLog.i("syncData", "syncData complete") }
+//                .subscribe({ DLog.i("syncData", "syncData subscribe") },
+//                        { DLog.i("syncData", it.message!!) })
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {

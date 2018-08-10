@@ -34,6 +34,8 @@ public class DBUserDao extends AbstractDao<DBUser, String> {
         public final static Property LastModifiedTime = new Property(1, java.util.Date.class, "lastModifiedTime", false, "LAST_MODIFIED_TIME");
         public final static Property Number = new Property(2, int.class, "number", false, "NUMBER");
         public final static Property Name = new Property(3, String.class, "name", false, "NAME");
+        public final static Property Token = new Property(4, String.class, "token", false, "TOKEN");
+        public final static Property HeadPic = new Property(5, String.class, "headPic", false, "HEAD_PIC");
     }
 
     private Query<DBUser> dBDayBook_CustomersQuery;
@@ -54,7 +56,9 @@ public class DBUserDao extends AbstractDao<DBUser, String> {
                 "\"ID\" TEXT PRIMARY KEY NOT NULL ," + // 0: id
                 "\"LAST_MODIFIED_TIME\" INTEGER," + // 1: lastModifiedTime
                 "\"NUMBER\" INTEGER NOT NULL ," + // 2: number
-                "\"NAME\" TEXT);"); // 3: name
+                "\"NAME\" TEXT," + // 3: name
+                "\"TOKEN\" TEXT," + // 4: token
+                "\"HEAD_PIC\" TEXT);"); // 5: headPic
     }
 
     /** Drops the underlying database table. */
@@ -82,6 +86,16 @@ public class DBUserDao extends AbstractDao<DBUser, String> {
         if (name != null) {
             stmt.bindString(4, name);
         }
+ 
+        String token = entity.getToken();
+        if (token != null) {
+            stmt.bindString(5, token);
+        }
+ 
+        String headPic = entity.getHeadPic();
+        if (headPic != null) {
+            stmt.bindString(6, headPic);
+        }
     }
 
     @Override
@@ -103,6 +117,16 @@ public class DBUserDao extends AbstractDao<DBUser, String> {
         if (name != null) {
             stmt.bindString(4, name);
         }
+ 
+        String token = entity.getToken();
+        if (token != null) {
+            stmt.bindString(5, token);
+        }
+ 
+        String headPic = entity.getHeadPic();
+        if (headPic != null) {
+            stmt.bindString(6, headPic);
+        }
     }
 
     @Override
@@ -116,7 +140,9 @@ public class DBUserDao extends AbstractDao<DBUser, String> {
             cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // id
             cursor.isNull(offset + 1) ? null : new java.util.Date(cursor.getLong(offset + 1)), // lastModifiedTime
             cursor.getInt(offset + 2), // number
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3) // name
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // name
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // token
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5) // headPic
         );
         return entity;
     }
@@ -127,6 +153,8 @@ public class DBUserDao extends AbstractDao<DBUser, String> {
         entity.setLastModifiedTime(cursor.isNull(offset + 1) ? null : new java.util.Date(cursor.getLong(offset + 1)));
         entity.setNumber(cursor.getInt(offset + 2));
         entity.setName(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setToken(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setHeadPic(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
      }
     
     @Override
