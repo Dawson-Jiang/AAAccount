@@ -24,5 +24,5 @@ interface UserService {
      * 更新用户信息
      */
     @POST("user/update")
-    fun update(@Body author: User): Observable<OperateResult<Any>>
+    fun update(@Body user: User): Observable<OperateResult<Any>>
 }

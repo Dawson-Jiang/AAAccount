@@ -56,6 +56,6 @@ class DayBookModel : IDayBookModel {
     }
 
     override fun delete(id: String): Observable<OperateResult<Any>> {
-        return service.delDaybook(id)
+        return service.del(id)
     }
 }

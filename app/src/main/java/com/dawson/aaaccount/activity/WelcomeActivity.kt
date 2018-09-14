@@ -14,6 +14,7 @@ import com.dawson.aaaccount.model.IUserModel
 import com.dawson.aaaccount.model.myaliyun.UserModel
 import com.dawson.aaaccount.util.DLog
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_welcome.*
 import java.net.UnknownHostException
 
@@ -49,6 +50,7 @@ class WelcomeActivity : Activity() {
         })
         hasInit = false
         userModel.initUser(applicationContext)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ _ ->
                     if (!isFinishing) {

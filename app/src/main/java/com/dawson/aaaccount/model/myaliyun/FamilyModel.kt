@@ -9,7 +9,9 @@ import com.dawson.aaaccount.bean.result.OperateResult
 import com.dawson.aaaccount.model.IFamilyModel
 import com.dawson.aaaccount.net.FamilyService
 import com.dawson.aaaccount.net.RetrofitHelper
+import com.dawson.aaaccount.net.UserService
 import com.dawson.aaaccount.util.ErrorCode
+import com.google.gson.JsonObject
 import io.reactivex.Observable
 
 /**
@@ -44,44 +46,50 @@ class FamilyModel : IFamilyModel {
         param["uid"] = UserInstance.current_user?.id!!
 
         return service.disJoin(param).doOnNext {
-            if (it.result == ErrorCode.SUCCESS){
-               family.members?.removeIf { u->u.id==UserInstance.current_user?.id }
+            if (it.result == ErrorCode.SUCCESS) {
+                family.members?.removeIf { u -> u.id == UserInstance.current_user?.id }
             }
         }
     }
 
     override fun del(family: Family): Observable<OperateResult<Any>> {
-        return Observable.just(OperateResult())
-
+        return service.del(family.id!!)
     }
 
     override fun getMyFamily(): Observable<OperateResult<List<Family>>> {
-        return Observable.just(OperateResult())
-
+        return service.getMyFamily(UserInstance.current_user?.id!!)
     }
 
     override fun getFamilyById(context: Context, id: String): Observable<OperateResult<Family>> {
-        return Observable.just(OperateResult())
-
+        return service.get(id)
     }
 
     override fun modify(context: Context, family: Family): Observable<OperateResult<Family>> {
-        return Observable.just(OperateResult())
-
+        return create(context, family)
     }
 
     override fun addMember(family: Family, user: User): Observable<OperateResult<User>> {
-        return Observable.just(OperateResult())
-
+        val f = Family()
+        f.id = family.id
+        f.members = ArrayList()
+        f.members?.add(user)
+        return service.addMember(f)
     }
 
     override fun delMemeber(family: Family, user: User): Observable<OperateResult<Any>> {
-        return Observable.just(OperateResult())
-
+        val f = Family()
+        f.id = family.id
+        f.members = ArrayList()
+        f.members?.add(user)
+        val param = HashMap<String, String>()
+        param["fid"] = family.id!!
+        param["uid"] = user.id!!
+        return service.delMemeber(param)
     }
 
     override fun modifyMemeber(user: User): Observable<OperateResult<User>> {
-        return Observable.just(OperateResult())
-
+        return RetrofitHelper.getService(UserService::class.java).update(user).map {
+            it.cast(user)
+        }
     }
 }

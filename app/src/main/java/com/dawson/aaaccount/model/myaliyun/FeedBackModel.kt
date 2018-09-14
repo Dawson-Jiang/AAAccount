@@ -9,6 +9,8 @@ import com.dawson.aaaccount.bean.result.OperateResult
 import com.dawson.aaaccount.dao.DBSystemLogDao
 import com.dawson.aaaccount.dao.GreenDaoUtil
 import com.dawson.aaaccount.model.IFeedBackModel
+import com.dawson.aaaccount.net.FeedbackService
+import com.dawson.aaaccount.net.RetrofitHelper
 import com.dawson.aaaccount.util.FilePathConstants
 import com.dawson.aaaccount.util.PhoneHelper
 import io.reactivex.Observable
@@ -17,6 +19,7 @@ import java.io.File
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.HashMap
 
 /**
  * 反馈
@@ -24,7 +27,13 @@ import java.util.*
  */
 
 class FeedBackModel : IFeedBackModel {
+    private val service = RetrofitHelper.getService(FeedbackService::class.java)
+
     override fun add(title: String, content: String): Observable<OperateResult<Any>> {
-        return   Observable.just(OperateResult())
+        val param = HashMap<String, String>()
+        param["title"] = title
+        param["content"] = content
+        param["uid"] = UserInstance.current_user?.id!!
+        return service.save(param).map { it.cast<Any>(null) }
     }
 }

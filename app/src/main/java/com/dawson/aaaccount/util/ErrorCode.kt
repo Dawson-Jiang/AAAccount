@@ -2,7 +2,7 @@ package com.dawson.aaaccount.util
 
 /**
  * 系统操作错误码
- * @author JD
+ * @author dawson
  */
 object ErrorCode {
     /**
@@ -15,6 +15,11 @@ object ErrorCode {
      * token 过期
      */
     val TOKEN_OVERDUE = 2
+
+    /**
+     * 参数错误
+     */
+    val PARAM_ERROR = 3
 
     /**
      * 邮箱已存在
