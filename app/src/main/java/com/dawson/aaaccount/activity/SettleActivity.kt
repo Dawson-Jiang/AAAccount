@@ -58,7 +58,7 @@ class SettleActivity : BaseActivity() {
             title = "结算详情"
             showSettle()
             btn_settle!!.visibility = View.GONE
-            findViewById(R.id.layoutSettleList).visibility = View.GONE
+             layoutSettleList.visibility = View.GONE
         }
     }
 

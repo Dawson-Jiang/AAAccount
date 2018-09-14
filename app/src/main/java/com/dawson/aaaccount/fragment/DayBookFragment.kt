@@ -50,7 +50,7 @@ class DayBookFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mDaybookAdapter = DaybookAdapter(activity, mDayBooks)
+        mDaybookAdapter = DaybookAdapter(activity!!, mDayBooks)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -83,10 +83,10 @@ class DayBookFragment : BaseFragment() {
         if (item.itemId == 0) {
             //删除
             tempDayBook = mDayBooks[info.position]
-            AlertDialogHelper.showOKCancelAlertDialog(activity,
+            AlertDialogHelper.showOKCancelAlertDialog(activity!!,
                     R.string.del_notice, { _, _ ->
                 mProgressDialog = AlertDialogHelper.showWaitProgressDialog(
-                        activity, R.string.handling)
+                        activity!!, R.string.handling)
                 dayBookModel.delete(tempDayBook?.id!!)
                         .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                         .subscribe({ res ->
@@ -145,13 +145,13 @@ class DayBookFragment : BaseFragment() {
                             else
                                 families[it].name!! + if (families[it].isTemp) "(临时)" else ""
                         }.toList()
-                        activity.title = "账单-自己"
+                        activity?.title = "账单-自己"
                     } else {
-                        Common.showErrorInfo(activity, result.errorCode,
+                        Common.showErrorInfo(activity!!, result.errorCode,
                                 R.string.operate_fail, 0)
                     }
                 }, {
-                    Common.showErrorInfo(activity, ErrorCode.FAIL,
+                    Common.showErrorInfo(activity!!, ErrorCode.FAIL,
                             R.string.operate_fail, 0)
                 })
     }
@@ -208,9 +208,9 @@ class DayBookFragment : BaseFragment() {
                 rootView?.tvNoData?.visibility = View.GONE
             }
         } else if (result.errorCode == ErrorCode.TOKEN_OVERDUE) {
-            userModel.loginTimeOut(activity)
+            userModel.loginTimeOut(activity!!)
         } else {
-            Common.showErrorInfo(activity,
+            Common.showErrorInfo(activity!!,
                     result.errorCode, R.string.operate_fail, 0)
         }
     }
@@ -231,7 +231,7 @@ class DayBookFragment : BaseFragment() {
         } else if (requestCode == SELECT_FAMILY) {
             if (resultCode == Activity.RESULT_OK) {
                 selectedFamilyIndex = data!!.getIntExtra("select_index", 0)
-                activity.title = "账单-${familyNames[selectedFamilyIndex]}"
+                activity?.title = "账单-${familyNames[selectedFamilyIndex]}"
                 refreshDayBook()
             }
         }

@@ -28,13 +28,13 @@ class DaybookAdapter(private val mActivity: Activity, private val mDayBooks: Lis
         return mDayBooks.size
     }
 
-    override fun onBindViewHolder(holder: DaybookHolder?, position: Int) {
+    override fun onBindViewHolder(holder: DaybookHolder, position: Int) {
         val dbook = mDayBooks[position]
-        holder?.view?.tvMoney?.text = dbook.money.toString()
-        holder?.view?.tvType?.text = dbook.category!!.name
-        holder?.view?.tvPayer?.text = dbook.payer!!.name
-        holder?.view?.tvDate?.text = "${dbook.date?.getWeekDay()} - ${dbook.date?.format("yyyy.MM.dd")}"
-        holder?.view?.setOnClickListener { if (clickCallback != null) clickCallback(position) }
+        holder.view.tvMoney.text = dbook.money.toString()
+        holder.view.tvType?.text = dbook.category!!.name
+        holder.view.tvPayer?.text = dbook.payer!!.name
+        holder.view.tvDate?.text = "${dbook.date?.getWeekDay()} - ${dbook.date?.format("yyyy.MM.dd")}"
+        holder.view.setOnClickListener { if (clickCallback != null) clickCallback(position) }
         // 异步下载图片
         val temp = dbook.thumbPictures
         if (temp != null && !temp.isEmpty()) {
@@ -43,7 +43,7 @@ class DaybookAdapter(private val mActivity: Activity, private val mDayBooks: Lis
     }
 
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): DaybookHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DaybookHolder {
         val cv = mActivity.layoutInflater.inflate(
                 R.layout.layout_daybook_list_item, parent, false)
         return DaybookHolder(cv)
