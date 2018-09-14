@@ -18,6 +18,7 @@ import com.dawson.aaaccount.net.RetrofitHelper
 import com.dawson.aaaccount.net.UserService
 import com.dawson.aaaccount.util.PhoneHelper
 import com.dawson.aaaccount.util.format
+import com.google.gson.JsonObject
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -37,6 +38,9 @@ object UserInstance {
 class UserModel : IUserModel {
     override val currentUser: User?
         get() = UserInstance.current_user
+
+
+    private val service= RetrofitHelper.getService(UserService::class.java)
 
     override fun checkRegUser(context: Context, phone: String): Observable<OperateResult<Boolean>> {
         return Observable.just(OperateResult())
@@ -59,7 +63,7 @@ class UserModel : IUserModel {
                     }
                 }.observeOn(Schedulers.io())
                 .flatMap {
-                    getService().update(UserInstance.current_user!!)
+                    service.update(UserInstance.current_user!!)
                 }.flatMap {
                     updateLoginInfo(1)
                 }
@@ -126,30 +130,26 @@ class UserModel : IUserModel {
      * 更新登录信息
      */
     private fun updateLoginInfo(flag: Int = 0): Observable<OperateResult<Any>> {
-        val info = HashMap<String, String>()
+        val user = JsonObject()
         if (flag == 1) {
-            info["date"] = Date(System.currentTimeMillis()).format("yyyy-MM-dd HH:mm:ss")
-            info["version"] = BuildConfig.VERSION_CODE.toString()
-            info["phone"] = Build.BRAND
-            info["phoneType"] = PhoneHelper.phoneType
-            info["flavor"] = BuildConfig.FLAVOR
-            info["platform"] = "Android"
-            info["operate"] = "Android " + Build.VERSION.RELEASE
+            val info = JsonObject()
+            info.addProperty("date", Date(System.currentTimeMillis()).format("yyyy-MM-dd HH:mm:ss"))
+            info.addProperty("version", BuildConfig.VERSION_CODE.toString())
+            info.addProperty("phone", Build.BRAND)
+            info.addProperty("phoneType", PhoneHelper.phoneType)
+            info.addProperty("flavor", BuildConfig.FLAVOR)
+            info.addProperty("platform", "Android")
+            info.addProperty("operate", "Android " + Build.VERSION.RELEASE)
+            user.add("loginInfo", info)
         }
-        info["userId"] = currentUser?.id!!
-        return getService().updateLoginInfo(info)
+        user.addProperty("id", currentUser?.id!!)
+        return service.updateLoginInfo(user)
     }
 
     override fun update(user: User): Observable<OperateResult<User>> {
-        return getService().update(user).map {
+        return service.update(user).map {
             GreenDaoUtil.daoSession?.dbUserDao?.update(DBUser().withUser(user))
             OperateResult(user)
         }
-    }
-
-    private var service: UserService? = null
-    private fun getService(): UserService {
-        if (service == null) service = RetrofitHelper.getService(UserService::class.java)
-        return service!!
     }
 }

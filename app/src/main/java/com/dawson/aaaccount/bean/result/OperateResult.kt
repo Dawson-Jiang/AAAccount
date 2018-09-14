@@ -55,4 +55,14 @@ class OperateResult<T> {
     }
 
     constructor()
+
+    fun <K> cast(content: K?): OperateResult<K> {
+        val rs = OperateResult<K>()
+        rs.addInfo = addInfo
+        rs.errorCode = errorCode
+        rs.errorMsg = errorMsg
+        rs.result = result
+        rs.content = content
+        return rs
+    }
 }
