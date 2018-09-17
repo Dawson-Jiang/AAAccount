@@ -10,8 +10,8 @@ import android.view.animation.Animation
 import android.view.animation.AnimationSet
 import android.widget.Toast
 import com.dawson.aaaccount.R
+import com.dawson.aaaccount.model.BaseModelFactory
 import com.dawson.aaaccount.model.IUserModel
-import com.dawson.aaaccount.model.myaliyun.UserModel
 import com.dawson.aaaccount.util.DLog
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -25,7 +25,7 @@ class WelcomeActivity : Activity() {
     private var animationState = -1//-1 未开始 1开始 0结束
     private var hasInit = false
 
-    private var userModel: IUserModel = UserModel()
+    private var userModel: IUserModel =  BaseModelFactory.factory.createUserModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

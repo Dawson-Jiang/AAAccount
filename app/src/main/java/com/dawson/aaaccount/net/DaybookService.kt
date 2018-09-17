@@ -10,7 +10,7 @@ import retrofit2.http.POST
 
 /**
  * <p>project: AAAccount </p>
- * <p>des: [功能描述] </p>
+ * <p>des: 账单接口 </p>
  * <p>date: 2018/9/14 </p>
  * <p>云计算1310</p>
  *

@@ -10,6 +10,7 @@ import android.widget.Toast
 import com.dawson.aaaccount.R
 import com.dawson.aaaccount.bean.Family
 import com.dawson.aaaccount.bean.result.OperateResult
+import com.dawson.aaaccount.model.BaseModelFactory
 import com.dawson.aaaccount.util.Common
 import com.dawson.aaaccount.model.leancloud.FamilyModel
 import com.dawson.aaaccount.model.leancloud.FileModel
@@ -29,8 +30,8 @@ class EditFamilyActivity : BaseActivity() {
     private var photoChoose: PhotoChoose = PhotoChoose(this)
     private var realPath: String? = ""//添加时选择头像使用
 
-    private val familyModel = FamilyModel()
-    private val fileModel = FileModel()
+    private val familyModel = BaseModelFactory.factory.createFamilyModel()
+    private val fileModel = BaseModelFactory.factory.createFileModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,11 +64,11 @@ class EditFamilyActivity : BaseActivity() {
                 //到服务器获取家庭信息
                 familyModel.getFamilyById(applicationContext, id)
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe( { result ->
+                        .subscribe({ result ->
                             cancelDialog()
                             editFamily = result.content
                             showFamily()
-                        },{ ex ->
+                        }, { ex ->
                             Toast.makeText(this, "获取家庭信息失败", Toast.LENGTH_SHORT).show()
                             finish()
                             DLog.error("edfamily_getFamilyById", ex)

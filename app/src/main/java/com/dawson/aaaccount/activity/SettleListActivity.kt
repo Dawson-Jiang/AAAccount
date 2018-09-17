@@ -9,7 +9,7 @@ import com.dawson.aaaccount.R
 import com.dawson.aaaccount.bean.Family
 import com.dawson.aaaccount.bean.Settle
 import com.dawson.aaaccount.bean.result.OperateResult
-import com.dawson.aaaccount.model.leancloud.SettleModel
+import com.dawson.aaaccount.model.BaseModelFactory
 import com.dawson.aaaccount.util.Common
 import com.dawson.aaaccount.util.ErrorCode
 import com.dawson.aaaccount.util.format
@@ -21,7 +21,7 @@ class SettleListActivity : BaseActivity() {
     private val settles: MutableList<Settle> = mutableListOf()
     private val settleAdapter: SettleAdapter = SettleAdapter()
     internal var family: Family? = null
-    private val settleModel = SettleModel()
+    private val settleModel =  BaseModelFactory.factory.createSettleModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

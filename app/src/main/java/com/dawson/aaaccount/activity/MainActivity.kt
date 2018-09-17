@@ -9,11 +9,9 @@ import android.support.v4.view.GravityCompat
 import android.view.Window
 import com.dawson.aaaccount.R
 import com.dawson.aaaccount.fragment.DayBookFragment
-import com.dawson.aaaccount.util.Common
+import com.dawson.aaaccount.model.BaseModelFactory
 import com.dawson.aaaccount.model.IUserModel
-import com.dawson.aaaccount.model.leancloud.SettleModel
-import com.dawson.aaaccount.model.leancloud.UserModel
-import com.dawson.aaaccount.util.DLog
+import com.dawson.aaaccount.util.Common
 import com.dawson.aaaccount.util.ErrorCode
 import com.dawson.aaaccount.util.ImageLoadUtil
 import com.dawson.aaaccount.util.OperateCode
@@ -24,7 +22,7 @@ import kotlinx.android.synthetic.main.layout_main_nav.view.*
 
 class MainActivity : FragmentActivity() {
 
-    private val userModel: IUserModel = UserModel()
+    private val userModel: IUserModel =  BaseModelFactory.factory.createUserModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)

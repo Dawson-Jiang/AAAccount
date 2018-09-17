@@ -10,7 +10,7 @@ import android.widget.Toast
 import com.dawson.aaaccount.R
 import com.dawson.aaaccount.bean.Family
 import com.dawson.aaaccount.bean.result.OperateResult
-import com.dawson.aaaccount.model.leancloud.FamilyModel
+import com.dawson.aaaccount.model.BaseModelFactory
 import com.dawson.aaaccount.util.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_family.*
@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.common_title.*
 import kotlinx.android.synthetic.main.layout_family_list_item.view.*
 
 class FamilyActivity : BaseActivity() {
-    private val familyModel = FamilyModel()
+    private val familyModel =  BaseModelFactory.factory.createFamilyModel()
 
     private val familyAdapter = object : BaseAdapter() {
         override fun getCount(): Int {

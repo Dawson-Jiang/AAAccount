@@ -17,13 +17,11 @@ import com.dawson.aaaccount.adapter.DaybookAdapter
 import com.dawson.aaaccount.bean.DayBook
 import com.dawson.aaaccount.bean.Family
 import com.dawson.aaaccount.bean.result.OperateResult
+import com.dawson.aaaccount.model.BaseModelFactory
 import com.dawson.aaaccount.util.Common
 import com.dawson.aaaccount.model.IDayBookModel
 import com.dawson.aaaccount.model.IFamilyModel
 import com.dawson.aaaccount.model.IUserModel
-import com.dawson.aaaccount.model.myaliyun.DayBookModel
-import com.dawson.aaaccount.model.myaliyun.FamilyModel
-import com.dawson.aaaccount.model.myaliyun.UserModel
 import com.dawson.aaaccount.util.AlertDialogHelper
 import com.dawson.aaaccount.util.ErrorCode
 import com.dawson.aaaccount.util.OperateCode
@@ -42,9 +40,9 @@ class DayBookFragment : BaseFragment() {
     private val limit = 10
     private lateinit var mDaybookAdapter: DaybookAdapter
 
-    private var familyModel: IFamilyModel = FamilyModel()
-    private var dayBookModel: IDayBookModel = DayBookModel()
-    private var userModel: IUserModel = UserModel()
+    private var familyModel: IFamilyModel =  BaseModelFactory.factory.createFamilyModel()
+    private var dayBookModel: IDayBookModel =  BaseModelFactory.factory.createDayBookModel()
+    private var userModel: IUserModel =  BaseModelFactory.factory.createUserModel()
 
     private var tempDayBook: DayBook? = null//正在处理的记录  如编辑 删除等
 

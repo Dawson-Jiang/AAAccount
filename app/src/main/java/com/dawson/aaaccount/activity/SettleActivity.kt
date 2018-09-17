@@ -12,13 +12,9 @@ import com.dawson.aaaccount.R
 import com.dawson.aaaccount.bean.Family
 import com.dawson.aaaccount.bean.Settle
 import com.dawson.aaaccount.bean.result.OperateResult
-import com.dawson.aaaccount.util.Common
-import com.dawson.aaaccount.model.leancloud.SettleModel
+import com.dawson.aaaccount.model.BaseModelFactory
 import com.dawson.aaaccount.model.leancloud.UserModel
-import com.dawson.aaaccount.util.AlertDialogHelper
-import com.dawson.aaaccount.util.DLog
-import com.dawson.aaaccount.util.ErrorCode
-import com.dawson.aaaccount.util.format
+import com.dawson.aaaccount.util.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_settle.*
 import kotlinx.android.synthetic.main.common_title.*
@@ -31,7 +27,7 @@ class SettleActivity : BaseActivity() {
     private var flag: Int = 0//0 结算  1结算详情
     private var hasSync = true
 
-    private val settleModel = SettleModel()
+    private val settleModel =  BaseModelFactory.factory.createSettleModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

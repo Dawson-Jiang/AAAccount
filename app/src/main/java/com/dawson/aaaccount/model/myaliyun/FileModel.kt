@@ -1,14 +1,13 @@
 package com.dawson.aaaccount.model.myaliyun
 
 import android.content.Context
-import com.avos.avoscloud.AVFile
-import com.dawson.aaaccount.bean.result.OperateResult
+ import com.dawson.aaaccount.bean.result.OperateResult
 import com.dawson.aaaccount.util.Common
 import com.dawson.aaaccount.model.IFileModel
 import com.dawson.aaaccount.util.BitmapHelper
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
-import java.util.*
+
 
 /**
  * 上传文件操作
@@ -19,7 +18,6 @@ class FileModel : IFileModel {
 
     override fun uploadFile(context: Context, file: String, progressCallback: (progress: Int) -> Unit): Observable<OperateResult<Array<String>>> {
         return Observable.create<String> { e ->
-            uploadFiles.clear()
             var tmpFileName = file
             if (file.endsWith(".jpg") || file.endsWith(".png"))
                 tmpFileName = BitmapHelper.compressImageTwo(file)
@@ -29,10 +27,9 @@ class FileModel : IFileModel {
                 .observeOn(Schedulers.io())
                 .map<OperateResult<Array<String>>> { tmpFileName ->
                     val fileName = file.substring(file.lastIndexOf("/") + 1)
-                    val avFile = AVFile.withAbsoluteLocalPath(fileName, tmpFileName)
-                    avFile.save()
-                    uploadFiles.put(avFile.url, avFile)
-                    OperateResult(arrayOf(avFile.url, avFile.getThumbnailUrl(true, Common.THUMB_SIZE, Common.THUMB_SIZE)))
+//                    val avFile = AVFile.withAbsoluteLocalPath(fileName, tmpFileName)//TODO uploadfile
+//                    avFile.save()
+                    OperateResult(arrayOf("url", "thrumbUrl"))
                 }
     }
 
@@ -55,9 +52,5 @@ class FileModel : IFileModel {
 
     override fun downloadFile(url: String, progressCallback: (progress: Int) -> Unit): Observable<OperateResult<String>> {
         return Observable.just(OperateResult(""))
-    }
-
-    companion object {
-        var uploadFiles: MutableMap<String, AVFile> = HashMap()
     }
 }

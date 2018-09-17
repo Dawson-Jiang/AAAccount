@@ -9,9 +9,8 @@ import android.view.Window
 import android.widget.Toast
 import com.dawson.aaaccount.R
 import com.dawson.aaaccount.bean.result.OperateResult
+import com.dawson.aaaccount.model.BaseModelFactory
 import com.dawson.aaaccount.model.IUserModel
-import com.dawson.aaaccount.model.myaliyun.UserModel
-import com.dawson.aaaccount.model.myaliyun.QQLogin
 import com.dawson.aaaccount.util.AlertDialogHelper
 import com.dawson.aaaccount.util.Common
 import com.dawson.aaaccount.util.ErrorCode
@@ -22,7 +21,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : Activity() {
     private var mProgressDialog: Dialog? = null
-    private val userModel: IUserModel = UserModel()
+    private val userModel: IUserModel =  BaseModelFactory.factory.createUserModel()
     //    private int loginMethod = 2;//1 验证码登陆 2 QQ登录
 
     private fun cancelDialog() {

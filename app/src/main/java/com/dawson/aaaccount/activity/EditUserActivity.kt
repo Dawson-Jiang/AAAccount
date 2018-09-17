@@ -1,18 +1,16 @@
 package com.dawson.aaaccount.activity
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.Menu
 import android.widget.Toast
 import com.dawson.aaaccount.R
-import com.dawson.aaaccount.bean.Family
 import com.dawson.aaaccount.bean.User
 import com.dawson.aaaccount.bean.result.OperateResult
+import com.dawson.aaaccount.model.BaseModelFactory
 import com.dawson.aaaccount.model.IUserModel
 import com.dawson.aaaccount.model.leancloud.FileModel
-import com.dawson.aaaccount.model.leancloud.UserModel
 import com.dawson.aaaccount.util.*
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -21,7 +19,7 @@ import kotlinx.android.synthetic.main.common_title.*
 
 class EditUserActivity : BaseActivity() {
     private var photoChoose: PhotoChoose = PhotoChoose(this)
-    private val userModel: IUserModel = UserModel()
+    private val userModel: IUserModel =  BaseModelFactory.factory.createUserModel()
     private val user: User = userModel.currentUser!!
     private val fileModel = FileModel()
     private var realPath: String? = ""//添加时选择头像使用

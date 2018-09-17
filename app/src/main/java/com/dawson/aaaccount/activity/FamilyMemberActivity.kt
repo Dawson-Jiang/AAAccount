@@ -13,8 +13,7 @@ import com.dawson.aaaccount.R
 import com.dawson.aaaccount.bean.Family
 import com.dawson.aaaccount.bean.User
 import com.dawson.aaaccount.bean.result.OperateResult
-import com.dawson.aaaccount.model.leancloud.FamilyModel
-import com.dawson.aaaccount.model.leancloud.UserModel
+import com.dawson.aaaccount.model.BaseModelFactory
 import com.dawson.aaaccount.util.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_family_member.*
@@ -29,8 +28,8 @@ class FamilyMemberActivity : BaseActivity() {
     private var family_index = 0
     private var family: Family? = null//家庭
     private val memberAdapter: MemberAdapter = MemberAdapter()
-    private val userModel = UserModel()
-    private val familyModel = FamilyModel()
+    private val userModel =  BaseModelFactory.factory.createUserModel()
+    private val familyModel =  BaseModelFactory.factory.createFamilyModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

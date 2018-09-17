@@ -6,8 +6,8 @@ import android.view.Menu
 import android.widget.Toast
 import com.dawson.aaaccount.R
 import com.dawson.aaaccount.bean.result.OperateResult
+import com.dawson.aaaccount.model.BaseModelFactory
 import com.dawson.aaaccount.util.Common
-import com.dawson.aaaccount.model.leancloud.FeedBackModel
 import com.dawson.aaaccount.util.DLog
 import com.dawson.aaaccount.util.ErrorCode
 import com.dawson.aaaccount.util.ShareUtil
@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.activity_feed_back.*
 import kotlinx.android.synthetic.main.common_title.*
 
 class FeedBackActivity : BaseActivity() {
-    private val fbModel = FeedBackModel()
+    private val fbModel =  BaseModelFactory.factory.createFeedBackModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -11,29 +11,15 @@ import com.dawson.aaaccount.R
 import com.dawson.aaaccount.bean.Family
 import com.dawson.aaaccount.bean.Settle
 import com.dawson.aaaccount.bean.result.OperateResult
-import com.dawson.aaaccount.util.Common
-import com.dawson.aaaccount.model.leancloud.FamilyModel
-import com.dawson.aaaccount.model.leancloud.SettleModel
+import com.dawson.aaaccount.model.BaseModelFactory
 import com.dawson.aaaccount.model.leancloud.UserModel
-import com.dawson.aaaccount.util.AlertDialogHelper
-import com.dawson.aaaccount.util.DLog
-import com.dawson.aaaccount.util.ErrorCode
-import com.dawson.aaaccount.util.format
+import com.dawson.aaaccount.util.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.common_title.*
 import kotlinx.android.synthetic.main.fragment_statistics.*
 import java.util.Date
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
-import kotlin.collections.List
-import kotlin.collections.Map
-import kotlin.collections.MutableList
-import kotlin.collections.indices
-import kotlin.collections.isNotEmpty
-import kotlin.collections.listOf
-import kotlin.collections.map
-import kotlin.collections.toList
-import kotlin.collections.toTypedArray
 
 class StatisticsActivity : BaseActivity() {
     private val families: MutableList<Family> = ArrayList()
@@ -48,9 +34,9 @@ class StatisticsActivity : BaseActivity() {
 
     private var hasSync = false
 
-    private val familyModel = FamilyModel()
-    private val userModel = UserModel()
-    private val settleModel = SettleModel()
+    private val familyModel =  BaseModelFactory.factory.createFamilyModel()
+    private val userModel =  BaseModelFactory.factory.createUserModel()
+    private val settleModel =  BaseModelFactory.factory.createSettleModel()
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

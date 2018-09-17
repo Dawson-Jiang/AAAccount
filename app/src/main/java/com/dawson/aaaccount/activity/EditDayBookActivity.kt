@@ -19,10 +19,6 @@ import com.dawson.aaaccount.bean.Family
 import com.dawson.aaaccount.bean.User
 import com.dawson.aaaccount.bean.result.OperateResult
 import com.dawson.aaaccount.model.*
-import com.dawson.aaaccount.model.leancloud.*
-import com.dawson.aaaccount.model.leancloud.DayBookModel
-import com.dawson.aaaccount.model.leancloud.FamilyModel
-import com.dawson.aaaccount.model.leancloud.UserModel
 import com.dawson.aaaccount.util.*
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -34,11 +30,11 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class EditDayBookActivity : BaseActivity() {
-    private var dayBookModel: IDayBookModel = DayBookModel()
-    private var fileMode = FileModel()
-    private var familyModel: IFamilyModel = FamilyModel()
-    private var categoryModel: ICategoryModel = CategoryModel()
-    private var userModel: IUserModel = UserModel()
+    private var dayBookModel: IDayBookModel =  BaseModelFactory.factory.createDayBookModel()
+    private var fileMode =BaseModelFactory.factory.createFileModel()
+    private var familyModel: IFamilyModel =  BaseModelFactory.factory.createFamilyModel()
+    private var categoryModel: ICategoryModel =  BaseModelFactory.factory.createCategoryModel()
+    private var userModel: IUserModel =  BaseModelFactory.factory.createUserModel()
     // 家庭
     private val families = mutableListOf<Family>()
     private var familyNames = listOf<String>()
