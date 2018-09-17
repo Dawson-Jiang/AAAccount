@@ -1,66 +1,55 @@
 package com.dawson.aaaccount.model.myaliyun
 
 import android.content.Context
-import com.avos.avoscloud.AVException
 import com.avos.avoscloud.AVObject
-import com.avos.avoscloud.AVQuery
-import com.avos.avoscloud.AVUser
 import com.dawson.aaaccount.bean.Family
 import com.dawson.aaaccount.bean.Settle
-import com.dawson.aaaccount.bean.User
 import com.dawson.aaaccount.bean.result.OperateResult
-import com.dawson.aaaccount.dao.*
-import com.dawson.aaaccount.dao.bean.*
+import com.dawson.aaaccount.dao.bean.DBDayBook
 import com.dawson.aaaccount.model.ISettleModel
-import com.dawson.aaaccount.model.leancloud.bean.*
-import com.dawson.aaaccount.util.ErrorCode
+import com.dawson.aaaccount.net.RetrofitHelper
+import com.dawson.aaaccount.net.SettleService
 import com.dawson.aaaccount.util.format
 import io.reactivex.Observable
-import io.reactivex.schedulers.Schedulers
-import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.HashMap
 
 /**
  * 统计结算
  * Created by dawson on 2017/3/29.
  */
 class SettleModel : ISettleModel {
+    private val service = RetrofitHelper.getService(SettleService::class.java)
+
     override fun settle(settle: Settle): Observable<OperateResult<Any>> {
-        return Observable.just(OperateResult())
+        return service.settle(settle).map { it.cast<Any>(null) }
     }
 
     override fun getByFamilyId(familyId: String): Observable<OperateResult<List<Settle>>> {
-        return Observable.just(OperateResult())
-
+        return service.getByFamily(familyId)
     }
 
     override fun statistic(family: Family, start: Date?, end: Date?, containSettle: Boolean): Observable<OperateResult<Settle>> {
-        return Observable.just(OperateResult())
+        val param=HashMap<String,String>()
+        param["fid"]=family.id!!
+        param["start"]= start?.format("yyyy.MM.dd HH:mm:ss")!!
+        param["end"]= end?.format("yyyy.MM.dd HH:mm:ss")!!
+        param["contain_settle"]= containSettle.toString()
 
+        return  service.statistic(param)
     }
 
     override fun statisticMine(start: Date?, end: Date?): Observable<OperateResult<Settle>> {
-        return Observable.just(OperateResult())
+        val param=HashMap<String,String>()
+        param["uid"]=UserInstance.current_user?.id!!
+        param["start"]= start?.format("yyyy.MM.dd HH:mm:ss")!!
+        param["end"]= end?.format("yyyy.MM.dd HH:mm:ss")!!
 
+        return  service.statisticMine(param)
     }
 
     override fun syncData(context: Context, all: Boolean): Observable<OperateResult<Any>> {
-        //同步自己的所有账单
-        return Observable.just(OperateResult())
-
-    }
-
-    private fun syncUser(family: AVObject): Observable<AVObject> {
-        return Observable.just(AVObject())
-
-    }
-
-    private fun syncDayBook(family: AVObject?): Observable<OperateResult<Any>> {
-        return Observable.just(OperateResult())
-
-    }
-
-    companion object {
-        private var DAY_BOOKS: List<DBDayBook>? = null
+        //同步自己的所有账单 无需同步  直接返回成功
+        return Observable.just(OperateResult<Any>(""))
     }
 }
