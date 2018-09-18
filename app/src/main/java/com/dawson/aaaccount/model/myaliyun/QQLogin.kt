@@ -6,6 +6,7 @@ import com.dawson.aaaccount.bean.result.OperateResult
 import com.dawson.aaaccount.dao.GreenDaoUtil
 import com.dawson.aaaccount.dao.bean.DBUser
 import com.dawson.aaaccount.dao.bean.withUser
+import com.dawson.aaaccount.exception.QQLoginException
 import com.dawson.aaaccount.net.RetrofitHelper
 import com.dawson.aaaccount.net.UserService
 import com.dawson.aaaccount.util.ErrorCode
@@ -33,12 +34,12 @@ class QQLogin(val activity: Activity) {
         mTencent = Tencent.createInstance("1106203415", activity.applicationContext)
     }
 
-    fun login(): Observable<OperateResult<Any>> {
+    fun login(): Observable<OperateResult<Map<String, String>>> {
         return auth()
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .filter { it.result == ErrorCode.SUCCESS }
                 .observeOn(Schedulers.io())
-                .flatMap<OperateResult<User>> {
+                .map<OperateResult<Map<String, String>>> {
                     val author = HashMap<String, String>()
                     val jsonObject = it.content!!
                     author["openid"] = jsonObject.getString("openid")
@@ -46,43 +47,34 @@ class QQLogin(val activity: Activity) {
 //                    author["expires_in"] = jsonObject.getString("expires_in")
                     mTencent?.openId = author["openid"]
                     mTencent?.setAccessToken(author["access_token"], jsonObject.getString("expires_in"))
-                    RetrofitHelper.getService(UserService::class.java).login(author)
-                }.filter {
-                    it.result == ErrorCode.SUCCESS
+                    return@map it.cast(author)
                 }
-                .doOnNext {
-                    val user = it.content!!
-                    if (!user.name.isNullOrEmpty()) {
-                        GreenDaoUtil.daoSession?.dbUserDao?.insert(DBUser().withUser(user))
-                    }
-                }
-                .flatMap<OperateResult<Any>> { oruser ->
-                    if (oruser.content!!.name.isNullOrEmpty()) {
-                        Observable.create<OperateResult<Any>> {
-                            val qqToken = mTencent?.qqToken
-                            val userInfo = UserInfo(activity.applicationContext, qqToken)
-                            userInfo.getUserInfo(object : IUiListener {
-                                override fun onComplete(p0: Any?) {
-                                    val json = p0 as JSONObject
-                                    val user = oruser.content!!
-                                    user.name = json.getString("nickname")
-                                    user.headUrl = json.getString("figureurl_2")
-//                                user.headThumbUrl = json.getString("figureurl_1")
-                                    GreenDaoUtil.daoSession?.dbUserDao?.insert(DBUser().withUser(user))
-                                    it.onNext(OperateResult(""))
-                                }
+    }
 
-                                override fun onCancel() {
-                                    it.onNext(OperateResult())
-                                }
-
-                                override fun onError(p0: UiError?) {
-                                    it.onNext(OperateResult(ecode = p0?.errorCode!!, mes = p0.errorMessage))
-                                }
-                            })
-                        }
-                    } else Observable.just(OperateResult<Any>(""))
+    fun getUserInfo(): Observable<OperateResult<Map<String, String>>> {
+        return Observable.create<OperateResult<Map<String, String>>> {
+            val qqToken = mTencent?.qqToken
+            val userInfo = UserInfo(activity.applicationContext, qqToken)
+            userInfo.getUserInfo(object : IUiListener {
+                override fun onComplete(p0: Any?) {
+                    val json = p0 as JSONObject
+                    val info = HashMap<String, String>()
+                    info["nickname"] = json.getString("nickname")
+                    info["figureurl_2"] = json.getString("figureurl_2")
+                    //user.headThumbUrl = json.getString("figureurl_1")
+                    it.onNext(OperateResult(info))
+                    it.onComplete()
                 }
+
+                override fun onCancel() {
+                    it.onComplete()
+                }
+
+                override fun onError(p0: UiError?) {
+                    it.onError(QQLoginException(p0!!))
+                }
+            })
+        }
     }
 
     /**
@@ -94,14 +86,16 @@ class QQLogin(val activity: Activity) {
                 mTencent?.login(activity, "get_simple_userinfo", object : IUiListener {
                     override fun onComplete(p0: Any?) {
                         em.onNext(OperateResult(p0 as JSONObject))
+                        em.onComplete()
                     }
 
                     override fun onCancel() {
                         em.onNext(OperateResult())
+                        em.onComplete()
                     }
 
                     override fun onError(p0: UiError?) {
-                        em.onNext(OperateResult(ecode = p0?.errorCode!!, mes = p0.errorMessage))
+                        em.onError(QQLoginException(p0!!))
                     }
                 })
             }

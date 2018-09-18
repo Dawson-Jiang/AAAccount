@@ -11,8 +11,9 @@ import com.dawson.aaaccount.net.FamilyService
 import com.dawson.aaaccount.net.RetrofitHelper
 import com.dawson.aaaccount.net.UserService
 import com.dawson.aaaccount.util.ErrorCode
-import com.google.gson.JsonObject
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 /**
  * 家庭相关业务
@@ -58,14 +59,20 @@ class FamilyModel : IFamilyModel {
 
     override fun getMyFamily(): Observable<OperateResult<List<Family>>> {
         return service.getMyFamily(UserInstance.current_user?.id!!)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun getFamilyById(context: Context, id: String): Observable<OperateResult<Family>> {
         return service.get(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun modify(context: Context, family: Family): Observable<OperateResult<Family>> {
         return create(context, family)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun addMember(family: Family, user: User): Observable<OperateResult<User>> {
@@ -73,7 +80,8 @@ class FamilyModel : IFamilyModel {
         f.id = family.id
         f.members = ArrayList()
         f.members?.add(user)
-        return service.addMember(f)
+        return service.addMember(f).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun delMemeber(family: Family, user: User): Observable<OperateResult<Any>> {
@@ -84,12 +92,14 @@ class FamilyModel : IFamilyModel {
         val param = HashMap<String, String>()
         param["fid"] = family.id!!
         param["uid"] = user.id!!
-        return service.delMemeber(param)
+        return service.delMemeber(param).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun modifyMemeber(user: User): Observable<OperateResult<User>> {
         return RetrofitHelper.getService(UserService::class.java).update(user).map {
             it.cast(user)
-        }
+        }.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
     }
 }

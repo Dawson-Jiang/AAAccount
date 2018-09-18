@@ -55,9 +55,9 @@ class FamilyMemberActivity : BaseActivity() {
     private fun initComponent() {
         initCommonTitle()
 
-        if (family?.isTemp!!) {//临时家庭  可以编辑
+//        if (family?.isTemp!!) {//临时家庭  可以编辑
             registerForContextMenu(lvMember)
-        } else {
+//        } else {
 //            lvMember.setOnItemClickListener { _, _, position, _ ->
 //                //查看用户详细信息
 //                val intent = Intent()
@@ -66,7 +66,7 @@ class FamilyMemberActivity : BaseActivity() {
 //                intent.setClass(this@FamilyMemberActivity, EditUserActivity::class.java)
 //                startActivityForResult(intent, 2)
 //            }
-        }
+//        }
     }
 
     override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
@@ -104,10 +104,10 @@ class FamilyMemberActivity : BaseActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        if (family?.isTemp!!) {
+//        if (family?.isTemp!!) {
             menuInflater.inflate(R.menu.save, menu)
             menu?.getItem(0)?.title = "添加"
-        }
+//        }
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -174,7 +174,7 @@ class FamilyMemberActivity : BaseActivity() {
                 cv?.ivHead?.visibility = VISIBLE
                 cv?.tvPhone?.text = user.phone
                 // 异步下载图片
-                ImageLoadUtil.loadCircleImage(user.headThumbUrl, cv?.ivHead!!)
+                ImageLoadUtil.loadCircleImage(user.headUrl, cv?.ivHead!!)
             }
             return cv!!
         }

@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory
  * Created by Dawson on 2018/3/29.
  */
 object RetrofitHelper {
-      private const val BASE_URL = "http://192.168.1.8:8080/"
+      private const val BASE_URL = "http://172.30.10.9:8080/"
 
     private fun init(): Retrofit {
         val client = OkHttpClient.Builder()
@@ -21,7 +21,7 @@ object RetrofitHelper {
         }
 
         return Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss.SSS").create()))
+                .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create()))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(client.build())
                 .baseUrl(BASE_URL)

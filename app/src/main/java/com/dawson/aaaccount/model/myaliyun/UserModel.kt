@@ -16,6 +16,7 @@ import com.dawson.aaaccount.dao.bean.withUser
 import com.dawson.aaaccount.model.IUserModel
 import com.dawson.aaaccount.net.RetrofitHelper
 import com.dawson.aaaccount.net.UserService
+import com.dawson.aaaccount.util.ErrorCode
 import com.dawson.aaaccount.util.PhoneHelper
 import com.dawson.aaaccount.util.format
 import com.google.gson.JsonObject
@@ -40,7 +41,7 @@ class UserModel : IUserModel {
         get() = UserInstance.current_user
 
 
-    private val service= RetrofitHelper.getService(UserService::class.java)
+    private val service = RetrofitHelper.getService(UserService::class.java)
 
     override fun checkRegUser(context: Context, phone: String): Observable<OperateResult<Boolean>> {
         return Observable.just(OperateResult())
@@ -55,18 +56,33 @@ class UserModel : IUserModel {
     }
 
     override fun loginByQQ(activity: Activity): Observable<OperateResult<Any>> {
-        return QQLogin(activity).login()
+        val qqLogin = QQLogin(activity)
+        var org_user = User()
+        return qqLogin.login().subscribeOn(Schedulers.io())
+                .flatMap { service.login(it.content!!) }
                 .doOnNext {
-                    val users = GreenDaoUtil.daoSession?.dbUserDao?.loadAll()
-                    if (users != null && !users.isEmpty()) {//已经登录
-                        UserInstance.current_user = User().withDBUser(users[0])
-                    }
-                }.observeOn(Schedulers.io())
+                    org_user = it.content!!
+                    GreenDaoUtil.daoSession?.dbUserDao?.insert(DBUser().withUser(org_user))
+                }
                 .flatMap {
-                    service.update(UserInstance.current_user!!)
-                }.flatMap {
+                    if (it.content!!.name.isNullOrEmpty()) {//第一次登录用户
+                        qqLogin.getUserInfo()
+                                .observeOn(Schedulers.io())
+                                .flatMap {
+                                    if (it.result == ErrorCode.SUCCESS) {
+                                        org_user.name = it.content!!["nickname"]
+                                        org_user.headUrl = it.content!!["figureurl_2"]
+                                         GreenDaoUtil.daoSession?.dbUserDao?.update(DBUser().withUser(org_user))
+                                        service.update(org_user)
+                                    } else Observable.just(OperateResult<Any>())
+                                }
+                    } else Observable.just(OperateResult<Any>())
+                }.observeOn(Schedulers.io())
+                .flatMap { initUser(activity) }
+                .flatMap {
                     updateLoginInfo(1)
                 }
+                .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun logout(activity: Activity): Observable<OperateResult<Any>> {
@@ -119,11 +135,12 @@ class UserModel : IUserModel {
             }
             e.onNext("")
             e.onComplete()
-        }.flatMap {
+        }.subscribeOn(Schedulers.io()).flatMap {
             if (currentUser != null)
                 updateLoginInfo()
             else Observable.just(OperateResult())
-        }.subscribeOn(Schedulers.io())
+        }
+                .observeOn(AndroidSchedulers.mainThread())
     }
 
     /**
@@ -139,17 +156,19 @@ class UserModel : IUserModel {
             info.addProperty("phoneType", PhoneHelper.phoneType)
             info.addProperty("flavor", BuildConfig.FLAVOR)
             info.addProperty("platform", "Android")
-            info.addProperty("operate", "Android " + Build.VERSION.RELEASE)
+            info.addProperty("os", "Android " + Build.VERSION.RELEASE)
             user.add("loginInfo", info)
         }
         user.addProperty("id", currentUser?.id!!)
-        return service.updateLoginInfo(user)
+        return service.updateLoginInfo(user).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun update(user: User): Observable<OperateResult<User>> {
         return service.update(user).map {
             GreenDaoUtil.daoSession?.dbUserDao?.update(DBUser().withUser(user))
             OperateResult(user)
-        }
+        }.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
     }
 }

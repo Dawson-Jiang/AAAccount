@@ -49,7 +49,7 @@ class EditUserActivity : BaseActivity() {
     }
 
     private fun showUser() {
-        ImageLoadUtil.loadCircleImage(user.headThumbUrl, ivHead)
+        ImageLoadUtil.loadCircleImage(user.headUrl, ivHead)
         etName!!.setText(user.name)
     }
 

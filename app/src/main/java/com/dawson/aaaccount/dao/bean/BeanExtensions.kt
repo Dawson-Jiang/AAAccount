@@ -7,21 +7,19 @@ import com.dawson.aaaccount.model.leancloud.DataObjectHelper
 import com.dawson.aaaccount.util.Common
 
 fun User.withDBUser(dbUser: DBUser): User {
-//    phone = dbUser.
     name = dbUser.name
     id = dbUser.id
-//    createTime = dbUser.createdAt
     lastModifiedTime = dbUser.lastModifiedTime
-//        headUrl = dbUser.
+    headUrl = dbUser.headPic
+    token = dbUser.token
     return this
 }
 
 fun DBUser.withUser(user: User): DBUser {
-//    phone = dbUser.
     name = user.name
     id = user.id
-//    createTime = dbUser.createdAt
     lastModifiedTime = user.lastModifiedTime
     headPic = user.headUrl
+    token = user.token
     return this
 }

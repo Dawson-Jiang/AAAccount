@@ -12,6 +12,7 @@ import android.widget.Toast
 import com.dawson.aaaccount.R
 import com.dawson.aaaccount.model.BaseModelFactory
 import com.dawson.aaaccount.model.IUserModel
+import com.dawson.aaaccount.util.Common
 import com.dawson.aaaccount.util.DLog
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -50,8 +51,6 @@ class WelcomeActivity : Activity() {
         })
         hasInit = false
         userModel.initUser(applicationContext)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ _ ->
                     if (!isFinishing) {
                         hasInit = true
@@ -60,7 +59,7 @@ class WelcomeActivity : Activity() {
                 }, {
                     it.printStackTrace()
                     if (it !is UnknownHostException) DLog.error("initUser", it)
-                    Toast.makeText(this@WelcomeActivity, "启动失败", Toast.LENGTH_SHORT).show()
+                     Toast.makeText(this@WelcomeActivity, "启动失败", Toast.LENGTH_SHORT).show()
                     finish()
                 })
     }

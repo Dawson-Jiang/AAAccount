@@ -40,9 +40,9 @@ class DayBookFragment : BaseFragment() {
     private val limit = 10
     private lateinit var mDaybookAdapter: DaybookAdapter
 
-    private var familyModel: IFamilyModel =  BaseModelFactory.factory.createFamilyModel()
-    private var dayBookModel: IDayBookModel =  BaseModelFactory.factory.createDayBookModel()
-    private var userModel: IUserModel =  BaseModelFactory.factory.createUserModel()
+    private var familyModel: IFamilyModel = BaseModelFactory.factory.createFamilyModel()
+    private var dayBookModel: IDayBookModel = BaseModelFactory.factory.createDayBookModel()
+    private var userModel: IUserModel = BaseModelFactory.factory.createUserModel()
 
     private var tempDayBook: DayBook? = null//正在处理的记录  如编辑 删除等
 
@@ -56,8 +56,8 @@ class DayBookFragment : BaseFragment() {
         rootView = inflater.inflate(R.layout.fragment_daybook, null)
         initComponent()
         rootView?.lvRecord?.adapter = mDaybookAdapter
-        rootView?.lvRecord?.layoutManager= LinearLayoutManager(activity)
-        rootView?.lvRecord?.addItemDecoration(DividerItemDecoration(activity,DividerItemDecoration.HORIZONTAL))
+        rootView?.lvRecord?.layoutManager = LinearLayoutManager(activity)
+        rootView?.lvRecord?.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.HORIZONTAL))
         mDaybookAdapter.setClick { position ->
             val intent = Intent()
             intent.setClass(activity, EditDayBookActivity::class.java)
@@ -161,9 +161,7 @@ class DayBookFragment : BaseFragment() {
         currentPage = -1
         rootView?.refRecord?.isRefreshing = true
         val fid = if (selectedFamilyIndex == 0) "" else families[selectedFamilyIndex].id
-        dayBookModel[fid!!, currentPage, limit]
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+        dayBookModel[fid!!, currentPage + 1, limit]
                 .subscribe({ result ->
                     handleDayBook(result)
                 }, { _ ->
@@ -195,7 +193,8 @@ class DayBookFragment : BaseFragment() {
         if (result.result == ErrorCode.SUCCESS) {
             currentPage++
             if (currentPage == 0) mDayBooks.clear()
-            mDayBooks.addAll(result.content!!)
+            if (result.content != null)
+                mDayBooks.addAll(result.content!!)
             rootView?.refRecord?.isNeedLoadMore = (result.content!!.size > limit)
             mDaybookAdapter.notifyDataSetChanged()
             if (mDayBooks.size <= 0) {

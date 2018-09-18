@@ -9,19 +9,22 @@ import android.view.Window
 import android.widget.Toast
 import com.dawson.aaaccount.R
 import com.dawson.aaaccount.bean.result.OperateResult
+import com.dawson.aaaccount.exception.QQLoginException
 import com.dawson.aaaccount.model.BaseModelFactory
 import com.dawson.aaaccount.model.IUserModel
 import com.dawson.aaaccount.util.AlertDialogHelper
 import com.dawson.aaaccount.util.Common
+import com.dawson.aaaccount.util.DLog
 import com.dawson.aaaccount.util.ErrorCode
 import com.tencent.tauth.Tencent
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_login.*
+import java.net.SocketTimeoutException
 
 class LoginActivity : Activity() {
     private var mProgressDialog: Dialog? = null
-    private val userModel: IUserModel =  BaseModelFactory.factory.createUserModel()
+    private val userModel: IUserModel = BaseModelFactory.factory.createUserModel()
     //    private int loginMethod = 2;//1 验证码登陆 2 QQ登录
 
     private fun cancelDialog() {
@@ -125,13 +128,6 @@ class LoginActivity : Activity() {
         mProgressDialog = AlertDialogHelper.showWaitProgressDialog(
                 this@LoginActivity, R.string.handling)
         userModel.loginByQQ(this)
-                .flatMap {
-                    userModel.initUser(this@LoginActivity.applicationContext)
-                }.observeOn(AndroidSchedulers.mainThread())
-                .doOnComplete {
-                    cancelDialog()
-                    Common.showErrorInfo(this@LoginActivity, ErrorCode.FAIL, "")
-                }
                 .subscribe({ _ ->
                     cancelDialog()
                     Toast.makeText(this@LoginActivity, "登录成功", Toast.LENGTH_SHORT).show()
@@ -142,8 +138,13 @@ class LoginActivity : Activity() {
                 }, { e ->
                     e.printStackTrace()
                     cancelDialog()
-//                    if (snse == null || snse.code != SNSException.USER_CANCEL)
-                    Common.showErrorInfo(this@LoginActivity, ErrorCode.FAIL, e.message)
+                    when (e) {
+                        is SocketTimeoutException -> Common.showErrorInfo(this@LoginActivity, ErrorCode.FAIL, "无法连接服务器")
+                        is QQLoginException -> Common.showErrorInfo(this@LoginActivity, ErrorCode.FAIL, e.error.errorMessage)
+                        else -> Common.showErrorInfo(this@LoginActivity, ErrorCode.FAIL, e.message)
+                    }
+                }, {
+                    cancelDialog()
                 })
     }
 

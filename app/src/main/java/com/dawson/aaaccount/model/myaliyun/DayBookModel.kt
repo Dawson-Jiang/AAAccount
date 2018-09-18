@@ -18,6 +18,7 @@ import com.dawson.aaaccount.net.DaybookService
 import com.dawson.aaaccount.net.RetrofitHelper
 import com.dawson.aaaccount.util.ErrorCode
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.*
 import kotlin.collections.HashMap
@@ -35,7 +36,8 @@ class DayBookModel : IDayBookModel {
                 dayBook.id = it.content!!
             }
             return@map it.cast<DayBook>(dayBook)
-        }
+        }.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun get(familyId: String, page: Int, limit: Int): Observable<OperateResult<List<DayBook>>> {
@@ -44,18 +46,22 @@ class DayBookModel : IDayBookModel {
         param["limit"] = limit.toString()
         return if (TextUtils.isEmpty(familyId)) {
             param["uid"] = UserInstance.current_user?.id!!
-            service.getMyDaybook(param)
+            service.getMyDaybook(param).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
         } else {
             param["fid"] = familyId
-            service.getFamilyDaybook(param)
+            service.getFamilyDaybook(param).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
         }
     }
 
     override fun getById(id: String): Observable<OperateResult<DayBook>> {
-        return service.get(id)
+        return service.get(id).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun delete(id: String): Observable<OperateResult<Any>> {
-        return service.del(id)
+        return service.del(id).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
     }
 }

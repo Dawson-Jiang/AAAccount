@@ -67,15 +67,14 @@ object Common {
             ErrorCode.NET_TIMEOUT -> errorMsg = "网络异常"
             ErrorCode.EMAIL_OR_PWD_WRONG -> errorMsg = "用户名或密码错误"
             ErrorCode.EMAIL_EXIST -> errorMsg = "邮箱已存在"
+            ErrorCode.TOKEN_OVERDUE -> errorMsg = "登录过期"
             ErrorCode.FAMILY_OR_PWD_WRONG -> errorMsg = "家庭不存在或者密码错误"
             ErrorCode.FAMILY_MEMBER_EXIST -> errorMsg = "重复加入"
             ErrorCode.TOKEN_OVERDUE -> return
             ErrorCode.SYS_ERROR -> errorMsg = "系统错误"
-            else -> errorMsg = if (TextUtils.isEmpty(msg)) {
-                "系统错误$errorCode"
-            } else {
-                (msg + ":" + errorCode)
-            }
+            ErrorCode.FAIL -> errorMsg = if (TextUtils.isEmpty(msg)) "系统错误" else msg!!
+            else -> errorMsg = if (TextUtils.isEmpty(msg)) "系统错误$errorCode"
+            else ("$msg:$errorCode")
         }
 
         if (flag == 0)

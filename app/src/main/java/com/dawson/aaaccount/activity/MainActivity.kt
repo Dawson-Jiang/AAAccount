@@ -11,18 +11,22 @@ import com.dawson.aaaccount.R
 import com.dawson.aaaccount.fragment.DayBookFragment
 import com.dawson.aaaccount.model.BaseModelFactory
 import com.dawson.aaaccount.model.IUserModel
+import com.dawson.aaaccount.model.myaliyun.UserInstance
+import com.dawson.aaaccount.model.myaliyun.UserModel
 import com.dawson.aaaccount.util.Common
 import com.dawson.aaaccount.util.ErrorCode
 import com.dawson.aaaccount.util.ImageLoadUtil
 import com.dawson.aaaccount.util.OperateCode
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_main_nav.view.*
+import java.util.concurrent.TimeUnit
 
 class MainActivity : FragmentActivity() {
 
-    private val userModel: IUserModel =  BaseModelFactory.factory.createUserModel()
+    private val userModel: IUserModel = BaseModelFactory.factory.createUserModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -112,8 +116,13 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun initMeInfo() {
-        ImageLoadUtil.loadCircleImage(userModel.currentUser?.headThumbUrl, nav_view.getHeaderView(0).iv_head)
-        nav_view.getHeaderView(0).tv_name.text = userModel.currentUser?.name
+        Observable.just(1)
+                .delay(1000, TimeUnit.MILLISECONDS, Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    ImageLoadUtil.loadCircleImage(userModel.currentUser?.headUrl, nav_view.getHeaderView(0).iv_head)
+                    nav_view.getHeaderView(0).tv_name.text = userModel.currentUser?.name
+                }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -1,11 +1,9 @@
 package com.dawson.aaaccount.model.myaliyun
 
 import android.content.Context
-import com.avos.avoscloud.AVObject
 import com.dawson.aaaccount.bean.Family
 import com.dawson.aaaccount.bean.Settle
 import com.dawson.aaaccount.bean.result.OperateResult
-import com.dawson.aaaccount.dao.bean.DBDayBook
 import com.dawson.aaaccount.model.ISettleModel
 import com.dawson.aaaccount.net.RetrofitHelper
 import com.dawson.aaaccount.net.SettleService

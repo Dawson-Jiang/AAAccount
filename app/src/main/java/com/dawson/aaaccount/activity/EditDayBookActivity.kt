@@ -30,11 +30,11 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class EditDayBookActivity : BaseActivity() {
-    private var dayBookModel: IDayBookModel =  BaseModelFactory.factory.createDayBookModel()
-    private var fileMode =BaseModelFactory.factory.createFileModel()
-    private var familyModel: IFamilyModel =  BaseModelFactory.factory.createFamilyModel()
-    private var categoryModel: ICategoryModel =  BaseModelFactory.factory.createCategoryModel()
-    private var userModel: IUserModel =  BaseModelFactory.factory.createUserModel()
+    private var dayBookModel: IDayBookModel = BaseModelFactory.factory.createDayBookModel()
+    private var fileMode = BaseModelFactory.factory.createFileModel()
+    private var familyModel: IFamilyModel = BaseModelFactory.factory.createFamilyModel()
+    private var categoryModel: ICategoryModel = BaseModelFactory.factory.createCategoryModel()
+    private var userModel: IUserModel = BaseModelFactory.factory.createUserModel()
     // 家庭
     private val families = mutableListOf<Family>()
     private var familyNames = listOf<String>()
@@ -79,10 +79,12 @@ class EditDayBookActivity : BaseActivity() {
         is_modify = !TextUtils.isEmpty(daybookId)
         initComponent()
 
-        familyModel.getMyFamily().observeOn(AndroidSchedulers.mainThread())
-                .doOnNext { initFamily(it) }.observeOn(Schedulers.io())
+        familyModel.getMyFamily()
+                .doOnNext {
+                    initFamily(it.content)
+                }
+                .observeOn(Schedulers.io())
                 .flatMap { categoryModel.get() }
-                .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext { initCategory(it) }
                 .observeOn(Schedulers.io())
                 .flatMap {
@@ -99,7 +101,7 @@ class EditDayBookActivity : BaseActivity() {
                     cancelDialog()
                     Common.showErrorInfo(this, ErrorCode.FAIL,
                             "加载失败", 0)
-                    DLog.error("edbook_getMyFamily", ex)
+                    DLog.error("edbook_init", ex)
                 })
     }
 
@@ -153,14 +155,15 @@ class EditDayBookActivity : BaseActivity() {
         }
     }
 
-    private fun initFamily(result: OperateResult<List<Family>>) {
+    private fun initFamily(family: List<Family>?) {
         val sf = Family()// 自己作为虚拟家庭
         sf.id = userModel.currentUser!!.id
         sf.name = userModel.currentUser!!.name
         families.add(sf)
-        families.addAll(result.content!!)
+        if (family != null && !family.isEmpty())
+            families.addAll(family)
         familyNames = families.indices.map {
-            if (it == 0) "自己"
+            if (it == 0) "(无)"
             else families[it].name!! + if (families[it].isTemp) "(临时)" else ""
         }.toList()
         selectedFamilyIndex = 0
@@ -169,12 +172,14 @@ class EditDayBookActivity : BaseActivity() {
     }
 
     private fun initCategory(result: OperateResult<List<ConsumptionCategory>>) {
-        if (result.result == ErrorCode.SUCCESS) {
+        if (result.result == ErrorCode.SUCCESS && result.content != null && !result.content?.isEmpty()!!) {
             categories.clear()
             categories.addAll(result.content!!)
             categoryNames = categories.indices.map { categories[it].name }.toList()
             selectedCategoryIndex = 0
             tv_category.text = categoryNames[selectedCategoryIndex]
+        }else{
+            Toast.makeText(this@EditDayBookActivity, "消费类别加载失败！", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -186,16 +191,20 @@ class EditDayBookActivity : BaseActivity() {
      */
     private fun initMemberList(family: Family) {
         if (selectedFamilyIndex == 0) { // 消费人员设置为自己
-            tv_consumer.text = family.name
-            tv_payer.text = family.name
+            tv_consumer.text = "自己"
+            tv_consumer.isEnabled = false
+            tv_payer.text = "自己"
+            tv_payer.isEnabled = false
         } else {
             consumers.clear()
             consumers.addAll(family.members!!)
             tv_consumer.text = ""
+            tv_consumer.isEnabled = true
             selectedConsumers = BooleanArray(consumers.size)
             consumerStrs = consumers.indices.map { consumers[it].name!! }.toList()
             selectedPayerIndex = 0
             tv_payer.text = consumerStrs[0]
+            tv_payer.isEnabled = true
         }
     }
 
@@ -217,6 +226,10 @@ class EditDayBookActivity : BaseActivity() {
             if (familyNames.isEmpty()) {
                 Toast.makeText(this@EditDayBookActivity, "数据加载失败！", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
+            }
+            if (familyNames.size <= 1) {
+                Toast.makeText(this@EditDayBookActivity, "无可选家庭，请创建或加入一个家庭！", Toast.LENGTH_LONG).show()
+                return@setOnClickListener//自有自己 无需选择
             }
             val intent = Intent(this, BaseSimpleSelectActivity::class.java)
             intent.putExtra("select_string", familyNames.toTypedArray())
