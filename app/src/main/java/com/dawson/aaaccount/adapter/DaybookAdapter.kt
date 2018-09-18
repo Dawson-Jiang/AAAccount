@@ -28,11 +28,14 @@ class DaybookAdapter(private val mActivity: Activity, private val mDayBooks: Lis
         return mDayBooks.size
     }
 
+   public var is_family=true
+
     override fun onBindViewHolder(holder: DaybookHolder, position: Int) {
         val dbook = mDayBooks[position]
         holder.view.tvMoney.text = dbook.money.toString()
         holder.view.tvType?.text = dbook.category!!.name
-        holder.view.tvPayer?.text = dbook.payer!!.name
+
+        holder.view.tvPayer?.text = if(is_family)dbook.payer!!.name else ""
         holder.view.tvDate?.text = "${dbook.date?.getWeekDay()} - ${dbook.date?.format("yyyy.MM.dd")}"
         holder.view.setOnClickListener { if (clickCallback != null) clickCallback(position) }
         // 异步下载图片
@@ -48,7 +51,7 @@ class DaybookAdapter(private val mActivity: Activity, private val mDayBooks: Lis
                 R.layout.layout_daybook_list_item, parent, false)
         return DaybookHolder(cv)
     }
-//
+
 //    @SuppressLint("NewApi")
 //    override fun getView(index: Int, view: View?, vg: ViewGroup): View {
 //        var cv = view

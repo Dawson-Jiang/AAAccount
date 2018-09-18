@@ -120,8 +120,10 @@ class MainActivity : FragmentActivity() {
                 .delay(1000, TimeUnit.MILLISECONDS, Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    ImageLoadUtil.loadCircleImage(userModel.currentUser?.headUrl, nav_view.getHeaderView(0).iv_head)
-                    nav_view.getHeaderView(0).tv_name.text = userModel.currentUser?.name
+                    if (!this@MainActivity.isDestroyed) {
+                        ImageLoadUtil.loadCircleImage(userModel.currentUser?.headUrl, nav_view.getHeaderView(0).iv_head)
+                        nav_view.getHeaderView(0).tv_name.text = userModel.currentUser?.name
+                    }
                 }
     }
 

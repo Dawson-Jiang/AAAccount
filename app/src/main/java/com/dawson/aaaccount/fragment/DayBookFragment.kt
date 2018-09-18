@@ -196,6 +196,7 @@ class DayBookFragment : BaseFragment() {
             if (result.content != null)
                 mDayBooks.addAll(result.content!!)
             rootView?.refRecord?.isNeedLoadMore = (result.content!!.size > limit)
+            mDaybookAdapter.is_family = selectedFamilyIndex != 0
             mDaybookAdapter.notifyDataSetChanged()
             if (mDayBooks.size <= 0) {
                 rootView?.lvRecord?.visibility = View.GONE

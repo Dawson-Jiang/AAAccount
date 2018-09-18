@@ -1,5 +1,6 @@
 package com.dawson.aaaccount.bean
 
+import com.google.gson.annotations.SerializedName
 import java.util.Date
 
 open class DayBook : BaseEntity() {
@@ -16,6 +17,7 @@ open class DayBook : BaseEntity() {
     /**
      * 创建人
      */
+    @SerializedName("recorder")
     var creator: User? =null
 
     /**
