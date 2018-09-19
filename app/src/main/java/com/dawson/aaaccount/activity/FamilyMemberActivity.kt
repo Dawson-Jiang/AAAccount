@@ -28,8 +28,8 @@ class FamilyMemberActivity : BaseActivity() {
     private var family_index = 0
     private var family: Family? = null//家庭
     private val memberAdapter: MemberAdapter = MemberAdapter()
-    private val userModel =  BaseModelFactory.factory.createUserModel()
-    private val familyModel =  BaseModelFactory.factory.createFamilyModel()
+    private val userModel = BaseModelFactory.factory.createUserModel()
+    private val familyModel = BaseModelFactory.factory.createFamilyModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,29 +44,14 @@ class FamilyMemberActivity : BaseActivity() {
     override fun initCommonTitle() {
         super.initCommonTitle()
         title = "家庭成员 - ${family?.name}" + if (family?.isTemp!!) "(临时)" else ""
-        nav_toolbar.setOnMenuItemClickListener {
-            if (it.itemId == R.id.action_save) {//添加
-                editMemeber(null)
-            }
-            return@setOnMenuItemClickListener true
+        enableOperate("添加") {
+            editMemeber(null)
         }
     }
 
     private fun initComponent() {
         initCommonTitle()
-
-//        if (family?.isTemp!!) {//临时家庭  可以编辑
-            registerForContextMenu(lvMember)
-//        } else {
-//            lvMember.setOnItemClickListener { _, _, position, _ ->
-//                //查看用户详细信息
-//                val intent = Intent()
-//                intent.putExtra("flag", 2)
-//                intent.putExtra("member", family?.members?.get(position))
-//                intent.setClass(this@FamilyMemberActivity, EditUserActivity::class.java)
-//                startActivityForResult(intent, 2)
-//            }
-//        }
+        registerForContextMenu(lvMember)
     }
 
     override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
@@ -103,14 +88,6 @@ class FamilyMemberActivity : BaseActivity() {
         return super.onContextItemSelected(item)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-//        if (family?.isTemp!!) {
-            menuInflater.inflate(R.menu.save, menu)
-            menu?.getItem(0)?.title = "添加"
-//        }
-        return super.onCreateOptionsMenu(menu)
-    }
-
     private fun editMemeber(user: User?) {
         val et_name = EditText(this)
         if (user == null)
@@ -119,7 +96,7 @@ class FamilyMemberActivity : BaseActivity() {
             et_name.setText(user.name!!)
         AlertDialog.Builder(this).setTitle(if (user == null) "添加" else "修改")
                 .setView(et_name)
-                .setPositiveButton(R.string.save, { _, _ ->
+                .setPositiveButton(R.string.save) { _, _ ->
                     val obs: io.reactivex.Observable<OperateResult<User>>
                     if (user == null) {
                         val usert = User()
@@ -140,7 +117,7 @@ class FamilyMemberActivity : BaseActivity() {
                                         R.string.operate_fail, 0)
                                 DLog.error("fm_ed_member", it)
                             })
-                })
+                }
                 .setNegativeButton(R.string.cancel, null).create().show()
     }
 

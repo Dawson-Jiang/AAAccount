@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.activity_feed_back.*
 import kotlinx.android.synthetic.main.common_title.*
 
 class FeedBackActivity : BaseActivity() {
-    private val fbModel =  BaseModelFactory.factory.createFeedBackModel()
+    private val fbModel = BaseModelFactory.factory.createFeedBackModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,23 +28,21 @@ class FeedBackActivity : BaseActivity() {
         super.initCommonTitle()
         title = "问题反馈"
 
-        nav_toolbar.setOnMenuItemClickListener {
-            if (it.itemId == R.id.action_ok) {
-                val title = etTitle.text.toString()
-                val content = etContent.text.toString()
-                if (TextUtils.isEmpty(title) && TextUtils.isEmpty(content)) {
-                    Toast.makeText(this@FeedBackActivity, "标题或内容不能为空！", Toast.LENGTH_SHORT).show()
-                    return@setOnMenuItemClickListener true
-                }
-                fbModel.add(title, content).observeOn(AndroidSchedulers.mainThread())
-                        .subscribe({
-                            onAdd(it)
-                        }, {
-                            Common.showErrorInfo(this, ErrorCode.FAIL, R.string.operate_fail, 0)
-                            DLog.error("feed_add", it)
-                        })
+        enableOperate("提交") {
+            val title = etTitle.text.toString()
+            val content = etContent.text.toString()
+            if (TextUtils.isEmpty(title) && TextUtils.isEmpty(content)) {
+                Toast.makeText(this@FeedBackActivity, "标题或内容不能为空！", Toast.LENGTH_SHORT).show()
+                return@enableOperate
             }
-            true
+            fbModel.add(title, content).observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                        onAdd(it)
+                    }, {
+                        Common.showErrorInfo(this, ErrorCode.FAIL, R.string.operate_fail, 0)
+                        DLog.error("feed_add", it)
+                    })
+
         }
     }
 

@@ -106,16 +106,12 @@ class EditFamilyActivity : BaseActivity() {
                 title = "修改家庭"
             }
         }
-
-        nav_toolbar.setOnMenuItemClickListener {
-            if (it.itemId == R.id.action_save) {
-                when (operateFlag) {
-                    OperateCode.ADD -> saveFamily()
-                    OperateCode.MODIFIED -> saveFamily()
-                    OperateCode.JOIN -> joinFamily()
-                }
+        enableOperate(if (operateFlag == OperateCode.JOIN) "加入" else "保存") {
+            when (operateFlag) {
+                OperateCode.ADD -> saveFamily()
+                OperateCode.MODIFIED -> saveFamily()
+                OperateCode.JOIN -> joinFamily()
             }
-            true
         }
     }
 
@@ -161,13 +157,6 @@ class EditFamilyActivity : BaseActivity() {
         etName.setText(editFamily?.name)
         tvMember.text = "${editFamily?.members?.size}人"
         if (editFamily?.isTemp!!) rgTemp.check(R.id.rbTempYes)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.save, menu)
-        if (operateFlag == OperateCode.JOIN)
-            nav_toolbar.menu?.getItem(0)?.title = "加入"
-        return true
     }
 
     /**

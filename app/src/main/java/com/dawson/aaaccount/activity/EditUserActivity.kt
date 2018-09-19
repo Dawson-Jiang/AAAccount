@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.common_title.*
 
 class EditUserActivity : BaseActivity() {
     private var photoChoose: PhotoChoose = PhotoChoose(this)
-    private val userModel: IUserModel =  BaseModelFactory.factory.createUserModel()
+    private val userModel: IUserModel = BaseModelFactory.factory.createUserModel()
     private val user: User = userModel.currentUser!!
     private val fileModel = FileModel()
     private var realPath: String? = ""//添加时选择头像使用
@@ -34,12 +34,7 @@ class EditUserActivity : BaseActivity() {
     override fun initCommonTitle() {
         super.initCommonTitle()
         title = "修改个人信息"
-        nav_toolbar.setOnMenuItemClickListener {
-            if (it.itemId == R.id.action_save) {
-                save()
-            }
-            true
-        }
+        enableOperate(R.string.save) { save() }
     }
 
     private fun iniComponent() {
@@ -109,8 +104,4 @@ class EditUserActivity : BaseActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.save, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
 }

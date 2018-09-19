@@ -79,14 +79,19 @@ class FamilyActivity : BaseActivity() {
         super.initCommonTitle()
         title = "我的家庭"
 
-        nav_toolbar.setOnMenuItemClickListener { e ->
-            if (e.itemId == R.id.action_create) {
-                editFamily(0, OperateCode.ADD)
-            } else if (e.itemId == R.id.action_scan) {
-                editFamily(0, OperateCode.JOIN)
-            }
-            true
+        enableOperate("创建"){
+            editFamily(0, OperateCode.ADD)
         }
+
+
+//        nav_toolbar.setOnMenuItemClickListener { e ->
+//            if (e.itemId == R.id.action_create) {
+//                editFamily(0, OperateCode.ADD)
+//            } else if (e.itemId == R.id.action_scan) {
+//                editFamily(0, OperateCode.JOIN)
+//            }
+//            true
+//        }
     }
 
     /**

@@ -32,7 +32,7 @@ import kotlin.collections.ArrayList
 class EditDayBookActivity : BaseActivity() {
     private var dayBookModel: IDayBookModel = BaseModelFactory.factory.createDayBookModel()
     private var fileMode = BaseModelFactory.factory.createFileModel()
-//    private var familyModel: IFamilyModel = BaseModelFactory.factory.createFamilyModel()
+    //    private var familyModel: IFamilyModel = BaseModelFactory.factory.createFamilyModel()
     private var categoryModel: ICategoryModel = BaseModelFactory.factory.createCategoryModel()
     private var userModel: IUserModel = BaseModelFactory.factory.createUserModel()
     // 家庭
@@ -74,7 +74,7 @@ class EditDayBookActivity : BaseActivity() {
         if (intent.getStringExtra("daybook_id") != null)
             daybookId = intent.getStringExtra("daybook_id")
         isModify = !TextUtils.isEmpty(daybookId)
-        family = intent.extras["family"] as Family
+        family = intent.extras?.get("family")  as? Family
         initComponent()
         initFamily()
         categoryModel.get()
@@ -101,19 +101,7 @@ class EditDayBookActivity : BaseActivity() {
 
     private fun initDayBook(editDayBook: DayBook) {
         et_money.setText(editDayBook.money.toString(), TextView.BufferType.NORMAL)
-        if (family == null) {
-            rl_family.visibility = View.GONE
-            rl_payer.visibility = View.GONE
-            rl_consumer.visibility = View.GONE
-        } else {
-//            tv_family.text = editDayBook.family?.name
-//            families.forEachIndexed { index, family ->
-//                if (family.id == editDayBook.family?.id) {
-//                    selectedFamilyIndex = index
-//                    initMemberList(family)
-//                    return@forEachIndexed
-//                }
-//            }
+        if (family != null) {
             val stringBuilder = StringBuilder()
             editDayBook.customers?.forEach {
                 stringBuilder.append(it.name)
@@ -186,21 +174,19 @@ class EditDayBookActivity : BaseActivity() {
 
     override fun initCommonTitle() {
         super.initCommonTitle()
-        title = if (isModify) "修改账单" else "添加账单" + "-" + if (family == null) "我的账单" else family?.name
-        nav_toolbar.setOnMenuItemClickListener {
-            if (it.itemId == R.id.action_save) {
-                save()
-            }
-            true
-        }
+        title = (if (isModify) "修改" else "添加") + if (family == null) "我的账单" else "账单"
+        enableOperate(R.string.save) { save() }
     }
 
     private fun initComponent() {
         initCommonTitle()
         val visible = if (family == null) View.GONE else View.VISIBLE
         rl_family.visibility = visible
+        line_2.visibility = visible
         rl_payer.visibility = visible
+        line_3.visibility = visible
         rl_consumer.visibility = visible
+        line_4.visibility = visible
 
         tv_category.setOnClickListener { _ ->
             if (categoryNames.isEmpty()) {
@@ -459,10 +445,5 @@ class EditDayBookActivity : BaseActivity() {
             }
             ll_pic.getChildAt(3).visibility = View.VISIBLE
         }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.save, menu)
-        return true
     }
 }

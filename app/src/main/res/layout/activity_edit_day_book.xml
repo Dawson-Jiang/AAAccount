@@ -45,6 +45,7 @@
             </RelativeLayout>
 
             <View
+                android:id="@+id/line_1"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/line_hight"
                 android:layout_marginTop="10dip"
@@ -69,6 +70,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="16dp"
                     android:gravity="right"
+                    android:enabled="false"
                     android:hint="@string/edit_daybook_family_hint" />
 
                 <ImageView
@@ -80,6 +82,7 @@
             </RelativeLayout>
 
             <View
+                android:id="@+id/line_2"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/line_hight"
                 android:layout_marginTop="10dip"
@@ -116,6 +119,7 @@
             </RelativeLayout>
 
             <View
+                android:id="@+id/line_3"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/line_hight"
                 android:layout_marginTop="10dip"
@@ -151,6 +155,7 @@
             </RelativeLayout>
 
             <View
+                android:id="@+id/line_4"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/line_hight"
                 android:layout_marginTop="10dip"
@@ -188,6 +193,7 @@
             </RelativeLayout>
 
             <View
+                android:id="@+id/line_5"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/line_hight"
                 android:layout_marginTop="10dip"
@@ -224,6 +230,7 @@
             </RelativeLayout>
 
             <View
+                android:id="@+id/line_6"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/line_hight"
                 android:layout_marginTop="10dip"
@@ -255,6 +262,7 @@
             </RelativeLayout>
 
             <View
+                android:id="@+id/line_7"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/line_hight"
                 android:layout_marginTop="10dip"

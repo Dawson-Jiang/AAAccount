@@ -3,7 +3,6 @@ package com.dawson.aaaccount.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
 import android.view.View
 import android.widget.SimpleAdapter
 import android.widget.Toast
@@ -15,7 +14,6 @@ import com.dawson.aaaccount.model.BaseModelFactory
 import com.dawson.aaaccount.model.leancloud.UserModel
 import com.dawson.aaaccount.util.*
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.common_title.*
 import kotlinx.android.synthetic.main.fragment_statistics.*
 import java.util.Date
 import kotlin.collections.ArrayList
@@ -34,9 +32,9 @@ class StatisticsActivity : BaseActivity() {
 
     private var hasSync = false
 
-    private val familyModel =  BaseModelFactory.factory.createFamilyModel()
-    private val userModel =  BaseModelFactory.factory.createUserModel()
-    private val settleModel =  BaseModelFactory.factory.createSettleModel()
+    private val familyModel = BaseModelFactory.factory.createFamilyModel()
+    private val userModel = BaseModelFactory.factory.createUserModel()
+    private val settleModel = BaseModelFactory.factory.createSettleModel()
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,32 +50,28 @@ class StatisticsActivity : BaseActivity() {
         super.initCommonTitle()
         title = "统计(自己)"
 
-        nav_toolbar.setOnMenuItemClickListener {
-            when {
-                it.itemId == R.id.action_filter -> {
-                    val intent = Intent(this, BaseFilterActivity::class.java)
-                    intent.putExtra("family_names", familyNames.toTypedArray())
-                    intent.putExtra("family_select_index", selectedFamilyIndex)
-                    intent.putExtra("is_ct_settle", isContainSettle)
-                    intent.putExtra("start", startTime)
-                    intent.putExtra("end", endTime)
-                    startActivityForResult(intent, FILTER)
-                }
+        enableIvRight {
+            val intent = Intent(this, BaseFilterActivity::class.java)
+            intent.putExtra("family_names", familyNames.toTypedArray())
+            intent.putExtra("family_select_index", selectedFamilyIndex)
+            intent.putExtra("is_ct_settle", isContainSettle)
+            intent.putExtra("start", startTime)
+            intent.putExtra("end", endTime)
+            startActivityForResult(intent, FILTER)
+        }
 //                it.itemId == R.id.action_settle -> {
 //                    if (selectedFamilyIndex <= 0) return@setOnMenuItemClickListener true
 //                    val intent = Intent(this, SettleActivity::class.java)
 //                    intent.putExtra("family", families[selectedFamilyIndex])
 //                    startActivityForResult(intent, FILTER)
 //                }
-                it.itemId == R.id.action_sync -> {
-                    mProgressDialog = AlertDialogHelper.showWaitProgressDialog(this,
-                            R.string.handling)
-                    settleModel.syncData(this.applicationContext, false).observeOn(AndroidSchedulers.mainThread())
-                            .subscribe({ result -> onSyncCompleted(result) }, { onSyncCompleted(OperateResult()) })
-                }
-            }
-            true
-        }
+//                it.itemId == R.id.action_sync -> {
+//                    mProgressDialog = AlertDialogHelper.showWaitProgressDialog(this,
+//                            R.string.handling)
+//                    settleModel.syncData(this.applicationContext, false).observeOn(AndroidSchedulers.mainThread())
+//                            .subscribe({ result -> onSyncCompleted(result) }, { onSyncCompleted(OperateResult()) })
+//                }
+
     }
 
     private fun initComponent() {
@@ -118,10 +112,10 @@ class StatisticsActivity : BaseActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.statistics, menu)
-        return true
-    }
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        menuInflater.inflate(R.menu.statistics, menu)
+//        return true
+//    }
 
     /**
      * 初始化家庭
@@ -134,7 +128,7 @@ class StatisticsActivity : BaseActivity() {
         familyNames = listOfNotNull("自己")
         selectedFamilyIndex = 0
         familyModel.getMyFamily().observeOn(AndroidSchedulers.mainThread())
-                .subscribe ({ result -> onGetFamily(result) },{ onGetFamily(OperateResult()) })
+                .subscribe({ result -> onGetFamily(result) }, { onGetFamily(OperateResult()) })
     }
 
     private fun showStatistic() {
@@ -213,7 +207,7 @@ class StatisticsActivity : BaseActivity() {
             Common.showErrorInfo(this, result.errorCode,
                     "加载失败", 0)
         }
-        if (selectedFamilyIndex <= 0) nav_toolbar.menu.getItem(1).isEnabled = false
+//        if (selectedFamilyIndex <= 0) nav_toolbar.menu.getItem(1).isEnabled = false
     }
 
     private fun onSettle(result: OperateResult<Any>) {
@@ -236,7 +230,7 @@ class StatisticsActivity : BaseActivity() {
             startTime = data.extras.get("start") as Date
             endTime = data.extras.get("end") as Date
             isContainSettle = data?.getBooleanExtra("is_ct_settle", true)!!
-            nav_toolbar.menu.getItem(1).isEnabled = selectedFamilyIndex > 0
+//            nav_toolbar.menu.getItem(1).isEnabled = selectedFamilyIndex > 0
             refresh()
         }
     }

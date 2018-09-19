@@ -27,7 +27,7 @@ class SettleActivity : BaseActivity() {
     private var flag: Int = 0//0 结算  1结算详情
     private var hasSync = true
 
-    private val settleModel =  BaseModelFactory.factory.createSettleModel()
+    private val settleModel = BaseModelFactory.factory.createSettleModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +54,7 @@ class SettleActivity : BaseActivity() {
             title = "结算详情"
             showSettle()
             btn_settle!!.visibility = View.GONE
-             layoutSettleList.visibility = View.GONE
+            layoutSettleList.visibility = View.GONE
         }
     }
 
@@ -62,13 +62,10 @@ class SettleActivity : BaseActivity() {
         super.initCommonTitle()
         title = if (flag == 0) "结算-${family?.name!!}" else "结算详情"
 
-        nav_toolbar.setOnMenuItemClickListener {
-            if (it.itemId == R.id.action_ok) {
-                val intent = Intent(this, SettleListActivity::class.java)
-                intent.putExtra("family", family)
-                startActivity(intent)
-            }
-            true
+        enableOperate(R.string.confirm) {
+            val intent = Intent(this, SettleListActivity::class.java)
+            intent.putExtra("family", family)
+            startActivity(intent)
         }
     }
 

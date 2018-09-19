@@ -68,29 +68,19 @@ class BaseSimpleSelectActivity : BaseActivity() {
         }
         lv_main!!.adapter = adapter
         adapter.notifyDataSetChanged()
-
-
-        nav_toolbar.setOnMenuItemClickListener { e ->
-            if (e.itemId == R.id.action_ok) {
-                if (isMutilSelect)
-                    intent.putExtra("select_index", selectIndexs)
-                else
-                    intent.putExtra("select_index", selectIndex)
-                setResult(Activity.RESULT_OK, intent)
-                finish()
-            }
-            true
+        enableOperate(R.string.confirm) {
+            if (isMutilSelect)
+                intent.putExtra("select_index", selectIndexs)
+            else
+                intent.putExtra("select_index", selectIndex)
+            setResult(Activity.RESULT_OK, intent)
+            finish()
         }
     }
 
     override fun initCommonTitle() {
         super.initCommonTitle()
         title = intent.getStringExtra("title")
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.ok_sure, menu)
-        return true
     }
 
     companion object {

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="80dip"
+    android:layout_height="72dip"
     android:orientation="vertical">
 
     <View
@@ -10,17 +10,50 @@
         android:layout_height="24dp"
         android:background="@color/colorPrimary" />
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/nav_toolbar"
+    <LinearLayout
+        android:id="@+id/layoutTitle"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/v_top"
         android:background="@color/colorPrimary"
-        android:theme="@style/ToolbarTheme"
-        app:contentInsetLeft="4dp"
-        app:navigationIcon="@drawable/ic_arrow_back"
-        app:popupTheme="@style/ToolbarPopupTheme"
-        app:title="关于"
-        app:titleMarginStart="4dp"
-        app:titleTextAppearance="@style/ToolbarTitleTheme"
-        app:titleTextColor="@color/text_white" />
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/iv_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_arrow_back" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="16dp"
+            android:layout_weight="1"
+            android:text="关于"
+            android:textColor="@color/text_white"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/tv_operate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="8dp"
+            android:text="保存"
+            android:textColor="@color/text_white"
+            android:visibility="gone"
+            android:textSize="14dp" />
+
+        <ImageView
+            android:id="@+id/iv_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_arrow_right"
+            android:visibility="gone" />
+    </LinearLayout>
 </LinearLayout>
