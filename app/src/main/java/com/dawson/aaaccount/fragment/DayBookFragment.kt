@@ -2,6 +2,7 @@ package com.dawson.aaaccount.fragment
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -57,11 +58,13 @@ class DayBookFragment : BaseFragment() {
         initComponent()
         rootView?.lvRecord?.adapter = mDaybookAdapter
         rootView?.lvRecord?.layoutManager = LinearLayoutManager(activity)
-        rootView?.lvRecord?.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.HORIZONTAL))
+        rootView?.lvRecord?.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
         mDaybookAdapter.setClick { position ->
             val intent = Intent()
             intent.setClass(activity, EditDayBookActivity::class.java)
             intent.putExtra("daybook_id", mDayBooks[position].id)
+            if (selectedFamilyIndex > 0)
+                intent.putExtra("family", families[selectedFamilyIndex])
             startActivityForResult(intent, OperateCode.MODIFIED)
         }
         registerForContextMenu(rootView?.rootView?.lvRecord!!)
@@ -111,6 +114,11 @@ class DayBookFragment : BaseFragment() {
     }
 
     fun gotoSelectFamily() {
+        if (familyNames.size <= 1) {
+            Toast.makeText(activity, "您还没有家庭，请创建或加入一个家庭！", Toast.LENGTH_LONG).show()
+            return //只有自己 无需选择
+        }
+
         val intent = Intent(activity, BaseSimpleSelectActivity::class.java)
         intent.putExtra("select_string", familyNames.toTypedArray())
         intent.putExtra("select_index", selectedFamilyIndex)
@@ -119,7 +127,12 @@ class DayBookFragment : BaseFragment() {
     }
 
     fun gotoAdd() {
-        startActivityForResult(Intent(activity, EditDayBookActivity::class.java), OperateCode.ADD)
+
+        val intent = Intent()
+        intent.setClass(activity, EditDayBookActivity::class.java)
+        if (selectedFamilyIndex > 0)
+            intent.putExtra("family", families[selectedFamilyIndex])
+        startActivityForResult(intent, OperateCode.ADD)
     }
 
     /**
@@ -139,11 +152,11 @@ class DayBookFragment : BaseFragment() {
                     if (result.result == ErrorCode.SUCCESS) {
                         families.addAll(result.content!!)
                         familyNames = families.indices.map {
-                            if (it == 0) "自己"
+                            if (it == 0) "我的账单"
                             else
                                 families[it].name!! + if (families[it].isTemp) "(临时)" else ""
                         }.toList()
-                        activity?.title = "账单-自己"
+                        activity?.title = "账单-我的账单"
                     } else {
                         Common.showErrorInfo(activity!!, result.errorCode,
                                 R.string.operate_fail, 0)

@@ -29,13 +29,13 @@ interface FamilyService {
     fun disJoin(@Body param: Map<String, String>): Observable<OperateResult<Any>>
 
     @POST("family/del")
-    fun del(@Body id: String): Observable<OperateResult<Any>>
+    fun del(@Body param:Map<String,String>): Observable<OperateResult<Any>>
 
     @POST("family/get_my_family")
-    fun getMyFamily(@Body uid: String): Observable<OperateResult<List<Family>>>
+    fun getMyFamily(@Body param:Map<String,String>): Observable<OperateResult<List<Family>>>
 
     @POST("family/get")
-    fun get(@Body id: String): Observable<OperateResult<Family>>
+    fun get(@Body param:Map<String,String>): Observable<OperateResult<Family>>
 
     @POST("family/add_member")
     fun addMember(@Body family: Family): Observable<OperateResult<User>>

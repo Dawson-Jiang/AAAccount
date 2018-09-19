@@ -54,17 +54,17 @@ class FamilyModel : IFamilyModel {
     }
 
     override fun del(family: Family): Observable<OperateResult<Any>> {
-        return service.del(family.id!!)
+        return service.del(mutableMapOf(Pair("id", family.id!!)))
     }
 
     override fun getMyFamily(): Observable<OperateResult<List<Family>>> {
-        return service.getMyFamily(UserInstance.current_user?.id!!)
+        return service.getMyFamily(mutableMapOf(Pair("uid", UserInstance.current_user?.id!!)))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun getFamilyById(context: Context, id: String): Observable<OperateResult<Family>> {
-        return service.get(id)
+        return service.get(mutableMapOf(Pair("id", id)))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
     }

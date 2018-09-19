@@ -28,7 +28,7 @@ class DaybookAdapter(private val mActivity: Activity, private val mDayBooks: Lis
         return mDayBooks.size
     }
 
-   public var is_family=true
+     var is_family=true
 
     override fun onBindViewHolder(holder: DaybookHolder, position: Int) {
         val dbook = mDayBooks[position]

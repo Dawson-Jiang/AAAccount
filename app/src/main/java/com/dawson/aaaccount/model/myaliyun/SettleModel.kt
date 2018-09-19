@@ -24,26 +24,26 @@ class SettleModel : ISettleModel {
     }
 
     override fun getByFamilyId(familyId: String): Observable<OperateResult<List<Settle>>> {
-        return service.getByFamily(familyId)
+        return service.getByFamily(mutableMapOf(Pair("fid", familyId)))
     }
 
     override fun statistic(family: Family, start: Date?, end: Date?, containSettle: Boolean): Observable<OperateResult<Settle>> {
-        val param=HashMap<String,String>()
-        param["fid"]=family.id!!
-        param["start"]= start?.format("yyyy.MM.dd HH:mm:ss")!!
-        param["end"]= end?.format("yyyy.MM.dd HH:mm:ss")!!
-        param["contain_settle"]= containSettle.toString()
+        val param = HashMap<String, String>()
+        param["fid"] = family.id!!
+        param["start"] = start?.format("yyyy.MM.dd HH:mm:ss")!!
+        param["end"] = end?.format("yyyy.MM.dd HH:mm:ss")!!
+        param["contain_settle"] = containSettle.toString()
 
-        return  service.statistic(param)
+        return service.statistic(param)
     }
 
     override fun statisticMine(start: Date?, end: Date?): Observable<OperateResult<Settle>> {
-        val param=HashMap<String,String>()
-        param["uid"]=UserInstance.current_user?.id!!
-        param["start"]= start?.format("yyyy.MM.dd HH:mm:ss")!!
-        param["end"]= end?.format("yyyy.MM.dd HH:mm:ss")!!
+        val param = HashMap<String, String>()
+        param["uid"] = UserInstance.current_user?.id!!
+        param["start"] = start?.format("yyyy.MM.dd HH:mm:ss")!!
+        param["end"] = end?.format("yyyy.MM.dd HH:mm:ss")!!
 
-        return  service.statisticMine(param)
+        return service.statisticMine(param)
     }
 
     override fun syncData(context: Context, all: Boolean): Observable<OperateResult<Any>> {

@@ -26,7 +26,7 @@ interface DaybookService {
     fun save(@Body daybook: DayBook): Observable<OperateResult<String>>
 
     @POST("daybook/get")
-    fun get(@Body id:String): Observable<OperateResult<DayBook>>
+    fun get(@Body param:Map<String,String>): Observable<OperateResult<DayBook>>
 
     @POST("daybook/get_my_daybook")
     fun getMyDaybook(@Body param:Map<String,String>): Observable<OperateResult<List<DayBook>>>
@@ -35,5 +35,5 @@ interface DaybookService {
     fun getFamilyDaybook(@Body param:Map<String,String>): Observable<OperateResult<List<DayBook>>>
 
     @POST("daybook/del")
-    fun del(@Body id:String): Observable<OperateResult<Any>>
+    fun del(@Body param:Map<String,String>): Observable<OperateResult<Any>>
 }
