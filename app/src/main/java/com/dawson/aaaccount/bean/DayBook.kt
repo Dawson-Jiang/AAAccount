@@ -33,6 +33,7 @@ open class DayBook : BaseEntity() {
     /**
      * 消费人员
      */
+    @SerializedName("consumer")
     var customers: MutableList<User>? = null
 
     /**

@@ -5,6 +5,10 @@ import com.dawson.aaaccount.bean.result.OperateResult
 import io.reactivex.Observable
 import retrofit2.http.Body
 import retrofit2.http.POST
+import okhttp3.MultipartBody
+import retrofit2.http.Multipart
+import retrofit2.http.Part
+
 
 /**
  * <p>project: AAAccount </p>
@@ -18,4 +22,8 @@ import retrofit2.http.POST
 interface CommonService {
     @POST("common/upload_log")
     fun uploadLog(@Body param:List<Map<String,String>>): Observable<OperateResult<Any>>
+
+    @Multipart
+    @POST("/common/file_upload")
+    fun fileUpload(@Part(value = "fileName") key: String, @Part file: MultipartBody.Part): Observable<OperateResult<String>>
 }

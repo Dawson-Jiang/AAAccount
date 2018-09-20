@@ -2,6 +2,7 @@ package com.dawson.aaaccount.activity
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -15,17 +16,17 @@ import com.dawson.aaaccount.bean.User
 import com.dawson.aaaccount.bean.result.OperateResult
 import com.dawson.aaaccount.model.BaseModelFactory
 import com.dawson.aaaccount.util.*
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_family_member.*
 import kotlinx.android.synthetic.main.common_title.*
 import kotlinx.android.synthetic.main.layout_member_list_item.view.*
+import org.w3c.dom.Text
 
 /**
  * 家庭成员
  */
 class FamilyMemberActivity : BaseActivity() {
-
-    private var family_index = 0
     private var family: Family? = null//家庭
     private val memberAdapter: MemberAdapter = MemberAdapter()
     private val userModel = BaseModelFactory.factory.createUserModel()
@@ -34,8 +35,7 @@ class FamilyMemberActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_family_member)
-        family_index = intent.getIntExtra("family_index", -1)
-        family = CommonCach.families[family_index]
+        family = intent.extras["family"] as Family
         initComponent()
         lvMember.adapter = memberAdapter
         memberAdapter.notifyDataSetChanged()
@@ -65,12 +65,16 @@ class FamilyMemberActivity : BaseActivity() {
         if (family?.members?.get(info.position) == userModel.currentUser) {
             return super.onContextItemSelected(item)
         }
+        val user = family?.members?.get(info.position)!!
+
         if (item.itemId == 0) {
 //修改
-            val user = family?.members?.get(info.position)!!
             editMemeber(user)
         } else if (item.itemId == 1) {
-            AlertDialogHelper.showOKCancelAlertDialog(this@FamilyMemberActivity,
+            if (!TextUtils.isEmpty(user.token)) {//不能修改注册用户
+                Toast.makeText(this, "不能修改正式成员信息", Toast.LENGTH_SHORT).show()
+
+            } else AlertDialogHelper.showOKCancelAlertDialog(this@FamilyMemberActivity,
                     R.string.del_notice, { _, _ ->
                 familyModel.delMemeber(family!!, family?.members?.get(info.position)!!)
                         .observeOn(AndroidSchedulers.mainThread())
@@ -92,12 +96,17 @@ class FamilyMemberActivity : BaseActivity() {
         val et_name = EditText(this)
         if (user == null)
             et_name.hint = "成员名称"
-        else
+        else {
+            if (!TextUtils.isEmpty(user.token)) {//不能修改注册用户
+                Toast.makeText(this, "不能修改正式成员信息", Toast.LENGTH_SHORT).show()
+                return
+            }
             et_name.setText(user.name!!)
+        }
         AlertDialog.Builder(this).setTitle(if (user == null) "添加" else "修改")
                 .setView(et_name)
                 .setPositiveButton(R.string.save) { _, _ ->
-                    val obs: io.reactivex.Observable<OperateResult<User>>
+                    val obs: Observable<OperateResult<User>>
                     if (user == null) {
                         val usert = User()
                         usert.name = et_name.text.toString()
@@ -106,17 +115,18 @@ class FamilyMemberActivity : BaseActivity() {
                         user.name = et_name.text.toString()
                         obs = familyModel.modifyMemeber(user)
                     }
-                    obs.observeOn(AndroidSchedulers.mainThread())
-                            .subscribe({
-                                Toast.makeText(this, R.string.operate_success, Toast.LENGTH_SHORT).show()
-                                if (user == null) family?.members?.add(it.content!!)
-                                memberAdapter.notifyDataSetChanged()
-                                setResult(RESULT_OK)
-                            }, {
-                                Common.showErrorInfo(this, ErrorCode.FAIL,
-                                        R.string.operate_fail, 0)
-                                DLog.error("fm_ed_member", it)
-                            })
+                    obs.subscribe({
+                        if (it.result == ErrorCode.SUCCESS) {
+                            Toast.makeText(this, R.string.operate_success, Toast.LENGTH_SHORT).show()
+//                            if (user == null) family?.members?.add(it.content!!)
+                            memberAdapter.notifyDataSetChanged()
+                            setResult(RESULT_OK)
+                        }
+                    }, {
+                        Common.showErrorInfo(this, ErrorCode.FAIL,
+                                R.string.operate_fail, 0)
+                        DLog.error("fm_ed_member", it)
+                    })
                 }
                 .setNegativeButton(R.string.cancel, null).create().show()
     }
@@ -143,16 +153,11 @@ class FamilyMemberActivity : BaseActivity() {
             }
             val user = family?.members!![position]
             cv?.tvName?.text = user.name
-            if (family?.isTemp!!) {
-                cv?.tvPhone?.visibility = GONE
-                cv?.ivHead?.visibility = GONE
-            } else {
-                cv?.tvPhone?.visibility = VISIBLE
-                cv?.ivHead?.visibility = VISIBLE
-                cv?.tvPhone?.text = user.phone
-                // 异步下载图片
-                ImageLoadUtil.loadCircleImage(user.headUrl, cv?.ivHead!!)
-            }
+            cv?.tvPhone?.visibility = VISIBLE
+            cv?.tvPhone?.text = if (TextUtils.isEmpty(user.token)) "(临时成员)" else ""
+            // 异步下载图片
+            ImageLoadUtil.loadCircleImage(user.headUrl, cv?.ivHead!!)
+
             return cv!!
         }
     }

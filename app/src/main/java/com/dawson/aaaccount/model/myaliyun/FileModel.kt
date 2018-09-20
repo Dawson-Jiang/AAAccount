@@ -6,6 +6,7 @@ import com.dawson.aaaccount.util.Common
 import com.dawson.aaaccount.model.IFileModel
 import com.dawson.aaaccount.util.BitmapHelper
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 
@@ -30,7 +31,7 @@ class FileModel : IFileModel {
 //                    val avFile = AVFile.withAbsoluteLocalPath(fileName, tmpFileName)//TODO uploadfile
 //                    avFile.save()
                     OperateResult(arrayOf("url", "thrumbUrl"))
-                }
+                }.observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun uploadFile(context: Context, files: MutableList<String>, progressCallback: (file: String, progress: Int) -> Unit):

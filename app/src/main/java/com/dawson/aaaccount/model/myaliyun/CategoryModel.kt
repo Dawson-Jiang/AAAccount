@@ -6,6 +6,7 @@ import com.dawson.aaaccount.bean.result.OperateResult
 import com.dawson.aaaccount.model.ICategoryModel
 import com.dawson.aaaccount.net.DaybookService
 import com.dawson.aaaccount.net.RetrofitHelper
+import com.dawson.aaaccount.util.CommonLruCach
 import com.dawson.aaaccount.util.ErrorCode
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -18,20 +19,16 @@ import io.reactivex.schedulers.Schedulers
 class CategoryModel : ICategoryModel {
     private val service = RetrofitHelper.getService(DaybookService::class.java)
 
-    object CategoryInstance {
-        var categories = mutableListOf<ConsumptionCategory>()
-    }
-
     override fun get(): Observable<OperateResult<List<ConsumptionCategory>>> {
-        return if (CategoryInstance.categories.isEmpty())
+        return if (CommonLruCach.categories.isEmpty())
             service.getCategories().subscribeOn(Schedulers.io())
                     .doOnNext {
                         if (it.result == ErrorCode.SUCCESS) {
-                            CategoryInstance.categories.clear()
-                            CategoryInstance.categories.addAll(it.content!!)
+                            CommonLruCach.categories.clear()
+                            CommonLruCach.categories.addAll(it.content!!)
                         }
                     }
                     .observeOn(AndroidSchedulers.mainThread())
-        else Observable.just(OperateResult(CategoryInstance.categories.toList())) .observeOn(AndroidSchedulers.mainThread())
+        else Observable.just(OperateResult(CommonLruCach.categories.toList())) .observeOn(AndroidSchedulers.mainThread())
     }
 }
