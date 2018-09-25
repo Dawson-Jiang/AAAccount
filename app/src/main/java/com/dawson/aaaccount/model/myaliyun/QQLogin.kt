@@ -131,3 +131,25 @@ class QQLogin(val activity: Activity) {
     }
 
 }
+
+
+class QQLoginTest(val activity: Activity) {
+
+    fun login(): Observable<OperateResult<Map<String, String>>> {
+        val author = HashMap<String, String>()
+        author["openid"] = "68801BC1A9DC8F1B968BE0E9AE21EA5B"
+        author["access_token"] = "617661D6211EB9F8A815E23FCBAF95CF"
+        return Observable.just(OperateResult(author.toMap()))
+    }
+
+    fun getUserInfo(): Observable<OperateResult<Map<String, String>>> {
+        val info = HashMap<String, String>()
+        info["nickname"] = "东山再起"
+        info["figureurl_2"] = "http://qzapp.qlogo.cn/qzapp/1106203415/68801BC1A9DC8F1B968BE0E9AE21EA5B/100"
+        return Observable.just(OperateResult(info.toMap()))
+    }
+
+    fun logout() {
+    }
+
+}

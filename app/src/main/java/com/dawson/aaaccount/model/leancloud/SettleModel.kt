@@ -336,7 +336,7 @@ class SettleModel : ISettleModel {
                         dbConfig = DBConfig()
                         dbConfig.key = ISettleModel.Companion.DAYBOOK_LAST_SYNC_TIME
                     }
-                    dbConfig.value = ddate.format("yyyy-MM-dd HH:mm:ss")
+                    dbConfig.value = ddate.format()
                     dbConfigDao.insertOrReplace(dbConfig)
                     val res: OperateResult<Any> = OperateResult()
                     res.result = ErrorCode.SUCCESS

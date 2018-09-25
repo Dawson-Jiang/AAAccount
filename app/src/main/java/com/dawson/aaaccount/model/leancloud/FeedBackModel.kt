@@ -5,6 +5,7 @@ import android.os.AsyncTask
 import com.avos.avoscloud.AVException
 import com.avos.avoscloud.AVObject
 import com.avos.avoscloud.AVUser
+import com.dawson.aaaccount.bean.Feedback
 import com.dawson.aaaccount.bean.result.OperateResult
 import com.dawson.aaaccount.dao.DBSystemLogDao
 import com.dawson.aaaccount.dao.GreenDaoUtil
@@ -24,6 +25,10 @@ import java.util.*
  */
 
 class FeedBackModel : IFeedBackModel {
+    override fun getMyFeedback(): Observable<OperateResult<List<Feedback>>> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun add(title: String, content: String): Observable<OperateResult<Any>> {
         return Observable.create<OperateResult<Any>> {
             val avFeedback = AVObject(DataObjectHelper.FEED_BACK.CLASS_NAME)

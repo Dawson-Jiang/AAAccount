@@ -56,7 +56,8 @@ class UserModel : IUserModel {
     }
 
     override fun loginByQQ(activity: Activity): Observable<OperateResult<Any>> {
-        val qqLogin = QQLogin(activity)
+//        val qqLogin = QQLogin(activity)
+        val qqLogin = QQLoginTest(activity)
         var org_user = User()
         return qqLogin.login().subscribeOn(Schedulers.io())
                 .flatMap { service.login(it.content!!) }
@@ -150,7 +151,7 @@ class UserModel : IUserModel {
         val user = JsonObject()
         if (flag == 1) {
             val info = JsonObject()
-            info.addProperty("date", Date(System.currentTimeMillis()).format("yyyy-MM-dd HH:mm:ss"))
+            info.addProperty("date", Date(System.currentTimeMillis()).format())
             info.addProperty("version", BuildConfig.VERSION_CODE.toString())
             info.addProperty("phone", Build.BRAND)
             info.addProperty("phoneType", PhoneHelper.phoneType)

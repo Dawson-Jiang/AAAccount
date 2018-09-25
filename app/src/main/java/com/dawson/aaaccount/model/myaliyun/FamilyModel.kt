@@ -59,7 +59,8 @@ class FamilyModel : IFamilyModel {
     }
 
     override fun del(family: Family): Observable<OperateResult<Any>> {
-        return service.del(mutableMapOf(Pair("id", family.id!!)))
+        return service.del(mutableMapOf(Pair("id", family.id!!))).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun getMyFamily(): Observable<OperateResult<List<Family>>> {

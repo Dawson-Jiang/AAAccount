@@ -21,9 +21,9 @@ import retrofit2.http.Part
  */
 interface CommonService {
     @POST("common/upload_log")
-    fun uploadLog(@Body param:List<Map<String,String>>): Observable<OperateResult<Any>>
+    fun uploadLog(@Body param: List<Map<String, String>>): Observable<OperateResult<Any>>
 
     @Multipart
     @POST("/common/file_upload")
-    fun fileUpload(@Part(value = "fileName") key: String, @Part file: MultipartBody.Part): Observable<OperateResult<String>>
+    fun fileUpload(@Body file: MultipartBody): Observable<OperateResult<List<String>>>
 }

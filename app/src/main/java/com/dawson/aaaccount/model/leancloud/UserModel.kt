@@ -142,7 +142,7 @@ class UserModel : IUserModel {
     private fun updateInfo() {
         //更新登录信息
         val info = StringBuilder()
-        info.append(Date(System.currentTimeMillis()).format("yyyy-MM-dd HH:mm:ss"))
+        info.append(Date(System.currentTimeMillis()).format())
         info.append("|")
         info.append(BuildConfig.VERSION_CODE)
         info.append("|")

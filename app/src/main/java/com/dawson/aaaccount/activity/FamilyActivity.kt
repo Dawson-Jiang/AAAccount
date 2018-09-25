@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.activity_family.*
 import kotlinx.android.synthetic.main.layout_family_list_item.view.*
 
 class FamilyActivity : BaseActivity() {
-    private val familyModel =  BaseModelFactory.factory.createFamilyModel()
+    private val familyModel = BaseModelFactory.factory.createFamilyModel()
     val families = mutableListOf<Family>()
 
     private val familyAdapter = object : BaseAdapter() {
@@ -79,7 +79,7 @@ class FamilyActivity : BaseActivity() {
         super.initCommonTitle()
         title = "我的家庭"
 
-        enableOperate("创建"){
+        enableOperate("创建") {
             editFamily("", OperateCode.ADD)
         }
     }
@@ -90,7 +90,10 @@ class FamilyActivity : BaseActivity() {
     private fun initFamily() {
         srefreshRecord.isRefreshing = true
         familyModel.getMyFamily().observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ result -> onGetFamily(result) }, { DLog.error("family_init", it) })
+                .subscribe({ result -> onGetFamily(result) }, {
+                    onGetFamily(OperateResult(ErrorCode.FAIL, it.message!!))
+                    DLog.error("family_init", it)
+                })
     }
 
     private fun editFamily(fid: String, type: Int) {

@@ -1,13 +1,17 @@
 package com.dawson.aaaccount.model.myaliyun
 
 import android.content.Context
- import com.dawson.aaaccount.bean.result.OperateResult
+import com.dawson.aaaccount.bean.result.OperateResult
 import com.dawson.aaaccount.util.Common
 import com.dawson.aaaccount.model.IFileModel
+import com.dawson.aaaccount.net.CommonService
+import com.dawson.aaaccount.net.RetrofitHelper
 import com.dawson.aaaccount.util.BitmapHelper
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import okhttp3.MultipartBody
+import com.google.gson.JsonObject
 
 
 /**
@@ -16,6 +20,8 @@ import io.reactivex.schedulers.Schedulers
  */
 
 class FileModel : IFileModel {
+
+    private val service = RetrofitHelper.getService(CommonService::class.java)
 
     override fun uploadFile(context: Context, file: String, progressCallback: (progress: Int) -> Unit): Observable<OperateResult<Array<String>>> {
         return Observable.create<String> { e ->
@@ -26,12 +32,21 @@ class FileModel : IFileModel {
         }
                 .subscribeOn(Schedulers.computation())
                 .observeOn(Schedulers.io())
-                .map<OperateResult<Array<String>>> { tmpFileName ->
+                .map { tmpFileName ->
                     val fileName = file.substring(file.lastIndexOf("/") + 1)
-//                    val avFile = AVFile.withAbsoluteLocalPath(fileName, tmpFileName)//TODO uploadfile
-//                    avFile.save()
-                    OperateResult(arrayOf("url", "thrumbUrl"))
-                }.observeOn(AndroidSchedulers.mainThread())
+
+
+                    val builder = MultipartBody.Builder()
+
+                    val jsonObject = JsonObject()
+                    jsonObject.addProperty("fileName", fileName)
+                    builder.addFormDataPart("params", jsonObject.toString())
+                    builder.setType(MultipartBody.FORM)
+                    builder.build()
+                }.flatMap {
+                    service.fileUpload(it).map {res-> res.cast(res.content?.toTypedArray()) }
+                }
+                .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun uploadFile(context: Context, files: MutableList<String>, progressCallback: (file: String, progress: Int) -> Unit):

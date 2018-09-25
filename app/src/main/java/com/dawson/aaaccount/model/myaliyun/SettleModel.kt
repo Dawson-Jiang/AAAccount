@@ -30,8 +30,8 @@ class SettleModel : ISettleModel {
     override fun statistic(family: Family, start: Date?, end: Date?, containSettle: Boolean): Observable<OperateResult<Settle>> {
         val param = HashMap<String, String>()
         param["fid"] = family.id!!
-        param["start"] = start?.format("yyyy.MM.dd HH:mm:ss")!!
-        param["end"] = end?.format("yyyy.MM.dd HH:mm:ss")!!
+        param["start"] = start?.format()!!
+        param["end"] = end?.format()!!
         param["contain_settle"] = containSettle.toString()
 
         return service.statistic(param)
@@ -40,8 +40,8 @@ class SettleModel : ISettleModel {
     override fun statisticMine(start: Date?, end: Date?): Observable<OperateResult<Settle>> {
         val param = HashMap<String, String>()
         param["uid"] = UserInstance.current_user?.id!!
-        param["start"] = start?.format("yyyy.MM.dd HH:mm:ss")!!
-        param["end"] = end?.format("yyyy.MM.dd HH:mm:ss")!!
+        param["start"] = start?.format()!!
+        param["end"] = end?.format()!!
 
         return service.statisticMine(param)
     }

@@ -1,6 +1,7 @@
 package com.dawson.aaaccount.activity
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
@@ -37,8 +38,11 @@ class LoginActivity : Activity() {
         setContentView(R.layout.activity_login)
 
         iv_phone.setOnClickListener {
-            ll_phone_login.visibility = View.VISIBLE
-            ll_qq_login.visibility = View.GONE
+            //            ll_phone_login.visibility = View.VISIBLE
+//            ll_qq_login.visibility = View.GONE
+            AlertDialog.Builder(this).setTitle(R.string.title_notice)
+                    .setMessage("已注册用户请先用QQ登录,再查看帮助手册进行操作")
+                    .setPositiveButton(R.string.confirm, null).create().show()
         }
 
         btn_login.setOnClickListener { loginByPhone() }

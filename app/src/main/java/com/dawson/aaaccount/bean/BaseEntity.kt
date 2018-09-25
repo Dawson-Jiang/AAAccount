@@ -21,5 +21,6 @@ open class BaseEntity : Serializable {
     /**
      * 最后修改时间
      */
+    @SerializedName("updateTime")
     var lastModifiedTime: Date? = null
 }

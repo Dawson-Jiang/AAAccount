@@ -80,7 +80,7 @@ class MainActivity : FragmentActivity() {
 
         nav_view.getHeaderView(0).ll_nav_fb.setOnClickListener { _ ->
             goto({
-                startActivity(Intent(this, FeedBackActivity::class.java))
+                startActivity(Intent(this, FeedbackListActivity::class.java))
             })
         }
         nav_view.getHeaderView(0).ll_nav_about.setOnClickListener { _ ->
