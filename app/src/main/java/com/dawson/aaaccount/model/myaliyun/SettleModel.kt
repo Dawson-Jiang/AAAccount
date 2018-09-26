@@ -24,7 +24,7 @@ class SettleModel : ISettleModel {
     }
 
     override fun getByFamilyId(familyId: String): Observable<OperateResult<List<Settle>>> {
-        return service.getByFamily(mutableMapOf(Pair("fid", familyId)))
+        return service.getFamilySettle(mutableMapOf(Pair("fid", familyId)))
     }
 
     override fun statistic(family: Family, start: Date?, end: Date?, containSettle: Boolean): Observable<OperateResult<Settle>> {

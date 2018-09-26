@@ -10,8 +10,8 @@ interface SettleService {
     @POST("settle/settle")
     fun settle(@Body param: Settle): Observable<OperateResult<String>>
 
-    @POST("settle/get_by_family")
-    fun getByFamily(@Body param:Map<String,String>): Observable<OperateResult<List<Settle>>>
+    @POST("settle/get_family_settle")
+    fun getFamilySettle(@Body param:Map<String,String>): Observable<OperateResult<List<Settle>>>
 
     @POST("settle/statistic")
     fun statistic(@Body param: Map<String,String>): Observable<OperateResult<Settle>>
