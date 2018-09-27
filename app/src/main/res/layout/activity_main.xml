@@ -39,12 +39,12 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="16dp"
                 android:layout_weight="1"
-                android:text="账单"
+                android:text="我的账单"
                 android:textColor="@color/text_white"
                 android:textSize="16dp" />
 
             <ImageView
-                android:id="@+id/ivFilter"
+                android:id="@+id/iv_filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"

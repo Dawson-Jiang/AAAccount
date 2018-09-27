@@ -6,13 +6,12 @@ import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import android.support.v4.view.GravityCompat
+import android.view.View
 import android.view.Window
 import com.dawson.aaaccount.R
 import com.dawson.aaaccount.fragment.DayBookFragment
 import com.dawson.aaaccount.model.BaseModelFactory
 import com.dawson.aaaccount.model.IUserModel
-import com.dawson.aaaccount.model.myaliyun.UserInstance
-import com.dawson.aaaccount.model.myaliyun.UserModel
 import com.dawson.aaaccount.util.Common
 import com.dawson.aaaccount.util.ErrorCode
 import com.dawson.aaaccount.util.ImageLoadUtil
@@ -34,6 +33,7 @@ class MainActivity : FragmentActivity() {
         setContentView(R.layout.activity_main)
         ivOperate.setOnClickListener { _ -> layout_main.openDrawer(GravityCompat.START) }
         layoutTitle.setOnClickListener { _ -> (fg_daybook as DayBookFragment).gotoSelectFamily() }
+        iv_filter.visibility= View.INVISIBLE
         main_floatbtn.setOnClickListener { _ -> (fg_daybook as DayBookFragment).gotoAdd() }
         initDrawerLayout()
 //        SettleModel().syncData(applicationContext, true).subscribeOn(Schedulers.io())
@@ -58,35 +58,58 @@ class MainActivity : FragmentActivity() {
     private fun initDrawerLayout() {
         nav_view.inflateHeaderView(R.layout.layout_main_nav)
         nav_view.getHeaderView(0).iv_head.setOnClickListener { _ ->
-            goto({
-                startActivityForResult(Intent(this, EditUserActivity::class.java), OperateCode.MODIFIED_BASIC)
-            })
+            goto {
+                startActivityForResult(Intent(this, EditUserActivity::class.java),
+                        OperateCode.MODIFIED_BASIC)
+            }
         }
-        nav_view.getHeaderView(0).ll_nav_family.setOnClickListener { _ ->
-            goto({
-                startActivityForResult(Intent(this, FamilyActivity::class.java), OperateCode.MODIFIED_BASIC)
-            })
+
+        nav_view.getHeaderView(0).ll_nav_my_daybook.setOnClickListener { _ ->
+            layout_main.closeDrawer(GravityCompat.START)
+            (fg_daybook as DayBookFragment).switchFamily(false)
+            iv_filter.visibility= View.INVISIBLE
+        }
+
+        nav_view.getHeaderView(0).ll_nav_family_daybook.setOnClickListener { _ ->
+            layout_main.closeDrawer(GravityCompat.START)
+            (fg_daybook as DayBookFragment).switchFamily(true)
+            iv_filter.visibility= View.VISIBLE
         }
         nav_view.getHeaderView(0).ll_nav_statistic.setOnClickListener { _ ->
-            goto({
+            goto {
                 startActivity(Intent(this, StatisticsActivity::class.java))
-            })
+            }
         }
-//        nav_view.getHeaderView(0).ll_nav_settle.setOnClickListener { _ ->
-//            goto({
-//                startActivity(Intent(this, SettleListActivity::class.java))
-//            })
-//        }
+
+        nav_view.getHeaderView(0).ll_nav_settle.setOnClickListener { _ ->
+            goto {
+                startActivity(Intent(this, StatisticsActivity::class.java))
+            }
+        }
+
+        nav_view.getHeaderView(0).ll_nav_settle_history.setOnClickListener { _ ->
+            goto {
+                startActivity(Intent(this, SettleListActivity::class.java))
+            }
+        }
+
+        nav_view.getHeaderView(0).ll_nav_family.setOnClickListener { _ ->
+            goto {
+                startActivityForResult(Intent(this, FamilyActivity::class.java), OperateCode.MODIFIED_BASIC)
+            }
+        }
+
+
 
         nav_view.getHeaderView(0).ll_nav_fb.setOnClickListener { _ ->
-            goto({
+            goto {
                 startActivity(Intent(this, FeedbackListActivity::class.java))
-            })
+            }
         }
         nav_view.getHeaderView(0).ll_nav_about.setOnClickListener { _ ->
-            goto({
+            goto {
                 startActivity(Intent(this, AboutActivity::class.java))
-            })
+            }
         }
         nav_view.getHeaderView(0).ll_nav_logout.setOnClickListener { _ ->
             userModel.logout(this)
@@ -94,15 +117,15 @@ class MainActivity : FragmentActivity() {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe { result ->
                         if (result.result == ErrorCode.SUCCESS) {
-                            goto({
+                            goto {
                                 startActivity(Intent(this@MainActivity, LoginActivity::class.java))
-                            })
+                            }
                             finish()
                         } else {
-                            goto({
+                            goto {
                                 Common.showErrorInfo(this@MainActivity, result.errorCode,
                                         R.string.operate_fail, 0)
-                            })
+                            }
                         }
                     }
         }

@@ -19,6 +19,11 @@ open class User : BaseEntity() {
      */
     var headThumbUrl: String? = null
 
+    /**
+     * 是否是家庭成员
+     */
+    var isMember:Boolean =false
+
     override fun equals(other: Any?): Boolean {
         return if (other is User) {
             id == other.id

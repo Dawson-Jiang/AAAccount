@@ -71,9 +71,8 @@ class FamilyMemberActivity : BaseActivity() {
 //修改
             editMemeber(user)
         } else if (item.itemId == 1) {
-            if (!TextUtils.isEmpty(user.token)) {//不能修改注册用户
+            if (!user.isMember) {//不能修改注册用户
                 Toast.makeText(this, "不能修改正式成员信息", Toast.LENGTH_SHORT).show()
-
             } else AlertDialogHelper.showOKCancelAlertDialog(this@FamilyMemberActivity,
                     R.string.del_notice, { _, _ ->
                 familyModel.delMemeber(family!!, family?.members?.get(info.position)!!)
@@ -97,7 +96,7 @@ class FamilyMemberActivity : BaseActivity() {
         if (user == null)
             et_name.hint = "成员名称"
         else {
-            if (!TextUtils.isEmpty(user.token)) {//不能修改注册用户
+            if (!user.isMember) {//不能修改注册用户
                 Toast.makeText(this, "不能修改正式成员信息", Toast.LENGTH_SHORT).show()
                 return
             }
@@ -154,7 +153,7 @@ class FamilyMemberActivity : BaseActivity() {
             val user = family?.members!![position]
             cv?.tvName?.text = user.name
             cv?.tvPhone?.visibility = VISIBLE
-            cv?.tvPhone?.text = if (TextUtils.isEmpty(user.token)) "(临时成员)" else ""
+            cv?.tvPhone?.text = if (user.isMember) "(临时成员)" else ""
             // 异步下载图片
             ImageLoadUtil.loadCircleImage(user.headUrl, cv?.ivHead!!)
 

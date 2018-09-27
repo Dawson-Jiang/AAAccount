@@ -66,7 +66,7 @@ class UserModel : IUserModel {
                     GreenDaoUtil.daoSession?.dbUserDao?.insert(DBUser().withUser(org_user))
                 }
                 .flatMap {
-                    if (it.content!!.name.isNullOrEmpty()) {//第一次登录用户
+                    if (it.content!!.name.isNullOrEmpty()||it.content!!.headUrl.isNullOrEmpty()) {//第一次登录用户
                         qqLogin.getUserInfo()
                                 .observeOn(Schedulers.io())
                                 .flatMap {

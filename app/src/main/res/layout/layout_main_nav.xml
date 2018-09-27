@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F8F8F8"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -44,6 +45,165 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/ll_nav_my_daybook"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/ripple_one_item_bg"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_home"
+            android:tint="@color/text_gray" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:text="我的账单"
+            android:textColor="@color/text_black"
+            android:textSize="15dp" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/line_1"
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="8dp"
+        android:background="@color/line" />
+
+    <LinearLayout
+        android:id="@+id/ll_nav_family_daybook"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/ripple_one_item_bg"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_statis_record" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:text="家庭账单"
+            android:textColor="@color/text_black"
+            android:textSize="15dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_nav_statistic"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/ripple_one_item_bg"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_statis_record" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:text="统        计"
+            android:textColor="@color/text_black"
+            android:textSize="15dp" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/line_2"
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="8dp"
+        android:background="@color/line" />
+
+    <LinearLayout
+        android:id="@+id/ll_nav_settle"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/ripple_one_item_bg"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_settle"
+            android:tint="@color/text_gray" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:text="结        算"
+            android:textColor="@color/text_black"
+            android:textSize="15dp" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/line_3"
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="8dp"
+        android:background="@color/line" />
+
+    <LinearLayout
+        android:id="@+id/ll_nav_settle_history"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/ripple_one_item_bg"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_settle"
+            android:tint="@color/text_gray" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:text="结算历史"
+            android:textColor="@color/text_black"
+            android:textSize="15dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/ll_nav_family"
         android:layout_width="match_parent"
         android:layout_height="48dp"
@@ -72,70 +232,10 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/ll_nav_statistic"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@drawable/ripple_one_item_bg"
-        android:clickable="true"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
-
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/ic_statis_record" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:text="统计"
-            android:textColor="@color/text_black"
-            android:textSize="15dp" />
-
-    </LinearLayout>
-
-    <!--<LinearLayout-->
-        <!--android:id="@+id/ll_nav_settle"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="48dp"-->
-        <!--android:background="@drawable/ripple_one_item_bg"-->
-        <!--android:clickable="true"-->
-        <!--android:gravity="center_vertical"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:paddingLeft="16dp"-->
-        <!--android:paddingRight="16dp">-->
-
-        <!--<ImageView-->
-            <!--android:layout_width="20dp"-->
-            <!--android:layout_height="20dp"-->
-            <!--android:src="@drawable/ic_settle"-->
-            <!--android:tint="@color/text_gray" />-->
-
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginLeft="16dp"-->
-            <!--android:text="结算历史"-->
-            <!--android:textColor="@color/text_black"-->
-            <!--android:textSize="15dp" />-->
-
-    <!--</LinearLayout>-->
-
-    <View
-        android:id="@+id/line"
-        android:layout_width="match_parent"
-        android:layout_height="0.3dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:background="@color/line" />
-
-    <LinearLayout
         android:id="@+id/ll_nav_fb"
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/ripple_one_item_bg"
         android:clickable="true"
         android:gravity="center_vertical"
@@ -146,8 +246,8 @@
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:tint="@color/text_gray"
-            android:src="@drawable/ic_feedback" />
+            android:src="@drawable/ic_feedback"
+            android:tint="@color/text_gray" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -157,6 +257,14 @@
             android:textColor="@color/text_black"
             android:textSize="15dp" />
     </LinearLayout>
+
+    <View
+        android:id="@+id/line_4"
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="8dp"
+        android:background="@color/line" />
 
     <LinearLayout
         android:id="@+id/ll_nav_about"
@@ -184,11 +292,11 @@
 
     </LinearLayout>
 
-
     <LinearLayout
         android:id="@+id/ll_nav_logout"
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/ripple_one_item_bg"
         android:clickable="true"
         android:gravity="center_vertical"
@@ -210,4 +318,5 @@
             android:textSize="15dp" />
 
     </LinearLayout>
+
 </LinearLayout>
