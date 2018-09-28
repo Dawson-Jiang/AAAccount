@@ -25,5 +25,5 @@ interface CommonService {
 
     @Multipart
     @POST("/common/file_upload")
-    fun fileUpload(@Body file: MultipartBody): Observable<OperateResult<List<String>>>
+    fun fileUpload(@Part file: MultipartBody.Part): Observable<OperateResult<String>>
 }

@@ -49,10 +49,10 @@ class FeedBackActivity : BaseActivity() {
             sv_reply.visibility = View.VISIBLE
             tv_time.text = "反馈时间:" + feedback?.createTime?.format("yyyy.MM.dd")
             if (!TextUtils.isEmpty(feedback?.reply)) {
-                tv_reply_t.text = "客户回复: " + feedback?.lastModifiedTime?.format("yyyy.MM.dd")
+                tv_reply_t.text = "客服回复: " + feedback?.lastModifiedTime?.format("yyyy.MM.dd")
                 tv_reply.text = feedback?.reply
             } else {
-                tv_reply_t.text = "客户回复: 未回复"
+                tv_reply_t.text = "客服回复: 未回复"
                 tv_reply.text = ""
             }
         }else  sv_reply.visibility = View.GONE

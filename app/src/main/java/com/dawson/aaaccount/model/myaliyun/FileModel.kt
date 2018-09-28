@@ -12,6 +12,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import okhttp3.MultipartBody
 import com.google.gson.JsonObject
+import okhttp3.MediaType
+import okhttp3.RequestBody
+import java.io.File
 
 
 /**
@@ -35,16 +38,10 @@ class FileModel : IFileModel {
                 .map { tmpFileName ->
                     val fileName = file.substring(file.lastIndexOf("/") + 1)
 
-
-                    val builder = MultipartBody.Builder()
-
-                    val jsonObject = JsonObject()
-                    jsonObject.addProperty("fileName", fileName)
-                    builder.addFormDataPart("params", jsonObject.toString())
-                    builder.setType(MultipartBody.FORM)
-                    builder.build()
+                    val requestFile = RequestBody.create(MediaType.parse("image/jpg"), File(tmpFileName))
+                    MultipartBody.Part.createFormData("file", fileName, requestFile)
                 }.flatMap {
-                    service.fileUpload(it).map {res-> res.cast(res.content?.toTypedArray()) }
+                    service.fileUpload(it).map { res -> res.cast(arrayOf(res.content!!,res.content!!)) }
                 }
                 .observeOn(AndroidSchedulers.mainThread())
     }

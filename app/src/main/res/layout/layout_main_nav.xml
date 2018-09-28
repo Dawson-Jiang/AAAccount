@@ -225,7 +225,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:text="家庭"
+            android:text="家        庭"
             android:textColor="@color/text_black"
             android:textSize="15dp" />
 

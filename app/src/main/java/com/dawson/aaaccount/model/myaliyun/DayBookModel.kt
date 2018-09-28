@@ -20,6 +20,11 @@ class DayBookModel : IDayBookModel {
     private val service = RetrofitHelper.getService(DaybookService::class.java)
 
     override fun save(context: Context, dayBook: DayBook): Observable<OperateResult<DayBook>> {
+        if (dayBook.pictures != null && !dayBook.pictures?.isEmpty()!!) {
+            dayBook.pic1 = dayBook.pictures?.get(0)
+            if (dayBook.pictures?.size!! > 1) dayBook.pic2 = dayBook.pictures?.get(1)
+            if (dayBook.pictures?.size!! > 2) dayBook.pic3 = dayBook.pictures?.get(2)
+        }
         return service.save(dayBook).map {
             if (it.result == ErrorCode.SUCCESS) {
                 dayBook.id = it.content!!
@@ -35,7 +40,17 @@ class DayBookModel : IDayBookModel {
         param["limit"] = limit.toString()
         return if (TextUtils.isEmpty(familyId)) {
             param["uid"] = UserInstance.current_user?.id!!
-            service.getMyDaybook(param).subscribeOn(Schedulers.io())
+            service.getMyDaybook(param).doOnNext {
+                if (it.result == ErrorCode.SUCCESS && it.content != null && !it.content?.isEmpty()!!) {
+                    it.content?.forEach { db ->
+                        db.pictures = mutableListOf()
+                        if (!TextUtils.isEmpty(db.pic1)) db.pictures?.add(db.pic1!!)
+                        if (!TextUtils.isEmpty(db.pic2)) db.pictures?.add(db.pic2!!)
+                        if (!TextUtils.isEmpty(db.pic3)) db.pictures?.add(db.pic3!!)
+
+                    }
+                }
+            }.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
         } else {
             param["fid"] = familyId
@@ -45,7 +60,17 @@ class DayBookModel : IDayBookModel {
     }
 
     override fun getById(id: String): Observable<OperateResult<DayBook>> {
-        return service.get(mutableMapOf(Pair("id", id))).subscribeOn(Schedulers.io())
+        return service.get(mutableMapOf(Pair("id", id)))
+                .doOnNext {
+                    if (it.result == ErrorCode.SUCCESS && it.content != null) {
+                        val db = it.content!!
+                        db.pictures = mutableListOf()
+                        if (!TextUtils.isEmpty(db.pic1)) db.pictures?.add(db.pic1!!)
+                        if (!TextUtils.isEmpty(db.pic2)) db.pictures?.add(db.pic2!!)
+                        if (!TextUtils.isEmpty(db.pic3)) db.pictures?.add(db.pic3!!)
+                    }
+                }
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
