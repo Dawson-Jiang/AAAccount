@@ -31,7 +31,7 @@ fun DayBook.withAVObject(avObject: AVObject): DayBook {
     lastModifiedTime = avObject.updatedAt
     date = avObject.getDate(DataObjectHelper.DAY_BOOK.DATE)
     id = avObject.objectId
-    settled = avObject.getInt(DataObjectHelper.DAY_BOOK.SETTLE)
+//    settled = avObject.getInt(DataObjectHelper.DAY_BOOK.SETTLE)
     money = avObject.getDouble(DataObjectHelper.DAY_BOOK.MONEY)
     val pics = avObject.getString(DataObjectHelper.DAY_BOOK.PICTURES)
     val thum_pics = avObject.getString(DataObjectHelper.DAY_BOOK.THUM_PICTURES)
@@ -119,7 +119,7 @@ fun Settle.SettleDetail.withAVObject(avObject: AVObject): Settle.SettleDetail {
     id = avObject.objectId
     pay = avObject.getDouble(DataObjectHelper.SETTLE_DETAIL.PAY)
     consume = avObject.getDouble(DataObjectHelper.SETTLE_DETAIL.CONSUME)
-    settle = avObject.getDouble(DataObjectHelper.SETTLE_DETAIL.SETTLE)
+    settleMoney = avObject.getDouble(DataObjectHelper.SETTLE_DETAIL.SETTLE)
     agree = avObject.getInt(DataObjectHelper.SETTLE_DETAIL.AGREE)
     val avUser = avObject.getAVObject(DataObjectHelper.SETTLE_DETAIL.USER, AVUser::class.java)
     user = User().withAVUser(avUser)

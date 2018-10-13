@@ -28,16 +28,17 @@ class DaybookAdapter(private val mActivity: Activity, private val mDayBooks: Lis
         return mDayBooks.size
     }
 
-     var is_family=true
+    var is_family = true
 
     override fun onBindViewHolder(holder: DaybookHolder, position: Int) {
         val dbook = mDayBooks[position]
         holder.view.tvMoney.text = dbook.money.toString()
         holder.view.tvType?.text = dbook.category!!.name
 
-        holder.view.tvPayer?.text = if(is_family)dbook.payer!!.name else ""
+        holder.view.tvPayer?.text = if (is_family) dbook.payer!!.name else ""
         holder.view.tvDate?.text = "${dbook.date?.getWeekDay()} - ${dbook.date?.format("yyyy.MM.dd")}"
         holder.view.setOnClickListener { if (clickCallback != null) clickCallback(position) }
+        holder.view.tv_settled.visibility = if (dbook.settle!=null) View.VISIBLE else View.GONE
         // 异步下载图片
         val temp = dbook.thumbPictures
         if (temp != null && !temp.isEmpty()) {
@@ -51,27 +52,6 @@ class DaybookAdapter(private val mActivity: Activity, private val mDayBooks: Lis
                 R.layout.layout_daybook_list_item, parent, false)
         return DaybookHolder(cv)
     }
-
-//    @SuppressLint("NewApi")
-//    override fun getView(index: Int, view: View?, vg: ViewGroup): View {
-//        var cv = view
-//        if (cv == null) {
-//            cv = mActivity.layoutInflater.inflate(
-//                    R.layout.layout_daybook_list_item, vg, false)
-//        }
-//        val dbook = mDayBooks[index]
-//
-//        cv?.tvMoney?.text = dbook.money.toString()
-//        cv?.tvType?.text = dbook.category!!.name
-//        cv?.tvPayer?.text = dbook.payer!!.name
-//        cv?.tvDate?.text = "${dbook.date?.getWeekDay()} - ${dbook.date?.format("yyyy.MM.dd")}"
-//        // 异步下载图片
-//        val temp = dbook.thumbPictures
-//        if (temp != null && !temp.isEmpty()) {
-//            ImageLoadUtil.loadImage(dbook.thumbPictures!![0], cv?.ivPicture!!)
-//        } else cv?.ivPicture!!.setImageBitmap(null)
-//        return cv
-//    }
 }
 
 data class DaybookHolder(val view: View) : RecyclerView.ViewHolder(view) {

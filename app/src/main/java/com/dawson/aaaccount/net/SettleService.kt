@@ -16,6 +16,9 @@ interface SettleService {
     @POST("settle/statistic")
     fun statistic(@Body param: Map<String,String>): Observable<OperateResult<Settle>>
 
+    @POST("settle/statistic_unsettled")
+    fun statisticUnSettled(@Body param: Map<String,String>): Observable<OperateResult<Settle>>
+
     @POST("settle/statistic_mine")
     fun statisticMine(@Body param: Map<String,String>): Observable<OperateResult<Settle>>
 }

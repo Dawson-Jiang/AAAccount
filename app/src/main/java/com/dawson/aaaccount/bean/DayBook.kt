@@ -51,9 +51,9 @@ open class DayBook : BaseEntity() {
     var thumbPictures: MutableList<String>? = null
 
     /**
-     * 是否结算 0未结算 1已经结算
+     * 是否结算 null未结算
      */
-    var settled: Int = 0
+    var settle: Settle ?=null
 
     var pic1:String?=null
     var pic2:String?=null

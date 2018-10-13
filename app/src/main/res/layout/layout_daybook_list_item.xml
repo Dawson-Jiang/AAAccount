@@ -8,12 +8,28 @@
     android:paddingStart="20dip"
     android:paddingTop="10dip">
 
-    <ImageView
-        android:id="@+id/ivPicture"
-        android:layout_width="60dip"
-        android:layout_height="60dip"
-        android:background="@drawable/no_image"
-        android:scaleType="centerCrop" />
+    <RelativeLayout
+        android:layout_width="60dp"
+        android:layout_height="60dp">
+
+        <ImageView
+            android:id="@+id/ivPicture"
+            android:layout_width="60dip"
+            android:layout_height="60dip"
+            android:background="@drawable/no_image"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/tv_settled"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            android:text="结"
+            android:textColor="@color/colorPrimary"
+            android:background="#55EBEBEB"
+            android:textSize="12dp" />
+    </RelativeLayout>
+
 
     <LinearLayout
         android:id="@+id/rlRight"

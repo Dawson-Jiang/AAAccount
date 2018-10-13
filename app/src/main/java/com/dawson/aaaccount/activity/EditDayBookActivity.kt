@@ -67,6 +67,7 @@ class EditDayBookActivity : BaseActivity() {
 
     private var daybookId: String = ""
     private var isModify: Boolean = false
+    private var isSettled: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -100,6 +101,8 @@ class EditDayBookActivity : BaseActivity() {
     }
 
     private fun initDayBook(editDayBook: DayBook) {
+        isSettled = editDayBook.settle != null
+        tv_settled.visibility = if (isSettled) View.VISIBLE else View.GONE
         et_money.setText(editDayBook.money.toString(), TextView.BufferType.NORMAL)
         if (family != null) {
             val stringBuilder = StringBuilder()
@@ -355,6 +358,11 @@ class EditDayBookActivity : BaseActivity() {
      * 保存
      */
     fun save() {
+        if (isModify && isSettled) {
+            Toast.makeText(this, "已结算账单不能修改", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         if (et_money.text.toString() == "") {
             Toast.makeText(this, "消费金额不能为空", Toast.LENGTH_SHORT).show()
             return
@@ -391,7 +399,6 @@ class EditDayBookActivity : BaseActivity() {
             daybook.thumbPictures?.addAll(thumPic.filterNotNull())
         }
 
-        daybook.settled = 0
         daybook.date = selectedDate// 消费日期
         daybook.description = et_remark.text.toString()
         mProgressDialog = AlertDialogHelper.showWaitProgressDialog(this,

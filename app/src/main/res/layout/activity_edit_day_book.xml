@@ -69,8 +69,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="16dp"
-                    android:gravity="right"
                     android:enabled="false"
+                    android:gravity="right"
                     android:hint="@string/edit_daybook_family_hint" />
 
                 <ImageView
@@ -267,6 +267,16 @@
                 android:layout_height="@dimen/line_hight"
                 android:layout_marginTop="10dip"
                 android:background="@color/line" />
+
+            <TextView
+                android:id="@+id/tv_settled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="已结算"
+                android:textColor="@color/colorPrimary"
+                android:visibility="gone"
+                android:textSize="12dp" />
 
             <!--图片-->
             <LinearLayout

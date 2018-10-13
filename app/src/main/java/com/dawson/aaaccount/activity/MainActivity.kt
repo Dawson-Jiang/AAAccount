@@ -83,7 +83,7 @@ class MainActivity : FragmentActivity() {
 
         nav_view.getHeaderView(0).ll_nav_settle.setOnClickListener { _ ->
             goto {
-                startActivity(Intent(this, StatisticsActivity::class.java))
+                startActivity(Intent(this, SettleActivity::class.java))
             }
         }
 

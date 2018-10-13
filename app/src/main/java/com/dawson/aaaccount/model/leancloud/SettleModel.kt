@@ -35,7 +35,7 @@ class SettleModel : ISettleModel {
                 avDetail.put(DataObjectHelper.SETTLE_DETAIL.AGREE, 1)
                 avDetail.put(DataObjectHelper.SETTLE_DETAIL.CONSUME, detail.consume)
                 avDetail.put(DataObjectHelper.SETTLE_DETAIL.PAY, detail.pay)
-                avDetail.put(DataObjectHelper.SETTLE_DETAIL.SETTLE, detail.settle)
+                avDetail.put(DataObjectHelper.SETTLE_DETAIL.SETTLE, detail.settleMoney)
                 avDetail.put(DataObjectHelper.SETTLE_DETAIL.USER, AVUser.getCurrentUser())
                 avDetails.add(avDetail)
             }
@@ -165,7 +165,7 @@ class SettleModel : ISettleModel {
                     DAY_BOOKS = daybooks
                     // 结算金额
                     settleDetails.forEach {
-                        it.settle = it.pay - it.consume
+                        it.settleMoney = it.pay - it.consume
                     }
                     settle.settleDetails = settleDetails
                     OperateResult(settle)
