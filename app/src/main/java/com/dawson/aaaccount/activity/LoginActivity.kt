@@ -20,6 +20,7 @@ import com.dawson.aaaccount.util.DLog
 import com.dawson.aaaccount.util.ErrorCode
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -37,15 +38,9 @@ class LoginActivity : Activity() {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_login)
 
-        iv_phone.setOnClickListener {
-            ll_phone_login.visibility = View.VISIBLE
-            ll_qq_login.visibility = View.GONE
-        }
-
         btn_login.setOnClickListener { loginByPhone() }
         btn_send_vercode.setOnClickListener { sendCode() }
         iv_qq.setOnClickListener { loginByQQ() }
-        iv_qq_2.setOnClickListener { loginByQQ() }
     }
 
     /**
@@ -59,22 +54,23 @@ class LoginActivity : Activity() {
             return
         }
         btn_send_vercode.isEnabled = false
-        userModel.checkRegUser(this@LoginActivity.applicationContext, phone)
+//        val dis = userModel.checkRegUser(this@LoginActivity.applicationContext, phone)
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .filter { result ->
+//                    if (result.result == ErrorCode.SUCCESS && result.content!!) return@filter true
+//                    else {
+//                        Toast.makeText(this@LoginActivity, "未注册用户请使用QQ登录", Toast.LENGTH_SHORT).show()
+//                        return@filter false
+//                    }
+//                }
+//                .observeOn(Schedulers.io())
+//                .flatMap<OperateResult<Any>> {
+//                    userModel.sendLoginVerify(this@LoginActivity.applicationContext, phone)
+//                }
+        val dis =   userModel.sendLoginVerify(this@LoginActivity.applicationContext, phone)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .filter { result ->
-                    if (result.result == ErrorCode.SUCCESS && result.content!!) return@filter true
-                    else {
-                        Toast.makeText(this@LoginActivity, "未注册用户请使用QQ登录", Toast.LENGTH_SHORT).show()
-                        return@filter false
-                    }
-                }
-                .observeOn(Schedulers.io())
-                .flatMap<OperateResult<Any>> {
-                    userModel.sendLoginVerify(this@LoginActivity.applicationContext, phone)
-//                    Observable.just(OperateResult())
-                }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe( { result ->
+                .subscribe({ result ->
                     if (result.result == ErrorCode.SUCCESS) {
                         btn_send_vercode.isEnabled = false
                         btn_send_vercode.text = "发送成功"
@@ -82,7 +78,7 @@ class LoginActivity : Activity() {
                         btn_send_vercode.isEnabled = true
                         Toast.makeText(this@LoginActivity, "验证码发送失败", Toast.LENGTH_SHORT).show()
                     }
-                } ,{ ex ->
+                }, { ex ->
                     ex.printStackTrace()
                     btn_send_vercode.isEnabled = true
                     Toast.makeText(this@LoginActivity, "验证码发送失败", Toast.LENGTH_SHORT).show()
@@ -106,18 +102,18 @@ class LoginActivity : Activity() {
         mProgressDialog = AlertDialogHelper.showWaitProgressDialog(
                 this@LoginActivity, R.string.handling)
 
-        userModel.loginByPhoneVerify(applicationContext, phone, verifyCode)
+        var dis = userModel.loginByPhoneVerify(applicationContext, phone, verifyCode)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ _ ->
                     cancelDialog()
                     userModel.initUser(this@LoginActivity.applicationContext).subscribeOn(Schedulers.newThread())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe ({ _ ->
+                            .subscribe({ _ ->
                                 val intent = Intent()
                                 intent.setClass(this@LoginActivity, MainActivity::class.java)
                                 startActivity(intent)
                                 finish()
-                            },{ it.printStackTrace() })
+                            }, { it.printStackTrace() })
                     Toast.makeText(this@LoginActivity, "登录成功", Toast.LENGTH_SHORT).show()
                 }, { e ->
                     cancelDialog()
@@ -128,7 +124,7 @@ class LoginActivity : Activity() {
     private fun loginByQQ() {
         mProgressDialog = AlertDialogHelper.showWaitProgressDialog(
                 this@LoginActivity, R.string.handling)
-        userModel.loginByQQ(this)
+        var dis = userModel.loginByQQ(this)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ _ ->
                     cancelDialog()
