@@ -104,7 +104,7 @@
         <activity android:name=".activity.SettleListActivity" />
         <activity android:name=".activity.FamilyMemberActivity" />
         <activity android:name=".activity.StatisticsActivity" />
-        <activity android:name=".activity.FeedBackActivity"></activity>
+        <activity android:name=".activity.FeedBackActivity" />
     </application>
 
 </manifest>

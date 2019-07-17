@@ -102,6 +102,7 @@
     <string name="login_txt_qqlogin">QQ登录</string>
 
     <string name="del_notice">确定删除?</string>
-    <string name="settle_notice">统计数据包含已结算数据，无法结算\r\n请在筛选页'包含结算数据'项选择'否'</string>
+    <!--<string name="settle_notice">统计数据包含已结算数据，无法结算\r\n请在筛选页'包含结算数据'项选择'否'</string>-->
+    <string name="settle_notice">统计数据包含已结算数据，无法结算</string>
     <string name="settle_notice2"> 请先点击右上角同步按钮同步数据再结算</string>
 </resources>
