@@ -3,9 +3,8 @@ package com.dawson.aaaccount.util
 
 import android.util.Log
 import com.dawson.aaaccount.AAAccountApplication
-import com.dawson.aaaccount.dao.GreenDaoUtil
+import com.dawson.aaaccount.dao.utils.GreenDaoUtil
 import com.dawson.aaaccount.dao.bean.DBSystemLog
-import java.text.SimpleDateFormat
 import java.util.*
 
 /**

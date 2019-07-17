@@ -11,6 +11,7 @@ import com.dawson.aaaccount.bean.User
 import com.dawson.aaaccount.bean.result.OperateResult
 import com.dawson.aaaccount.dao.*
 import com.dawson.aaaccount.dao.bean.*
+import com.dawson.aaaccount.dao.utils.GreenDaoUtil
 import com.dawson.aaaccount.model.ISettleModel
 import com.dawson.aaaccount.model.leancloud.bean.*
 import com.dawson.aaaccount.util.ErrorCode

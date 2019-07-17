@@ -1,7 +1,9 @@
-package com.dawson.aaaccount.dao
+package com.dawson.aaaccount.dao.utils
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
+import com.dawson.aaaccount.dao.DaoMaster
+import com.dawson.aaaccount.dao.DaoSession
 
 /**
  * 数据库Dao

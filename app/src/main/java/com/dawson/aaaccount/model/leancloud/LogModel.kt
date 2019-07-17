@@ -4,7 +4,7 @@ import android.content.Context
 import com.avos.avoscloud.AVObject
 import com.avos.avoscloud.AVUser
 import com.dawson.aaaccount.dao.DBSystemLogDao
-import com.dawson.aaaccount.dao.GreenDaoUtil
+import com.dawson.aaaccount.dao.utils.GreenDaoUtil
 import com.dawson.aaaccount.dao.bean.DBSystemLog
 import com.dawson.aaaccount.model.ILogModel
 import com.dawson.aaaccount.util.PhoneHelper

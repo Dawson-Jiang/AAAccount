@@ -2,7 +2,7 @@ package com.dawson.aaaccount
 
 import android.support.multidex.MultiDexApplication
 import com.avos.avoscloud.AVOSCloud
-import com.dawson.aaaccount.dao.GreenDaoUtil
+import com.dawson.aaaccount.dao.utils.GreenDaoUtil
 import com.dawson.aaaccount.model.leancloud.LogModel
 import com.dawson.aaaccount.util.DLog
 
