@@ -2,9 +2,13 @@ package com.dawson.aaaccount
 
 import android.support.multidex.MultiDexApplication
 import com.avos.avoscloud.AVOSCloud
+import com.avos.avoscloud.AVUser
 import com.dawson.aaaccount.dao.utils.GreenDaoUtil
+import com.dawson.aaaccount.model.leancloud.DataObjectHelper
 import com.dawson.aaaccount.model.leancloud.LogModel
+import com.dawson.aaaccount.model.leancloud.UserInstance
 import com.dawson.aaaccount.util.DLog
+import com.tencent.bugly.crashreport.CrashReport
 
 //import com.facebook.stetho.Stetho
 
@@ -12,7 +16,7 @@ import com.dawson.aaaccount.util.DLog
  * 自定义Application
  * Created by dawson on 2016/4/19.
  */
-class AAAccountApplication :  MultiDexApplication() {
+class AAAccountApplication : MultiDexApplication() {
 
     private var uncaughtExceptionHandler: Thread.UncaughtExceptionHandler = Thread.UncaughtExceptionHandler { _, e -> DLog.error("uncaughtException", e) }
 
@@ -33,6 +37,13 @@ class AAAccountApplication :  MultiDexApplication() {
         //上传日志
         if (!DEBUG)
             LogModel().uploadLog(aplication.applicationContext)
+        initBugly()
+    }
+
+    private fun initBugly() {
+        CrashReport.initCrashReport(applicationContext, "98b657e815", DEBUG)
+        CrashReport.setUserId(if (UserInstance.current_user != null) AVUser.getCurrentUser().objectId
+        else "default")
     }
 
     companion object {
