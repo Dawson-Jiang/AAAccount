@@ -2,6 +2,7 @@ package com.dawson.aaaccount.model.leancloud
 
 import com.avos.avoscloud.AVObject
 import com.avos.avoscloud.AVUser
+import com.dawson.aaaccount.bean.Feedback
 import com.dawson.aaaccount.bean.result.OperateResult
 import com.dawson.aaaccount.model.IFeedBackModel
 import com.dawson.aaaccount.util.PhoneHelper
@@ -25,5 +26,9 @@ class FeedBackModel : IFeedBackModel {
             it.onNext(OperateResult(""))
             it.onComplete()
         }.subscribeOn(Schedulers.io())
+    }
+
+    override fun getMyFeedback(): Observable<OperateResult<List<Feedback>>> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
