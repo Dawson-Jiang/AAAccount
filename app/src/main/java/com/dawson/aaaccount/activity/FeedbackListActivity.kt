@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
@@ -52,7 +53,7 @@ class FeedbackListActivity : BaseActivity() {
 
         initComponent()
         lv_feedback.adapter = feedbackAdapter
-        // 初始化家庭
+        // 初始化反馈
         initFeedback()
     }
 
@@ -67,15 +68,19 @@ class FeedbackListActivity : BaseActivity() {
             intent.setClass(this@FeedbackListActivity, FeedBackActivity::class.java)
             startActivity(intent)
         }
+
+        main_floatbtn.setOnClickListener { _ ->
+            startActivityForResult(Intent(this, FeedBackActivity::class.java), OperateCode.ADD)
+        }
+
     }
 
     override fun initCommonTitle() {
         super.initCommonTitle()
         title = "我的反馈"
-
-        enableOperate("添加") {
-            startActivityForResult(Intent(this, FeedBackActivity::class.java), OperateCode.ADD)
-        }
+//        enableOperate("添加") {
+//            startActivityForResult(Intent(this, FeedBackActivity::class.java), OperateCode.ADD)
+//        }
     }
 
     private fun initFeedback() {

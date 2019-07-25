@@ -95,6 +95,7 @@ object DataObjectHelper {
         val TITLE = "title"
         val CONTENT = "content"
         val PHONE = "phone"
+        val REPLY = "reply"
     }
 
     object SYSTEM_LOG {

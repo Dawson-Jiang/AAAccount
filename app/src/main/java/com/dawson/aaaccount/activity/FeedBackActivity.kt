@@ -12,7 +12,8 @@ import com.dawson.aaaccount.bean.result.OperateResult
 import com.dawson.aaaccount.model.leancloud.FeedBackModel
 import com.dawson.aaaccount.util.*
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.activity_feed_back.* 
+import kotlinx.android.synthetic.main.activity_feed_back.*
+import kotlinx.android.synthetic.main.common_title.*
 
 class FeedBackActivity : BaseActivity() {
     private val fbModel = FeedBackModel()
@@ -31,8 +32,14 @@ class FeedBackActivity : BaseActivity() {
         title = if (feedback == null) "问题反馈" else "我的反馈"
 
         if (feedback == null)
-            enableOperate("提交") {
-                add()
+//            enableOperate("提交") {
+//                add()
+//            }
+            nav_toolbar.setOnMenuItemClickListener {
+                if (it.itemId == R.id.action_save) {
+                    add()
+                }
+                true
             }
     }
 
@@ -55,11 +62,11 @@ class FeedBackActivity : BaseActivity() {
                 tv_reply_t.text = "客服回复: 未回复"
                 tv_reply.text = ""
             }
-        }else  sv_reply.visibility = View.GONE
+        } else sv_reply.visibility = View.GONE
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.ok_sure, menu)
+        menuInflater.inflate(R.menu.save, menu)
         menu?.getItem(0)?.title = "提交"
         return super.onCreateOptionsMenu(menu)
     }
