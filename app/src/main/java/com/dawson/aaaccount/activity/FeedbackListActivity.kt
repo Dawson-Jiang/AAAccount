@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.Menu
+import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
@@ -12,13 +13,14 @@ import com.dawson.aaaccount.R
 import com.dawson.aaaccount.bean.Feedback
 import com.dawson.aaaccount.bean.result.OperateResult
 import com.dawson.aaaccount.model.leancloud.FeedBackModel
+import com.dawson.aaaccount.model.BaseModelFactory
 import com.dawson.aaaccount.util.*
 import kotlinx.android.synthetic.main.activity_feedback_list.*
 import kotlinx.android.synthetic.main.layout_feedback_list_item.view.*
 
 class FeedbackListActivity : BaseActivity() {
 
-    private val feedBackModel = FeedBackModel()
+    private val feedBackModel = BaseModelFactory.factory.createFeedBackModel()
     internal val feedbacks = mutableListOf<Feedback>()
 
     private val feedbackAdapter = object : BaseAdapter() {

@@ -12,6 +12,10 @@ fun Date.format(format: String): String {
     return sdf.format(this)
 }
 
+fun Date.format(): String {
+    return format("yyyy.MM.dd HH:mm:ss")
+}
+
 
 fun Date.getWeekDay(): String {
     val weekDays = arrayOf("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六")

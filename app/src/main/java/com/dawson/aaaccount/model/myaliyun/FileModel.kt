@@ -1,0 +1,69 @@
+package com.dawson.aaaccount.model.myaliyun
+
+import android.content.Context
+import com.dawson.aaaccount.bean.result.OperateResult
+import com.dawson.aaaccount.util.Common
+import com.dawson.aaaccount.model.IFileModel
+import com.dawson.aaaccount.net.CommonService
+import com.dawson.aaaccount.net.RetrofitHelper
+import com.dawson.aaaccount.util.BitmapHelper
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import okhttp3.MultipartBody
+import com.google.gson.JsonObject
+import okhttp3.MediaType
+import okhttp3.RequestBody
+import java.io.File
+
+
+/**
+ * 上传文件操作
+ * Created by Administrator on 2017/5/25.
+ */
+
+class FileModel : IFileModel {
+
+    private val service = RetrofitHelper.getService(CommonService::class.java)
+
+    override fun uploadFile(context: Context, file: String, progressCallback: (progress: Int) -> Unit): Observable<OperateResult<Array<String>>> {
+        return Observable.create<String> { e ->
+            var tmpFileName = file
+            if (file.endsWith(".jpg") || file.endsWith(".png"))
+                tmpFileName = BitmapHelper.compressImageTwo(file)
+            e.onNext(tmpFileName)
+        }
+                .subscribeOn(Schedulers.computation())
+                .observeOn(Schedulers.io())
+                .map { tmpFileName ->
+                    val fileName = file.substring(file.lastIndexOf("/") + 1)
+
+                    val requestFile = RequestBody.create(MediaType.parse("image/jpg"), File(tmpFileName))
+                    MultipartBody.Part.createFormData("file", fileName, requestFile)
+                }.flatMap {
+                    service.fileUpload(it).map { res -> res.cast(arrayOf(res.content!!,res.content!!)) }
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun uploadFile(context: Context, files: MutableList<String>, progressCallback: (file: String, progress: Int) -> Unit):
+            Observable<OperateResult<Map<String, Array<String>>>> {
+        val obss = mutableListOf<Observable<OperateResult<Array<String>>>>()
+        files.forEach {
+            obss.add(uploadFile(context, it) { progress -> progressCallback(it, progress) })
+        }
+        return Observable.zipIterable<OperateResult<Array<String>>, OperateResult<Map<String, Array<String>>>>(obss, {
+            val resMap = mutableMapOf<String, Array<String>>()
+//            val orgRes = it as Array<OperateResult<Array<String>>>
+            it.forEachIndexed { i, or ->
+                val r = or as OperateResult<Array<String>>
+                resMap.put(files[i], r.content!!)
+            }
+            OperateResult(resMap.toMap())
+        }, false, 1024).subscribeOn(Schedulers.io())
+    }
+
+    override fun downloadFile(url: String, progressCallback: (progress: Int) -> Unit): Observable<OperateResult<String>> {
+        return Observable.just(OperateResult(""))
+    }
+}

@@ -5,6 +5,7 @@ import com.avos.avoscloud.AVQuery
 import com.avos.avoscloud.AVUser
 import com.dawson.aaaccount.bean.DayBook
 import com.dawson.aaaccount.bean.Feedback
+import com.dawson.aaaccount.bean.Feedback
 import com.dawson.aaaccount.bean.result.OperateResult
 import com.dawson.aaaccount.model.IFeedBackModel
 import com.dawson.aaaccount.util.PhoneHelper
@@ -19,6 +20,10 @@ import java.util.ArrayList
  */
 
 class FeedBackModel : IFeedBackModel {
+    override fun getMyFeedback(): Observable<OperateResult<List<Feedback>>> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun add(title: String, content: String): Observable<OperateResult<Any>> {
         return Observable.create<OperateResult<Any>> {
             val avFeedback = AVObject(DataObjectHelper.FEED_BACK.CLASS_NAME)

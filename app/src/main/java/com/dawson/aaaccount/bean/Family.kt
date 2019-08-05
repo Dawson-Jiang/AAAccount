@@ -1,5 +1,7 @@
 package com.dawson.aaaccount.bean
 
+import com.google.gson.annotations.SerializedName
+
 open class Family : BaseEntity() {
     var number: Int = 0
 
@@ -7,6 +9,7 @@ open class Family : BaseEntity() {
     /**
      * 家庭成员
      */
+    @SerializedName("member")
     var members: MutableList<User>? = null
     /**
      * 头像url

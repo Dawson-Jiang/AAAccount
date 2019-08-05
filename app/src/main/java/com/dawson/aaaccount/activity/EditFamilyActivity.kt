@@ -4,33 +4,28 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.Menu
 import android.view.View
 import android.widget.Toast
 import com.dawson.aaaccount.R
 import com.dawson.aaaccount.bean.Family
 import com.dawson.aaaccount.bean.result.OperateResult
-import com.dawson.aaaccount.util.Common
-import com.dawson.aaaccount.model.leancloud.FamilyModel
-import com.dawson.aaaccount.model.leancloud.FileModel
+import com.dawson.aaaccount.model.BaseModelFactory
 import com.dawson.aaaccount.model.leancloud.UserModel
 import com.dawson.aaaccount.util.*
 import com.dawson.qrlibrary.CaptureActivity
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_edit_family.*
-import kotlinx.android.synthetic.main.common_title.*
 
 class EditFamilyActivity : BaseActivity() {
     private var operateFlag = OperateCode.ADD// 操作标记 * 创建  * 修改 * 查看、加入
-    private var family_index = 0
     private var editFamily: Family? = null
 
     private var photoChoose: PhotoChoose = PhotoChoose(this)
     private var realPath: String? = ""//添加时选择头像使用
 
-    private val familyModel = FamilyModel()
-    private val fileModel = FileModel()
+    private val familyModel = BaseModelFactory.factory.createFamilyModel()
+    private val fileModel = BaseModelFactory.factory.createFileModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,14 +34,14 @@ class EditFamilyActivity : BaseActivity() {
         setContentView(R.layout.activity_edit_family)
         initComponent()
         if (operateFlag == OperateCode.MODIFIED) {
-            family_index = intent.getIntExtra("family_index", -1)
-            editFamily = CommonCach.families[family_index]
-            if (editFamily?.isTemp!!) tvQRCode.visibility = View.GONE
-            showFamily()
-        } else if (operateFlag == OperateCode.JOIN) {//直接进入扫码页面
-            val intent2 = Intent(this@EditFamilyActivity,
-                    ScanCodeActivity::class.java)
-            startActivityForResult(intent2, OperateCode.SCAN_CODE)
+            val fid = intent.getStringExtra("family_id")
+            familyModel.getFamilyById(applicationContext, fid)
+                    .subscribe {
+                        if (it.result == ErrorCode.SUCCESS) {
+                            editFamily = it.content
+                            showFamily()
+                        }
+                    }
         }
     }
 
@@ -62,18 +57,20 @@ class EditFamilyActivity : BaseActivity() {
                         this, R.string.handling)
                 //到服务器获取家庭信息
                 familyModel.getFamilyById(applicationContext, id)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe( { result ->
+                        .subscribe({ result ->
+                            operateFlag = OperateCode.JOIN
+                            etName.isEnabled = false
                             cancelDialog()
                             editFamily = result.content
+                            title = "加入家庭"
+                            enableOperate("加入") { joinFamily() }
+                            ivHead.setOnClickListener {}
                             showFamily()
-                        },{ ex ->
+                        }, { ex ->
                             Toast.makeText(this, "获取家庭信息失败", Toast.LENGTH_SHORT).show()
                             finish()
                             DLog.error("edfamily_getFamilyById", ex)
                         })
-            } else {
-                finish()
             }
         } else if (requestCode == OperateCode.CAPTURE ||
                 requestCode == OperateCode.SELECT_PICTURE) {
@@ -98,53 +95,46 @@ class EditFamilyActivity : BaseActivity() {
             OperateCode.ADD -> {// 创建家庭
                 title = "创建家庭"
             }
-            OperateCode.JOIN -> {// 加入家庭
-                title = "加入家庭"
-            }
             OperateCode.MODIFIED -> {
                 title = "修改家庭"
             }
         }
-
-        nav_toolbar.setOnMenuItemClickListener {
-            if (it.itemId == R.id.action_save) {
-                when (operateFlag) {
-                    OperateCode.ADD -> saveFamily()
-                    OperateCode.MODIFIED -> saveFamily()
-                    OperateCode.JOIN -> joinFamily()
-                }
+        enableOperate("保存") {
+            when (operateFlag) {
+                OperateCode.ADD -> saveFamily()
+                OperateCode.MODIFIED -> saveFamily()
             }
-            true
         }
     }
 
     private fun initComponent() {
         initCommonTitle()
         tvQRCode.setOnClickListener {
-            val intent = Intent(this, FamilyQRCodeActivity::class.java)
-            intent.putExtra("family", editFamily)
-            startActivity(intent)
+            if (operateFlag == OperateCode.MODIFIED) {
+                val intent = Intent(this, FamilyQRCodeActivity::class.java)
+                intent.putExtra("family", editFamily)
+                startActivity(intent)
+            } else {
+                val intent2 = Intent(this@EditFamilyActivity,
+                        ScanCodeActivity::class.java)
+                startActivityForResult(intent2, OperateCode.SCAN_CODE)
+            }
         }
         tvMember.setOnClickListener {
             val intent = Intent(this, FamilyMemberActivity::class.java)
-            intent.putExtra("family_index", family_index)
+            intent.putExtra("family", editFamily)
             startActivityForResult(intent, 34)
         }
 
         when (operateFlag) {
             OperateCode.ADD -> {// 创建家庭
-                tvQRCode.visibility = View.GONE
+                tvQRCode.text = "扫码加入 >"
                 layoutMember.visibility = View.GONE
                 line4.visibility = View.GONE
                 ivHead.setOnClickListener { _ -> photoChoose.start() }
             }
-            OperateCode.JOIN -> {// 加入家庭
-                etName.isEnabled = false
-                tvQRCode.visibility = View.GONE
-            }
+
             OperateCode.MODIFIED -> {
-                title = "修改家庭"
-                tvQRCode.visibility = View.VISIBLE
                 ivHead.setOnClickListener { _ -> photoChoose.start() }
             }
         }
@@ -159,32 +149,19 @@ class EditFamilyActivity : BaseActivity() {
         ImageLoadUtil.loadCircleImage(editFamily?.headThumbUrl, ivHead)
         etName.setText(editFamily?.name)
         tvMember.text = "${editFamily?.members?.size}人"
-        if (editFamily?.isTemp!!) rgTemp.check(R.id.rbTempYes)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.save, menu)
-        if (operateFlag == OperateCode.JOIN)
-            nav_toolbar.menu?.getItem(0)?.title = "加入"
-        return true
     }
 
     /**
      * 加入家庭
      */
     private fun joinFamily() {
-        if (editFamily?.isTemp!!) {
-            Toast.makeText(this, "临时家庭不支持加入", Toast.LENGTH_SHORT).show()
-            return
-        }
-
         mProgressDialog = AlertDialogHelper.showWaitProgressDialog(
                 this@EditFamilyActivity, R.string.handling)
         familyModel.join(editFamily!!).observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ _ ->
                     cancelDialog()
                     editFamily?.members?.add(UserModel().currentUser!!)
-                    CommonCach.families.add(editFamily!!)
+                    CommonLruCach.families.clear()
                     Toast.makeText(this, R.string.operate_success, Toast.LENGTH_SHORT).show()
                     setResult(RESULT_OK)
                     finish()
@@ -204,7 +181,6 @@ class EditFamilyActivity : BaseActivity() {
         }
         val familyTemp = Family()
         familyTemp.name = name
-        familyTemp.isTemp = rgTemp.checkedRadioButtonId == R.id.rbTempYes
         if (operateFlag == OperateCode.MODIFIED)
             familyTemp.id = editFamily!!.id
         mProgressDialog = AlertDialogHelper.showWaitProgressDialog(
@@ -227,6 +203,7 @@ class EditFamilyActivity : BaseActivity() {
         obs.observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     cancelDialog()
+                    CommonLruCach.families.clear()
                     Toast.makeText(this, R.string.operate_success, Toast.LENGTH_SHORT).show()
                     setResult(RESULT_OK)
                     finish()

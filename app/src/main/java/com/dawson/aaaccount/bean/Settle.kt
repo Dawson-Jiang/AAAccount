@@ -1,5 +1,6 @@
 package com.dawson.aaaccount.bean
 
+import com.google.gson.annotations.SerializedName
 import java.util.Date
 
 /**
@@ -28,6 +29,7 @@ open class Settle : BaseEntity() {
      * 所属家庭
      */
     var family: Family? = null
+    @SerializedName("details")
     var settleDetails: MutableList<SettleDetail>? = null
     /**
      * 结算状态 0未结算 1已经结算 2结算中
@@ -53,10 +55,12 @@ open class Settle : BaseEntity() {
         /**
          * 结算金额 正数表示应收金额 负数表示应付金额
          */
-        var settle: Double = 0.toDouble()
+         var settleMoney: Double = 0.toDouble()
         /**
          * 是否同意 0不同意 1同意 2等待同意
          */
         var agree: Int = 0
+
+        var settle:Settle?=null
     }
 }

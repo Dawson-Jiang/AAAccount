@@ -8,29 +8,6 @@
 
     <include layout="@layout/common_title" />
 
-    <RelativeLayout
-        android:id="@+id/layoutSettleList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/btn_press_background"
-        android:padding="8dip">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="历史结算记录"
-            android:textColor="@color/text_white" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/right_arrow"
-            android:tint="@color/text_white" />
-    </RelativeLayout>
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -46,13 +23,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="起止日期" />
+                android:text="日        期" />
 
             <TextView
                 android:id="@+id/tvTimeInterval"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dip" />
+                android:layout_marginLeft="16dip"
+                android:text="-"/>
         </LinearLayout>
 
         <!--结算日期-->
@@ -87,7 +65,7 @@
                 android:id="@+id/tvMoneyLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="总金额" />
+                android:text="总  金  额" />
 
             <TextView
                 android:id="@+id/tvSettleMoney"
@@ -96,7 +74,13 @@
                 android:layout_marginLeft="32dp"
                 android:text="0.00" />
         </LinearLayout>
-
+        <!--<TextView-->
+            <!--android:id="@+id/tv_daybook"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+           <!--android:layout_gravity="right"-->
+            <!--android:textColor="@color/colorPrimary"-->
+            <!--android:text="账单详情>" />-->
         <View
             android:id="@+id/line"
             android:layout_width="match_parent"
@@ -120,17 +104,8 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="8dp"
             android:layout_weight="1"
-            android:text="暂无需结算数据"
+            android:text="无需要结算的账单"
             android:visibility="gone" />
-
-        <Button
-            android:id="@+id/btn_settle"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/button_hight"
-            android:layout_margin="8dp"
-            android:background="@drawable/button_selector"
-            android:text="结    算"
-            android:textColor="@color/text_white" />
     </LinearLayout>
 
 </LinearLayout>

@@ -1,4 +1,5 @@
 package com.dawson.aaaccount.activity
+import android.content.Intent
 import android.os.Bundle
 import com.dawson.aaaccount.BuildConfig
 import com.dawson.aaaccount.R
@@ -23,6 +24,11 @@ class AboutActivity : BaseActivity() {
         title = "关于AA账单"
         tv_version.text = version
 
-        ShareUtil.shareQQContact(this, tv_contact_qq)
+        tv_contact_qq.setOnClickListener {
+            startActivity(Intent(this@AboutActivity,FeedbackListActivity::class.java))
+            finish()
+        }
+
+//        ShareUtil.shareQQContact(this, tv_contact_qq)
     }
 }

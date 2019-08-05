@@ -10,6 +10,7 @@ import android.widget.TextView
 
 import com.dawson.aaaccount.R
 import kotlinx.android.synthetic.main.dialog_choose_photo.view.*
+import kotlinx.android.synthetic.main.dialog_loading.view.*
 
 object AlertDialogHelper {
     /**
@@ -92,7 +93,7 @@ object AlertDialogHelper {
         val progressDialog = Dialog(context, android.R.style.Theme_Holo_Light_Dialog_NoActionBar)
         val inflater = LayoutInflater.from(context)
         val v = inflater.inflate(R.layout.dialog_loading, null)
-        (v.findViewById(R.id.tipTextView) as TextView).setText(messageId)
+        v.tipTextView.setText(messageId)
         progressDialog.setContentView(v)
         progressDialog.setCancelable(false)
         progressDialog.show()

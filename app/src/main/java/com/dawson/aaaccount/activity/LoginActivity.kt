@@ -1,32 +1,32 @@
 package com.dawson.aaaccount.activity
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.Window
 import android.widget.Toast
-import com.avos.sns.SNS
-import com.avos.sns.SNSException
-import com.avos.sns.SNSType
 import com.dawson.aaaccount.R
 import com.dawson.aaaccount.bean.result.OperateResult
-import com.dawson.aaaccount.util.Common
+import com.dawson.aaaccount.exception.QQLoginException
+import com.dawson.aaaccount.model.BaseModelFactory
 import com.dawson.aaaccount.model.IUserModel
-import com.dawson.aaaccount.model.leancloud.UserModel
 import com.dawson.aaaccount.util.AlertDialogHelper
+import com.dawson.aaaccount.util.Common
 import com.dawson.aaaccount.util.DLog
 import com.dawson.aaaccount.util.ErrorCode
-import io.reactivex.Observable
+import com.tencent.tauth.Tencent
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_login.*
+import java.net.SocketTimeoutException
 
 class LoginActivity : Activity() {
     private var mProgressDialog: Dialog? = null
-    private val userModel: IUserModel = UserModel()
+    private val userModel: IUserModel = BaseModelFactory.factory.createUserModel()
     //    private int loginMethod = 2;//1 验证码登陆 2 QQ登录
 
     private fun cancelDialog() {
@@ -128,27 +128,27 @@ class LoginActivity : Activity() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ _ ->
                     cancelDialog()
-                    userModel.initUser(this@LoginActivity.applicationContext)
-                            .subscribeOn(Schedulers.newThread())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe { _ ->
-                                val intent = Intent()
-                                intent.setClass(this@LoginActivity, MainActivity::class.java)
-                                startActivity(intent)
-                                finish()
-                            }
                     Toast.makeText(this@LoginActivity, "登录成功", Toast.LENGTH_SHORT).show()
+                    val intent = Intent()
+                    intent.setClass(this@LoginActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
                 }, { e ->
                     e.printStackTrace()
                     cancelDialog()
-                    val snse = e as? SNSException
-                    if (snse == null || snse.code != SNSException.USER_CANCEL)
-                        Common.showErrorInfo(this@LoginActivity, ErrorCode.FAIL, e.message)
+                    when (e) {
+                        is SocketTimeoutException -> Common.showErrorInfo(this@LoginActivity, ErrorCode.FAIL, "无法连接服务器")
+                        is QQLoginException -> Common.showErrorInfo(this@LoginActivity, ErrorCode.FAIL, e.error.errorMessage)
+                        else -> Common.showErrorInfo(this@LoginActivity, ErrorCode.FAIL, e.message)
+                    }
+                }, {
+                    cancelDialog()
                 })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        SNS.onActivityResult(requestCode, resultCode, data, SNSType.AVOSCloudSNSQQ)
+//        SNS.onActivityResult(requestCode, resultCode, data, SNSType.AVOSCloudSNSQQ)
+        Tencent.onActivityResultData(requestCode, resultCode, data, null)
     }
 }

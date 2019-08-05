@@ -1,5 +1,6 @@
 package com.dawson.aaaccount.bean
 
+import com.google.gson.annotations.SerializedName
 import java.util.Date
 
 open class DayBook : BaseEntity() {
@@ -16,6 +17,7 @@ open class DayBook : BaseEntity() {
     /**
      * 创建人
      */
+    @SerializedName("recorder")
     var creator: User? =null
 
     /**
@@ -31,6 +33,7 @@ open class DayBook : BaseEntity() {
     /**
      * 消费人员
      */
+    @SerializedName("consumer")
     var customers: MutableList<User>? = null
 
     /**
@@ -48,7 +51,11 @@ open class DayBook : BaseEntity() {
     var thumbPictures: MutableList<String>? = null
 
     /**
-     * 是否结算 0未结算 1已经结算
+     * 是否结算 null未结算
      */
-    var settled: Int = 0
+    var settle: Settle ?=null
+
+    var pic1:String?=null
+    var pic2:String?=null
+    var pic3:String?=null
 }

@@ -11,12 +11,15 @@ import com.dawson.aaaccount.bean.Feedback
 import com.dawson.aaaccount.bean.result.OperateResult
 import com.dawson.aaaccount.model.leancloud.FeedBackModel
 import com.dawson.aaaccount.util.*
+import com.dawson.aaaccount.model.BaseModelFactory
+import com.dawson.aaaccount.util.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_feed_back.*
-import kotlinx.android.synthetic.main.common_title.*
 
 class FeedBackActivity : BaseActivity() {
-    private val fbModel = FeedBackModel()
+    private val fbModel = BaseModelFactory.factory.createFeedBackModel()
+
+    private var feedback: Feedback? = null
 
     private var feedback: Feedback? = null
 

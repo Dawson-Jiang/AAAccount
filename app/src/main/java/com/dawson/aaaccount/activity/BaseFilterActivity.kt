@@ -94,22 +94,14 @@ class BaseFilterActivity : BaseActivity() {
     override fun initCommonTitle() {
         super.initCommonTitle()
         title = "查询"
-        nav_toolbar.setOnMenuItemClickListener { e ->
-            if (e.itemId == R.id.action_ok) {
-                intent.putExtra("select_index", selectedFamilyIndex)
-                intent.putExtra("start", startDate)
-                intent.putExtra("end", endDate)
-                intent.putExtra("is_ct_settle", rgContainSettle.checkedRadioButtonId == R.id.rbCSYes )
-                setResult(Activity.RESULT_OK, intent)
-                finish()
-            }
-            true
+        enableOperate(R.string.confirm){
+            intent.putExtra("select_index", selectedFamilyIndex)
+            intent.putExtra("start", startDate)
+            intent.putExtra("end", endDate)
+            intent.putExtra("is_ct_settle", rgContainSettle.checkedRadioButtonId == R.id.rbCSYes )
+            setResult(Activity.RESULT_OK, intent)
+            finish()
         }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.ok_sure, menu)
-        return true
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

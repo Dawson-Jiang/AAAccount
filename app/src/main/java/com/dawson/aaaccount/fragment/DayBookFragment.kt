@@ -3,10 +3,10 @@ package com.dawson.aaaccount.fragment
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.*
 import android.widget.AdapterView
 import android.widget.Toast
@@ -19,13 +19,11 @@ import com.dawson.aaaccount.adapter.DaybookAdapter
 import com.dawson.aaaccount.bean.DayBook
 import com.dawson.aaaccount.bean.Family
 import com.dawson.aaaccount.bean.result.OperateResult
+import com.dawson.aaaccount.model.BaseModelFactory
 import com.dawson.aaaccount.util.Common
 import com.dawson.aaaccount.model.IDayBookModel
 import com.dawson.aaaccount.model.IFamilyModel
 import com.dawson.aaaccount.model.IUserModel
-import com.dawson.aaaccount.model.leancloud.DayBookModel
-import com.dawson.aaaccount.model.leancloud.FamilyModel
-import com.dawson.aaaccount.model.leancloud.UserModel
 import com.dawson.aaaccount.util.AlertDialogHelper
 import com.dawson.aaaccount.util.ErrorCode
 import com.dawson.aaaccount.util.OperateCode
@@ -36,17 +34,17 @@ import java.util.*
 
 class DayBookFragment : BaseFragment() {
     private var selectedFamilyIndex: Int = 0
-    private var families: MutableList<Family> = ArrayList()
-    private var familyNames: List<String> = listOf()
+    private var families: MutableList<Family> = mutableListOf()
+    private var familyNames: MutableList<String> = mutableListOf()
 
     private var mDayBooks: MutableList<DayBook> = ArrayList()
     private var currentPage = -1
     private val limit = 10
     private lateinit var mDaybookAdapter: DaybookAdapter
 
-    private var familyModel: IFamilyModel = FamilyModel()
-    private var dayBookModel: IDayBookModel = DayBookModel()
-    private var userModel: IUserModel = UserModel()
+    private var familyModel: IFamilyModel = BaseModelFactory.factory.createFamilyModel()
+    private var dayBookModel: IDayBookModel = BaseModelFactory.factory.createDayBookModel()
+    private var userModel: IUserModel = BaseModelFactory.factory.createUserModel()
 
     private var tempDayBook: DayBook? = null//正在处理的记录  如编辑 删除等
 
@@ -66,10 +64,11 @@ class DayBookFragment : BaseFragment() {
             val intent = Intent()
             intent.setClass(activity, EditDayBookActivity::class.java)
             intent.putExtra("daybook_id", mDayBooks[position].id)
+            if (is_family) intent.putExtra("family", families[selectedFamilyIndex])
             startActivityForResult(intent, OperateCode.MODIFIED)
         }
         registerForContextMenu(rootView?.rootView?.lvRecord!!)
-        initFamily()
+//       if(is_family) initFamily()
         // 初始化记录列表
         refreshDayBook()
         return rootView
@@ -115,6 +114,12 @@ class DayBookFragment : BaseFragment() {
     }
 
     fun gotoSelectFamily() {
+        if (!is_family) return
+        if (families.isEmpty()) {
+            Toast.makeText(activity, "您还没有家庭，请创建或加入一个家庭！", Toast.LENGTH_LONG).show()
+            return //只有自己 无需选择
+        }
+
         val intent = Intent(activity, BaseSimpleSelectActivity::class.java)
         intent.putExtra("select_string", familyNames.toTypedArray())
         intent.putExtra("select_index", selectedFamilyIndex)
@@ -123,38 +128,44 @@ class DayBookFragment : BaseFragment() {
     }
 
     fun gotoAdd() {
-        startActivityForResult(Intent(activity, EditDayBookActivity::class.java), OperateCode.ADD)
+        val intent = Intent()
+        intent.setClass(activity, EditDayBookActivity::class.java)
+        if (is_family) intent.putExtra("family", families[selectedFamilyIndex])
+        startActivityForResult(intent, OperateCode.ADD)
     }
 
     /**
      * 初始化家庭
      */
     private fun initFamily() {
-        families = ArrayList()
-        val f = Family()// 自己作为虚拟家庭
-        f.id = userModel.currentUser!!.id
-        f.name = userModel.currentUser!!.name
-        families.add(f)
+        families.clear()
+        familyNames.clear()
         selectedFamilyIndex = 0
-        familyNames = listOfNotNull(f.name)
         familyModel.getMyFamily()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ result ->
+                .doOnNext { result ->
                     if (result.result == ErrorCode.SUCCESS) {
-                        families.addAll(result.content!!)
-                        familyNames = families.indices.map {
-                            if (it == 0) "自己"
-                            else
-                                families[it].name!! + if (families[it].isTemp) "(临时)" else ""
-                        }.toList()
-                        activity?.title = "账单-自己"
+                        if (result.content != null && !result.content?.isEmpty()!!) {
+                            families.addAll(result.content!!)
+                            familyNames = families.indices.map {
+                                families[it].name!!
+                            }.toMutableList()
+                            activity?.title = "家庭账单-${familyNames[0]}"
+                        } else {
+                            //显示无家庭提示
+                            Toast.makeText(activity, "您还没有家庭，请创建或加入一个家庭！", Toast.LENGTH_LONG).show()
+                        }
                     } else {
                         Common.showErrorInfo(activity as Activity, result.errorCode,
                                 R.string.operate_fail, 0)
                     }
+                }
+                .subscribe({
+                    if (!families.isEmpty()) refreshDayBook()
                 }, {
                     Common.showErrorInfo(activity as Activity, ErrorCode.FAIL,
                             R.string.operate_fail, 0)
+                    it.printStackTrace()
                 })
     }
 
@@ -164,10 +175,8 @@ class DayBookFragment : BaseFragment() {
     private fun refreshDayBook() {
         currentPage = -1
         rootView?.refRecord?.isRefreshing = true
-        val fid = if (selectedFamilyIndex == 0) "" else families[selectedFamilyIndex].id
-        dayBookModel[fid!!, currentPage, limit]
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+        val fid = if (is_family) families[selectedFamilyIndex].id else ""
+        dayBookModel[fid!!, currentPage + 1, limit]
                 .subscribe({ result ->
                     handleDayBook(result)
                 }, { _ ->
@@ -179,7 +188,7 @@ class DayBookFragment : BaseFragment() {
      * 加载更多
      */
     private fun loadMoreDayBook() {
-        val fid = if (selectedFamilyIndex == 0) "" else families[selectedFamilyIndex].id
+        val fid = if (is_family) families[selectedFamilyIndex].id else ""
         dayBookModel[fid!!, currentPage + 1, limit]
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -199,8 +208,10 @@ class DayBookFragment : BaseFragment() {
         if (result.result == ErrorCode.SUCCESS) {
             currentPage++
             if (currentPage == 0) mDayBooks.clear()
-            mDayBooks.addAll(result.content!!)
+            if (result.content != null)
+                mDayBooks.addAll(result.content!!)
             rootView?.refRecord?.isNeedLoadMore = (result.content!!.size > limit)
+            mDaybookAdapter.is_family = is_family
             mDaybookAdapter.notifyDataSetChanged()
             if (mDayBooks.size <= 0) {
                 rootView?.lvRecord?.visibility = View.GONE
@@ -210,7 +221,7 @@ class DayBookFragment : BaseFragment() {
                 rootView?.tvNoData?.visibility = View.GONE
             }
         } else if (result.errorCode == ErrorCode.TOKEN_OVERDUE) {
-            userModel.loginTimeOut(activity as  Activity)
+            userModel.loginTimeOut(activity as Activity)
         } else {
             Common.showErrorInfo(activity as Activity,
                     result.errorCode, R.string.operate_fail, 0)
@@ -221,8 +232,18 @@ class DayBookFragment : BaseFragment() {
      * 修改个人信息等基础信息后 刷新
      */
     fun refreshBasicInfo() {
-        initFamily()
-        refreshDayBook()
+        if (is_family) initFamily()
+        else refreshDayBook()
+    }
+
+    var is_family = false
+
+    fun switchFamily(family: Boolean) {
+        if (is_family == family) return
+        is_family = family
+        if (is_family) activity?.title = "家庭账单"
+        else activity?.title = "我的账单"
+        refreshBasicInfo()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -233,7 +254,7 @@ class DayBookFragment : BaseFragment() {
         } else if (requestCode == SELECT_FAMILY) {
             if (resultCode == Activity.RESULT_OK) {
                 selectedFamilyIndex = data!!.getIntExtra("select_index", 0)
-                activity?.title = "账单-${familyNames[selectedFamilyIndex]}"
+                activity?.title = "家庭账单-${familyNames[selectedFamilyIndex]}"
                 refreshDayBook()
             }
         }

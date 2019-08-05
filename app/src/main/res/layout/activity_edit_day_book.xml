@@ -45,6 +45,7 @@
             </RelativeLayout>
 
             <View
+                android:id="@+id/line_1"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/line_hight"
                 android:layout_marginTop="10dip"
@@ -68,6 +69,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="16dp"
+                    android:enabled="false"
                     android:gravity="right"
                     android:hint="@string/edit_daybook_family_hint" />
 
@@ -80,6 +82,7 @@
             </RelativeLayout>
 
             <View
+                android:id="@+id/line_2"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/line_hight"
                 android:layout_marginTop="10dip"
@@ -116,12 +119,14 @@
             </RelativeLayout>
 
             <View
+                android:id="@+id/line_3"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/line_hight"
                 android:layout_marginTop="10dip"
                 android:background="@color/line" />
 
             <RelativeLayout
+                android:id="@+id/rl_payer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dip">
@@ -150,6 +155,7 @@
             </RelativeLayout>
 
             <View
+                android:id="@+id/line_4"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/line_hight"
                 android:layout_marginTop="10dip"
@@ -187,6 +193,7 @@
             </RelativeLayout>
 
             <View
+                android:id="@+id/line_5"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/line_hight"
                 android:layout_marginTop="10dip"
@@ -223,6 +230,7 @@
             </RelativeLayout>
 
             <View
+                android:id="@+id/line_6"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/line_hight"
                 android:layout_marginTop="10dip"
@@ -254,10 +262,21 @@
             </RelativeLayout>
 
             <View
+                android:id="@+id/line_7"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/line_hight"
                 android:layout_marginTop="10dip"
                 android:background="@color/line" />
+
+            <TextView
+                android:id="@+id/tv_settled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="已结算"
+                android:textColor="@color/colorPrimary"
+                android:visibility="gone"
+                android:textSize="12dp" />
 
             <!--图片-->
             <LinearLayout

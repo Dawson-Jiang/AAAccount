@@ -24,13 +24,18 @@ public class DBUser {
     private Date lastModifiedTime;
     private int number;
     private String name;
+    private String token;
+    private String headPic;
 
-    @Generated(hash = 471061171)
-    public DBUser(String id, Date lastModifiedTime, int number, String name) {
+    @Generated(hash = 588307253)
+    public DBUser(String id, Date lastModifiedTime, int number, String name,
+            String token, String headPic) {
         this.id = id;
         this.lastModifiedTime = lastModifiedTime;
         this.number = number;
         this.name = name;
+        this.token = token;
+        this.headPic = headPic;
     }
 
     @Generated(hash = 138933025)
@@ -73,5 +78,21 @@ public class DBUser {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getToken() {
+        return this.token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getHeadPic() {
+        return this.headPic;
+    }
+
+    public void setHeadPic(String headPic) {
+        this.headPic = headPic;
     }
 }

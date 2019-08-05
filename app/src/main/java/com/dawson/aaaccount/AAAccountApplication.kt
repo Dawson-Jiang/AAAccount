@@ -24,9 +24,9 @@ class AAAccountApplication : MultiDexApplication() {
         super.onCreate()
         aplication = this
         GreenDaoUtil.initDaoDB(this)
-        AVOSCloud.initialize(this, "mcoshkm3fro2kef3j4wtkxyid7k6o7zga85g4wjj0c4fc1tw",
-                "fh1oohucqgtrv4572ldsswyn9y7udnuw59el6it3xqxjdlpp")
-        AVOSCloud.setDebugLogEnabled(DEBUG)
+//        AVOSCloud.initialize(this, "mcoshkm3fro2kef3j4wtkxyid7k6o7zga85g4wjj0c4fc1tw",
+//                "fh1oohucqgtrv4572ldsswyn9y7udnuw59el6it3xqxjdlpp")
+//        AVOSCloud.setDebugLogEnabled(DEBUG)
 //        if (DEBUG) Stetho.initializeWithDefaults(this.applicationContext)
         // 开启消息接收服务
         //        Intent intent = new Intent("com.jd.myaaaccount.action.SUBSCRIBE");

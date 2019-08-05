@@ -10,23 +10,23 @@ import android.widget.Toast
 import com.dawson.aaaccount.R
 import com.dawson.aaaccount.bean.Family
 import com.dawson.aaaccount.bean.result.OperateResult
-import com.dawson.aaaccount.model.leancloud.FamilyModel
+import com.dawson.aaaccount.model.BaseModelFactory
 import com.dawson.aaaccount.util.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_family.*
-import kotlinx.android.synthetic.main.common_title.*
 import kotlinx.android.synthetic.main.layout_family_list_item.view.*
 
 class FamilyActivity : BaseActivity() {
-    private val familyModel = FamilyModel()
+    private val familyModel = BaseModelFactory.factory.createFamilyModel()
+    val families = mutableListOf<Family>()
 
     private val familyAdapter = object : BaseAdapter() {
         override fun getCount(): Int {
-            return CommonCach.families.size
+            return families.size
         }
 
         override fun getItem(position: Int): Any {
-            return CommonCach.families[position]
+            return families[position]
         }
 
         override fun getItemId(position: Int): Long {
@@ -38,8 +38,8 @@ class FamilyActivity : BaseActivity() {
             if (view == null) {
                 view = layoutInflater.inflate(R.layout.layout_family_list_item, null)
             }
-            val family = CommonCach.families[position]
-            view?.tvName?.text = family.name + if (family.isTemp) "(临时)" else ""
+            val family = families[position]
+            view?.tvName?.text = family.name
             view?.tvMeberCount?.text = family.members?.size.toString()
             ImageLoadUtil.loadCircleImage(family.headThumbUrl, view?.ivPhoto!!)
             return view
@@ -69,7 +69,7 @@ class FamilyActivity : BaseActivity() {
         srefreshRecord.setColorSchemeResources(R.color.colorPrimary)
         srefreshRecord.setOnRefreshListener { initFamily() }
         lvFamily.setOnItemClickListener { _, _, arg2, _ ->
-            editFamily(arg2, OperateCode.MODIFIED)
+            editFamily(families[arg2].id!!, OperateCode.MODIFIED)
         }
 
         registerForContextMenu(lvFamily)
@@ -79,13 +79,8 @@ class FamilyActivity : BaseActivity() {
         super.initCommonTitle()
         title = "我的家庭"
 
-        nav_toolbar.setOnMenuItemClickListener { e ->
-            if (e.itemId == R.id.action_create) {
-                editFamily(0, OperateCode.ADD)
-            } else if (e.itemId == R.id.action_scan) {
-                editFamily(0, OperateCode.JOIN)
-            }
-            true
+        enableOperate("创建") {
+            editFamily("", OperateCode.ADD)
         }
     }
 
@@ -95,23 +90,26 @@ class FamilyActivity : BaseActivity() {
     private fun initFamily() {
         srefreshRecord.isRefreshing = true
         familyModel.getMyFamily().observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ result -> onGetFamily(result) }, { DLog.error("family_init", it) })
+                .subscribe({ result -> onGetFamily(result) }, {
+                    onGetFamily(OperateResult(ErrorCode.FAIL, it.message!!))
+                    DLog.error("family_init", it)
+                })
     }
 
-    private fun editFamily(index: Int, type: Int) {
+    private fun editFamily(fid: String, type: Int) {
         val intent = Intent()
         intent.putExtra("operateFlag", type)
-        intent.putExtra("family_index", index)
+        intent.putExtra("family_id", fid)
         intent.setClass(this@FamilyActivity, EditFamilyActivity::class.java)
         startActivityForResult(intent, type)
     }
 
     private fun onGetFamily(result: OperateResult<List<Family>>) {
         srefreshRecord.isRefreshing = false
-        CommonCach.families.clear()
+        families.clear()
         if (result.result == ErrorCode.SUCCESS) {
-            CommonCach.families.clear()
-            CommonCach.families.addAll(result.content!!)
+            families.clear()
+            families.addAll(result.content!!)
             familyAdapter.notifyDataSetChanged()
         } else {
             Common.showErrorInfo(this@FamilyActivity, result.errorCode,
@@ -150,11 +148,11 @@ class FamilyActivity : BaseActivity() {
         AlertDialogHelper.showOKCancelAlertDialog(this, R.string.family_disjoin_notice, { _, _ ->
             mProgressDialog = AlertDialogHelper.showWaitProgressDialog(
                     this, R.string.handling)
-            familyModel.disJoin(CommonCach.families[index])
+            familyModel.disJoin(families[index])
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ _ ->
                         cancelDialog()
-                        CommonCach.families.removeAt(index)
+                        families.removeAt(index)
                         familyAdapter.notifyDataSetChanged()
                         Toast.makeText(this, R.string.operate_success, Toast.LENGTH_SHORT).show()
                     }, {
@@ -172,11 +170,11 @@ class FamilyActivity : BaseActivity() {
         AlertDialogHelper.showOKCancelAlertDialog(this, R.string.del_notice, { _, _ ->
             mProgressDialog = AlertDialogHelper.showWaitProgressDialog(
                     this, R.string.handling)
-            familyModel.del(CommonCach.families[index])
+            familyModel.del(families[index])
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ _ ->
                         cancelDialog()
-                        CommonCach.families.removeAt(index)
+                        families.removeAt(index)
                         familyAdapter.notifyDataSetChanged()
                         Toast.makeText(this, "删除成功", Toast.LENGTH_SHORT).show()
                     }, {

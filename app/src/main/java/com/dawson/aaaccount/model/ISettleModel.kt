@@ -35,7 +35,6 @@ interface ISettleModel {
     /**
      * 统计自己的账单
      *
-     * @param callback
      */
     fun statisticMine(start: Date?, end: Date?): Observable<OperateResult<Settle>>
 

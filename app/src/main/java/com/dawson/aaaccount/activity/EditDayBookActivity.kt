@@ -19,10 +19,6 @@ import com.dawson.aaaccount.bean.Family
 import com.dawson.aaaccount.bean.User
 import com.dawson.aaaccount.bean.result.OperateResult
 import com.dawson.aaaccount.model.*
-import com.dawson.aaaccount.model.leancloud.*
-import com.dawson.aaaccount.model.leancloud.DayBookModel
-import com.dawson.aaaccount.model.leancloud.FamilyModel
-import com.dawson.aaaccount.model.leancloud.UserModel
 import com.dawson.aaaccount.util.*
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -34,16 +30,13 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class EditDayBookActivity : BaseActivity() {
-    private var dayBookModel: IDayBookModel = DayBookModel()
-    private var fileMode = FileModel()
-    private var familyModel: IFamilyModel = FamilyModel()
-    private var categoryModel: ICategoryModel = CategoryModel()
-    private var userModel: IUserModel = UserModel()
+    private var dayBookModel: IDayBookModel = BaseModelFactory.factory.createDayBookModel()
+    private var fileMode = BaseModelFactory.factory.createFileModel()
+    //    private var familyModel: IFamilyModel = BaseModelFactory.factory.createFamilyModel()
+    private var categoryModel: ICategoryModel = BaseModelFactory.factory.createCategoryModel()
+    private var userModel: IUserModel = BaseModelFactory.factory.createUserModel()
     // 家庭
-    private val families = mutableListOf<Family>()
-    private var familyNames = listOf<String>()
-    private var selectedFamilyIndex: Int = 0// 0表示个人消费 1表示家庭消费
-    //    private var flag: Int = 0// 0表示个人消费 1表示家庭消费
+    private var family: Family? = null//null表示个人消费
     // 消费类别
     private val categories = mutableListOf<ConsumptionCategory>()
     private var categoryNames = listOf<String>()
@@ -73,55 +66,45 @@ class EditDayBookActivity : BaseActivity() {
     private var uploadPic: Array<String?> = arrayOfNulls(3)
 
     private var daybookId: String = ""
-    private var is_modify: Boolean = false
+    private var isModify: Boolean = false
+    private var isSettled: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_day_book)
         if (intent.getStringExtra("daybook_id") != null)
             daybookId = intent.getStringExtra("daybook_id")
-        is_modify = !TextUtils.isEmpty(daybookId)
+        isModify = !TextUtils.isEmpty(daybookId)
+        family = intent.extras?.get("family")  as? Family
         initComponent()
-
-        familyModel.getMyFamily().observeOn(AndroidSchedulers.mainThread())
-                .doOnNext { initFamily(it) }.observeOn(Schedulers.io())
-                .flatMap { categoryModel.get() }
+        initFamily()
+        categoryModel.get()
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext { initCategory(it) }
                 .observeOn(Schedulers.io())
                 .flatMap {
-                    if (is_modify)
-                        dayBookModel.getById(daybookId).observeOn(AndroidSchedulers.mainThread())
+                    if (isModify)
+                        dayBookModel.getById(daybookId)
                                 .map { initDayBook(it.content!!) }
                     else Observable.just("")
                 }.observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ _ ->
                     cancelDialog()
-                    if (!is_modify) et_money.requestFocus()
+                    if (!isModify) et_money.requestFocus()
                     et_remark.clearFocus()
                 }, { ex ->
                     cancelDialog()
                     Common.showErrorInfo(this, ErrorCode.FAIL,
                             "加载失败", 0)
-                    DLog.error("edbook_getMyFamily", ex)
+                    DLog.error("edbook_init", ex)
                 })
     }
 
     private fun initDayBook(editDayBook: DayBook) {
+        isSettled = editDayBook.settle != null
+        tv_settled.visibility = if (isSettled) View.VISIBLE else View.GONE
         et_money.setText(editDayBook.money.toString(), TextView.BufferType.NORMAL)
-        if (editDayBook.family == null) {
-            tv_family.text = userModel.currentUser!!.name
-            tv_consumer.text = userModel.currentUser!!.name
-            selectedFamilyIndex = 0
-        } else {
-            tv_family.text = editDayBook.family?.name
-            families.forEachIndexed { index, family ->
-                if (family.id == editDayBook.family?.id) {
-                    selectedFamilyIndex = index
-                    initMemberList(family)
-                    return@forEachIndexed
-                }
-            }
+        if (family != null) {
             val stringBuilder = StringBuilder()
             editDayBook.customers?.forEach {
                 stringBuilder.append(it.name)
@@ -133,6 +116,7 @@ class EditDayBookActivity : BaseActivity() {
                     }
                 }
             }
+            tv_payer.text = editDayBook.payer?.name
             tv_consumer.text = stringBuilder.toString()
         }
         tv_category.text = editDayBook.category?.name
@@ -142,7 +126,6 @@ class EditDayBookActivity : BaseActivity() {
                 return@forEachIndexed
             }
         }
-        tv_payer.text = editDayBook.payer?.name
         tv_date.text = editDayBook.date?.format("yyyy年MM月dd日")
         selectedDate = editDayBook.date!!
         et_remark.setText(editDayBook.description, TextView.BufferType.NORMAL)
@@ -157,77 +140,56 @@ class EditDayBookActivity : BaseActivity() {
         }
     }
 
-    private fun initFamily(result: OperateResult<List<Family>>) {
-        val sf = Family()// 自己作为虚拟家庭
-        sf.id = userModel.currentUser!!.id
-        sf.name = userModel.currentUser!!.name
-        families.add(sf)
-        families.addAll(result.content!!)
-        familyNames = families.indices.map {
-            if (it == 0) "自己"
-            else families[it].name!! + if (families[it].isTemp) "(临时)" else ""
-        }.toList()
-        selectedFamilyIndex = 0
-        tv_family.text = familyNames[0]
-        initMemberList(families[0])
+    private fun initFamily() {
+        tv_family.text = family?.name
+        initMemberList()
     }
 
     private fun initCategory(result: OperateResult<List<ConsumptionCategory>>) {
-        if (result.result == ErrorCode.SUCCESS) {
+        if (result.result == ErrorCode.SUCCESS && result.content != null && !result.content?.isEmpty()!!) {
             categories.clear()
             categories.addAll(result.content!!)
             categoryNames = categories.indices.map { categories[it].name }.toList()
             selectedCategoryIndex = 0
             tv_category.text = categoryNames[selectedCategoryIndex]
+        } else {
+            Toast.makeText(this@EditDayBookActivity, "消费类别加载失败！", Toast.LENGTH_SHORT).show()
         }
     }
 
     /**
      * 初始化家庭成员列表
      *
-     * @param family 家庭
-     * @param flag   0 表示自己 1表示一个家庭
      */
-    private fun initMemberList(family: Family) {
-        if (selectedFamilyIndex == 0) { // 消费人员设置为自己
-            tv_consumer.text = family.name
-            tv_payer.text = family.name
-        } else {
+    private fun initMemberList() {
+        if (family != null) {
             consumers.clear()
-            consumers.addAll(family.members!!)
+            consumers.addAll(family?.members!!)
             tv_consumer.text = ""
+            tv_consumer.isEnabled = true
             selectedConsumers = BooleanArray(consumers.size)
             consumerStrs = consumers.indices.map { consumers[it].name!! }.toList()
             selectedPayerIndex = 0
             tv_payer.text = consumerStrs[0]
+            tv_payer.isEnabled = true
         }
     }
 
     override fun initCommonTitle() {
         super.initCommonTitle()
-        title = if (is_modify) "修改账单" else "添加账单"
-        nav_toolbar.setOnMenuItemClickListener {
-            if (it.itemId == R.id.action_save) {
-                save()
-            }
-            true
-        }
+        title = (if (isModify) "修改" else "添加") + if (family == null) "我的账单" else "账单"
+        enableOperate(R.string.save) { save() }
     }
 
     private fun initComponent() {
         initCommonTitle()
-
-        tv_family.setOnClickListener { _ ->
-            if (familyNames.isEmpty()) {
-                Toast.makeText(this@EditDayBookActivity, "数据加载失败！", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            val intent = Intent(this, BaseSimpleSelectActivity::class.java)
-            intent.putExtra("select_string", familyNames.toTypedArray())
-            intent.putExtra("select_index", selectedFamilyIndex)
-            intent.putExtra("title", getString(R.string.select_family_title))
-            startActivityForResult(intent, BaseSimpleSelectActivity.SELECT_FAMILY)
-        }
+        val visible = if (family == null) View.GONE else View.VISIBLE
+        rl_family.visibility = visible
+        line_2.visibility = visible
+        rl_payer.visibility = visible
+        line_3.visibility = visible
+        rl_consumer.visibility = visible
+        line_4.visibility = visible
 
         tv_category.setOnClickListener { _ ->
             if (categoryNames.isEmpty()) {
@@ -242,7 +204,7 @@ class EditDayBookActivity : BaseActivity() {
         }
 
         tv_payer.setOnClickListener { _ ->
-            if (selectedFamilyIndex == 0) return@setOnClickListener
+            if (family == null) return@setOnClickListener
             if (consumerStrs.isEmpty()) {
                 Toast.makeText(this@EditDayBookActivity, "数据加载失败！", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -256,8 +218,7 @@ class EditDayBookActivity : BaseActivity() {
         }
 
         tv_consumer.setOnClickListener { _ ->
-            if (selectedFamilyIndex == 0)
-                return@setOnClickListener
+            if (family == null) return@setOnClickListener
             if (consumerStrs.isEmpty()) {
                 Toast.makeText(this@EditDayBookActivity, "数据加载失败！", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -292,7 +253,7 @@ class EditDayBookActivity : BaseActivity() {
                 selectedPic[i] = null
                 (rl.getChildAt(0) as ImageView).setImageBitmap(null)
                 rl.visibility = View.GONE
-                if (is_modify) {
+                if (isModify) {
                     uploadPic[i] = null
                     orgPic[i] = null
                     thumPic[i] = null
@@ -307,11 +268,6 @@ class EditDayBookActivity : BaseActivity() {
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == BaseSimpleSelectActivity.SELECT_FAMILY) {
-            if (resultCode != RESULT_OK) return
-            selectedFamilyIndex = data?.getIntExtra("select_index", 0)!!
-            tv_family.text = families[selectedFamilyIndex].name
-            // 初始化家庭成员
-            initMemberList(families[selectedFamilyIndex])
         } else if (requestCode == SELECT_FAMILY_PAYER) run {
             if (resultCode != RESULT_OK) return
             selectedPayerIndex = data?.getIntExtra("select_index", 0)!!
@@ -350,7 +306,7 @@ class EditDayBookActivity : BaseActivity() {
     private fun previewPic(index: Int) {
         val intent = Intent()
         intent.setClass(this, PreviewPictureActivity::class.java)
-        if (is_modify) {
+        if (isModify) {
             val temp = mutableListOf<String>()//合并orgPic和uploadPic
             temp.addAll(orgPic.filterNotNull())
             temp.addAll(uploadPic.filterNotNull())
@@ -402,6 +358,11 @@ class EditDayBookActivity : BaseActivity() {
      * 保存
      */
     fun save() {
+        if (isModify && isSettled) {
+            Toast.makeText(this, "已结算账单不能修改", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         if (et_money.text.toString() == "") {
             Toast.makeText(this, "消费金额不能为空", Toast.LENGTH_SHORT).show()
             return
@@ -417,18 +378,14 @@ class EditDayBookActivity : BaseActivity() {
         }
 
         val daybook = DayBook()
-        if (is_modify) daybook.id = daybookId
+        if (isModify) daybook.id = daybookId
         daybook.money = money
         daybook.creator = userModel.currentUser
         daybook.category = categories[selectedCategoryIndex]
 
-        if (selectedFamilyIndex > 0)
+        if (family != null) {
             daybook.payer = consumers[selectedPayerIndex]
-        else
-            daybook.payer = userModel.currentUser
-
-        if (selectedFamilyIndex > 0) {
-            daybook.family = families[selectedFamilyIndex]
+            daybook.family = family
             daybook.customers = ArrayList()
             selectedConsumers.indices
                     .filter { selectedConsumers[it] }
@@ -437,12 +394,11 @@ class EditDayBookActivity : BaseActivity() {
 
         daybook.pictures = mutableListOf()
         daybook.thumbPictures = mutableListOf()
-        if (is_modify) {
+        if (isModify) {
             daybook.pictures?.addAll(orgPic.filterNotNull())
             daybook.thumbPictures?.addAll(thumPic.filterNotNull())
         }
 
-        daybook.settled = 0
         daybook.date = selectedDate// 消费日期
         daybook.description = et_remark.text.toString()
         mProgressDialog = AlertDialogHelper.showWaitProgressDialog(this,
@@ -451,8 +407,8 @@ class EditDayBookActivity : BaseActivity() {
         val obs: Observable<OperateResult<Any>>
         val upp = uploadPic.filterNotNull()
         obs = if (upp.isNotEmpty()) {
-            fileMode.uploadFile(applicationContext, upp.toMutableList(),
-                    { _, _ -> })
+            fileMode.uploadFile(applicationContext, upp.toMutableList()
+            ) { _, _ -> }
                     .observeOn(AndroidSchedulers.mainThread())
                     .map { res ->
                         for (i in 0 until upp.size) {
@@ -482,7 +438,7 @@ class EditDayBookActivity : BaseActivity() {
         AlertDialogHelper.showOKAlertDialog(this,
                 R.string.operate_success, null)
         setResult(RESULT_OK)
-        if (is_modify) {
+        if (isModify) {
             finish()
         } else {
             et_money.setText("")
@@ -496,10 +452,5 @@ class EditDayBookActivity : BaseActivity() {
             }
             ll_pic.getChildAt(3).visibility = View.VISIBLE
         }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.save, menu)
-        return true
     }
 }

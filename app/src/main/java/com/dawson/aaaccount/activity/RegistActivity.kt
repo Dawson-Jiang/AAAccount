@@ -15,14 +15,11 @@ import com.dawson.aaaccount.bean.result.OperateResult
 import com.dawson.aaaccount.util.Common
 import com.dawson.aaaccount.util.AlertDialogHelper
 import com.dawson.aaaccount.util.ErrorCode
+import kotlinx.android.synthetic.main.activity_register.*
 
 class RegistActivity : Activity() {
 
-    private var etPhone: EditText? = null
-    private var etPassword: EditText? = null
-    private var etVerifyCode: EditText? = null
-    private var btnSendVerifyCode: Button? = null
-    private var btnRegister: Button? = null
+
     private val mContext: Context? = null
 
     //    UserPresenter userPresenter;
@@ -50,13 +47,6 @@ class RegistActivity : Activity() {
 
 
     private fun iniComponent() {
-
-        etPhone = findViewById(R.id.etPhone) as EditText
-        etPassword = findViewById(R.id.etPassword) as EditText
-
-        btnRegister = findViewById(R.id.btnRegister) as Button
-        etVerifyCode = findViewById(R.id.etVerifyCode) as EditText
-        btnSendVerifyCode = findViewById(R.id.btnSendVerifyCode) as Button
         // 测试初始化数据
         etPhone!!.setText("18628399607")
         etPassword!!.setText("888888")

@@ -10,9 +10,9 @@ import android.view.animation.Animation
 import android.view.animation.AnimationSet
 import android.widget.Toast
 import com.dawson.aaaccount.R
+import com.dawson.aaaccount.model.BaseModelFactory
 import com.dawson.aaaccount.model.IUserModel
-import com.dawson.aaaccount.model.leancloud.FeedBackModel
-import com.dawson.aaaccount.model.leancloud.UserModel
+import com.dawson.aaaccount.util.Common
 import com.dawson.aaaccount.util.DLog
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -26,7 +26,7 @@ class WelcomeActivity : Activity() {
     private var animationState = -1//-1 未开始 1开始 0结束
     private var hasInit = false
 
-    private var userModel: IUserModel = UserModel()
+    private var userModel: IUserModel =  BaseModelFactory.factory.createUserModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +51,6 @@ class WelcomeActivity : Activity() {
         })
         hasInit = false
         userModel.initUser(applicationContext)
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ _ ->
                     if (!isFinishing) {
                         hasInit = true
@@ -60,7 +59,7 @@ class WelcomeActivity : Activity() {
                 }, {
                     it.printStackTrace()
                     if (it !is UnknownHostException) DLog.error("initUser", it)
-                    Toast.makeText(this@WelcomeActivity, "启动失败", Toast.LENGTH_SHORT).show()
+                     Toast.makeText(this@WelcomeActivity, "启动失败", Toast.LENGTH_SHORT).show()
                     finish()
                 })
     }
@@ -80,7 +79,6 @@ class WelcomeActivity : Activity() {
     }
 
     @Synchronized private fun goTo() {
-//        if (!hasInit) return
         if (animationState != 0 || !hasInit) return
         if (userModel.isLogin(this@WelcomeActivity.applicationContext)) {
             startActivity(Intent(this@WelcomeActivity, MainActivity::class.java))
