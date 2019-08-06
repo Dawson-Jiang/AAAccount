@@ -47,7 +47,7 @@ class FileModel : IFileModel {
 //            val orgRes = it as Array<OperateResult<Array<String>>>
             it.forEachIndexed { i, or ->
                 val r = or as OperateResult<Array<String>>
-                resMap.put(files[i], r.content!!)
+                resMap[files[i]] = r.content!!
             }
             OperateResult(resMap.toMap())
         }, false, 1024).subscribeOn(Schedulers.io())

@@ -34,8 +34,8 @@ class SettleModel : ISettleModel {
         val param = HashMap<String, String>()
         param["fid"] = family.id!!
         if (start != null && end != null) {
-            param["start"] = start?.format()!!
-            param["end"] = end?.format()!!
+            param["start"] = start.format()
+            param["end"] = end.format()
             return service.statistic(param).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
         } else {
             return service.statisticUnSettled(param).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())

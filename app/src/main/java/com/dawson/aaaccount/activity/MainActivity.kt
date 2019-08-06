@@ -12,10 +12,7 @@ import com.dawson.aaaccount.R
 import com.dawson.aaaccount.fragment.DayBookFragment
 import com.dawson.aaaccount.model.BaseModelFactory
 import com.dawson.aaaccount.model.IUserModel
-import com.dawson.aaaccount.util.Common
-import com.dawson.aaaccount.util.ErrorCode
-import com.dawson.aaaccount.util.ImageLoadUtil
-import com.dawson.aaaccount.util.OperateCode
+import com.dawson.aaaccount.util.*
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -33,7 +30,7 @@ class MainActivity : FragmentActivity() {
         setContentView(R.layout.activity_main)
         ivOperate.setOnClickListener { _ -> layout_main.openDrawer(GravityCompat.START) }
         layoutTitle.setOnClickListener { _ -> (fg_daybook as DayBookFragment).gotoSelectFamily() }
-        iv_filter.visibility= View.INVISIBLE
+        iv_filter.visibility = View.INVISIBLE
         main_floatbtn.setOnClickListener { _ -> (fg_daybook as DayBookFragment).gotoAdd() }
         initDrawerLayout()
 //        SettleModel().syncData(applicationContext, true).subscribeOn(Schedulers.io())
@@ -67,13 +64,13 @@ class MainActivity : FragmentActivity() {
         nav_view.getHeaderView(0).ll_nav_my_daybook.setOnClickListener { _ ->
             layout_main.closeDrawer(GravityCompat.START)
             (fg_daybook as DayBookFragment).switchFamily(false)
-            iv_filter.visibility= View.INVISIBLE
+            iv_filter.visibility = View.INVISIBLE
         }
 
         nav_view.getHeaderView(0).ll_nav_family_daybook.setOnClickListener { _ ->
             layout_main.closeDrawer(GravityCompat.START)
             (fg_daybook as DayBookFragment).switchFamily(true)
-            iv_filter.visibility= View.VISIBLE
+            iv_filter.visibility = View.VISIBLE
         }
         nav_view.getHeaderView(0).ll_nav_statistic.setOnClickListener { _ ->
             goto {
@@ -99,12 +96,10 @@ class MainActivity : FragmentActivity() {
             }
         }
 
-
-
         nav_view.getHeaderView(0).ll_nav_fb.setOnClickListener { _ ->
-            goto({
+            goto {
                 startActivity(Intent(this, FeedbackListActivity::class.java))
-            })
+            }
         }
         nav_view.getHeaderView(0).ll_nav_about.setOnClickListener { _ ->
             goto {
@@ -112,22 +107,28 @@ class MainActivity : FragmentActivity() {
             }
         }
         nav_view.getHeaderView(0).ll_nav_logout.setOnClickListener { _ ->
-            userModel.logout(this)
-                    .subscribeOn(Schedulers.newThread())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { result ->
-                        if (result.result == ErrorCode.SUCCESS) {
-                            goto {
-                                startActivity(Intent(this@MainActivity, LoginActivity::class.java))
-                            }
-                            finish()
-                        } else {
-                            goto {
-                                Common.showErrorInfo(this@MainActivity, result.errorCode,
-                                        R.string.operate_fail, 0)
+
+            AlertDialogHelper.showOKCancelAlertDialog(this,
+                    R.string.logout_notice, { _, _ ->
+                userModel.logout(this)
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe { result ->
+                            if (result.result == ErrorCode.SUCCESS) {
+                                goto {
+                                    startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+                                }
+                                finish()
+                            } else {
+                                goto {
+                                    Common.showErrorInfo(this@MainActivity, result.errorCode,
+                                            R.string.operate_fail, 0)
+                                }
                             }
                         }
-                    }
+            }, { _, _ -> })
+
+
         }
     }
 

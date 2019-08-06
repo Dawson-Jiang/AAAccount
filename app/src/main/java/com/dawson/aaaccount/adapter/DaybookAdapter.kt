@@ -37,13 +37,13 @@ class DaybookAdapter(private val mActivity: Activity, private val mDayBooks: Lis
 
         holder.view.tvPayer?.text = if (is_family) dbook.payer!!.name else ""
         holder.view.tvDate?.text = "${dbook.date?.getWeekDay()} - ${dbook.date?.format("yyyy.MM.dd")}"
-        holder.view.setOnClickListener { if (clickCallback != null) clickCallback(position) }
-        holder.view.tv_settled.visibility = if (dbook.settle!=null) View.VISIBLE else View.GONE
+        holder.view.setOnClickListener { clickCallback(position) }
+        holder.view.tv_settled.visibility = if (dbook.settle != null) View.VISIBLE else View.GONE
         // 异步下载图片
         val temp = dbook.thumbPictures
         if (temp != null && !temp.isEmpty()) {
-            ImageLoadUtil.loadImage(dbook.thumbPictures!![0], holder?.view?.ivPicture!!)
-        } else holder?.view?.ivPicture!!.setImageBitmap(null)
+            ImageLoadUtil.loadImage(dbook.thumbPictures!![0], holder.view.ivPicture!!)
+        } else holder.view.ivPicture!!.setImageBitmap(null)
     }
 
 

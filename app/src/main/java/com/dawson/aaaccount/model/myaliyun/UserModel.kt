@@ -9,10 +9,10 @@ import com.dawson.aaaccount.BuildConfig
 import com.dawson.aaaccount.activity.LoginActivity
 import com.dawson.aaaccount.bean.User
 import com.dawson.aaaccount.bean.result.OperateResult
-import com.dawson.aaaccount.dao.GreenDaoUtil
 import com.dawson.aaaccount.dao.bean.DBUser
 import com.dawson.aaaccount.dao.bean.withDBUser
 import com.dawson.aaaccount.dao.bean.withUser
+import com.dawson.aaaccount.dao.utils.GreenDaoUtil
 import com.dawson.aaaccount.model.IUserModel
 import com.dawson.aaaccount.net.RetrofitHelper
 import com.dawson.aaaccount.net.UserService
@@ -24,7 +24,6 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.*
-import kotlin.collections.HashMap
 
 
 object UserInstance {
@@ -66,18 +65,18 @@ class UserModel : IUserModel {
                     GreenDaoUtil.daoSession?.dbUserDao?.insert(DBUser().withUser(org_user))
                 }
                 .flatMap {
-                    if (it.content!!.name.isNullOrEmpty()||it.content!!.headUrl.isNullOrEmpty()) {//第一次登录用户
+                    if (it.content!!.name.isNullOrEmpty() || it.content!!.headUrl.isNullOrEmpty()) {//第一次登录用户
                         qqLogin.getUserInfo()
                                 .observeOn(Schedulers.io())
-                                .flatMap {
-                                    if (it.result == ErrorCode.SUCCESS) {
-                                        org_user.name = it.content!!["nickname"]
-                                        org_user.headUrl = it.content!!["figureurl_2"]
-                                         GreenDaoUtil.daoSession?.dbUserDao?.update(DBUser().withUser(org_user))
+                                .flatMap { ur ->
+                                    if (ur.result == ErrorCode.SUCCESS) {
+                                        org_user.name = ur.content!!["nickname"]
+                                        org_user.headUrl = ur.content!!["figureurl_2"]
+                                        GreenDaoUtil.daoSession?.dbUserDao?.update(DBUser().withUser(org_user))
                                         service.update(org_user)
-                                    } else Observable.just(OperateResult<Any>())
+                                    } else Observable.just(OperateResult())
                                 }
-                    } else Observable.just(OperateResult<Any>())
+                    } else Observable.just(OperateResult())
                 }.observeOn(Schedulers.io())
                 .flatMap { initUser(activity) }
                 .flatMap {
@@ -131,7 +130,7 @@ class UserModel : IUserModel {
 
         return Observable.create<Any> { e ->
             val users = GreenDaoUtil.daoSession?.dbUserDao?.loadAll()
-            if (users != null && !users.isEmpty()) {//已经登录
+            if (users != null && users.isNotEmpty()) {//已经登录
                 UserInstance.current_user = User().withDBUser(users[0])
             }
             e.onNext("")

@@ -24,7 +24,7 @@ class AboutActivity : BaseActivity() {
         title = "关于AA账单"
         tv_version.text = version
 
-        tv_contact_qq.setOnClickListener {
+        tv_contact.setOnClickListener {
             startActivity(Intent(this@AboutActivity,FeedbackListActivity::class.java))
             finish()
         }

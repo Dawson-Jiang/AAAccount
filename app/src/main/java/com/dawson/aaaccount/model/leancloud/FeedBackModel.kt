@@ -3,8 +3,6 @@ package com.dawson.aaaccount.model.leancloud
 import com.avos.avoscloud.AVObject
 import com.avos.avoscloud.AVQuery
 import com.avos.avoscloud.AVUser
-import com.dawson.aaaccount.bean.DayBook
-import com.dawson.aaaccount.bean.Feedback
 import com.dawson.aaaccount.bean.Feedback
 import com.dawson.aaaccount.bean.result.OperateResult
 import com.dawson.aaaccount.model.IFeedBackModel
@@ -12,7 +10,6 @@ import com.dawson.aaaccount.util.PhoneHelper
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import java.util.ArrayList
 
 /**
  * 反馈
@@ -20,10 +17,6 @@ import java.util.ArrayList
  */
 
 class FeedBackModel : IFeedBackModel {
-    override fun getMyFeedback(): Observable<OperateResult<List<Feedback>>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     override fun add(title: String, content: String): Observable<OperateResult<Any>> {
         return Observable.create<OperateResult<Any>> {
             val avFeedback = AVObject(DataObjectHelper.FEED_BACK.CLASS_NAME)
@@ -56,7 +49,7 @@ class FeedBackModel : IFeedBackModel {
                         feed.title = it.getString(DataObjectHelper.FEED_BACK.TITLE)
                         feed.createTime = it.createdAt
                         feed.lastModifiedTime = it.updatedAt
-                        return@map feed
+                        feed
                     }
                     OperateResult(feeds)
                 }

@@ -14,12 +14,11 @@ import com.dawson.aaaccount.util.*
 import com.dawson.aaaccount.model.BaseModelFactory
 import com.dawson.aaaccount.util.*
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_feed_back.*
 
 class FeedBackActivity : BaseActivity() {
     private val fbModel = BaseModelFactory.factory.createFeedBackModel()
-
-    private var feedback: Feedback? = null
 
     private var feedback: Feedback? = null
 
@@ -35,15 +34,15 @@ class FeedBackActivity : BaseActivity() {
         title = if (feedback == null) "问题反馈" else "我的反馈"
 
         if (feedback == null)
-//            enableOperate("提交") {
-//                add()
-//            }
-            nav_toolbar.setOnMenuItemClickListener {
-                if (it.itemId == R.id.action_save) {
-                    add()
-                }
-                true
+            enableOperate("提交") {
+                add()
             }
+//            nav_toolbar.setOnMenuItemClickListener {
+//                if (it.itemId == R.id.action_save) {
+//                    add()
+//                }
+//                true
+//            }
     }
 
     private fun initCompent() {
@@ -81,7 +80,7 @@ class FeedBackActivity : BaseActivity() {
             Toast.makeText(this@FeedBackActivity, "标题或内容不能为空！", Toast.LENGTH_SHORT).show()
             return
         }
-        fbModel.add(title, content).observeOn(AndroidSchedulers.mainThread())
+        val dis = fbModel.add(title, content).observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     onAdd(it)
                 }, {
@@ -90,7 +89,7 @@ class FeedBackActivity : BaseActivity() {
                 })
     }
 
-    fun onAdd(result: OperateResult<Any>) {
+    private fun onAdd(result: OperateResult<Any>) {
         if (result.result == ErrorCode.SUCCESS) {
             Toast.makeText(this@FeedBackActivity, "提交成功！", Toast.LENGTH_SHORT).show()
             finish()

@@ -93,15 +93,12 @@
     <string name="system_error">系统错误</string>
     <string name="complete">完成</string>
     <string name="str_about_statement">&#160;&#160;&#160;&#160;欢迎使用AA账单，该系统主要用于个人，家庭(如家庭成员，合租室友，同事，合伙人等)和临时家庭(如何旅行团，集体出差，自驾游等)记录日常消费，能够随时随地快速记账，统计和结算，操作简单方便快捷。</string>
-    <string name="str_about_contact_qq" formatted="false">
-    <![CDATA[
-    欢迎联系客服进行反馈和讨论相关问题<br/> <u><font color=\'#FCBE34\'>点击反馈</font></u>
-    ]]>
-    </string>
+    <string name="str_about_contact">欢迎通过添加QQ(327)或问题反馈联系客服进行反馈和讨论遇到的问题</string>
     <string name="str_about_copyright">Copyright©2017-2018 Dawson\n\t\t\t\tAll Rights Reserved</string>
     <string name="login_txt_qqlogin">QQ登录</string>
 
     <string name="del_notice">确定删除?</string>
+    <string name="logout_notice">确定退出?</string>
     <!--<string name="settle_notice">统计数据包含已结算数据，无法结算\r\n请在筛选页'包含结算数据'项选择'否'</string>-->
     <string name="settle_notice">统计数据包含已结算数据，无法结算</string>
     <string name="settle_notice2"> 请先点击右上角同步按钮同步数据再结算</string>

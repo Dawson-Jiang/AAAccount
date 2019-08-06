@@ -43,6 +43,11 @@ class SettleListActivity : BaseActivity() {
         initFamily()
     }
 
+    override fun initCommonTitle() {
+        super.initCommonTitle()
+        title="结算信息"
+    }
+
     private fun initComponent() {
         initCommonTitle()
      }
@@ -176,7 +181,7 @@ class SettleListActivity : BaseActivity() {
                 convertView?.tvDateInterval!!.text = ""
             }
             convertView.tvMoney!!.text = String.format("%.2f", settle.money)
-            return convertView!!
+            return convertView
         }
     }
 }

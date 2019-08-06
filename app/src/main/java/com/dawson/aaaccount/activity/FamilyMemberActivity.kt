@@ -156,8 +156,7 @@ class FamilyMemberActivity : BaseActivity() {
             cv?.tvPhone?.text = if (user.isMember) "(临时成员)" else ""
             // 异步下载图片
             ImageLoadUtil.loadCircleImage(user.headUrl, cv?.ivHead!!)
-
-            return cv!!
+            return cv
         }
     }
 }

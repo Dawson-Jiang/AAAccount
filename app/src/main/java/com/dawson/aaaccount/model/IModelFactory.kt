@@ -1,6 +1,7 @@
 package com.dawson.aaaccount.model
 
 import com.avos.avoscloud.AVFile
+import com.dawson.aaaccount.model.leancloud.LeancloudFactory
 import com.dawson.aaaccount.model.myaliyun.AliyunFactory
 import java.util.HashMap
 
@@ -27,7 +28,7 @@ interface IModelFactory {
 
 abstract class BaseModelFactory{
     companion object {
-        var factory: IModelFactory=AliyunFactory()
+        var factory: IModelFactory=LeancloudFactory()
     }
 }
 

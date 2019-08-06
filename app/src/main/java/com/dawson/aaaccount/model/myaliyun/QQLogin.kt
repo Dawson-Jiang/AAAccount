@@ -1,14 +1,8 @@
 package com.dawson.aaaccount.model.myaliyun
 
 import android.app.Activity
-import com.dawson.aaaccount.bean.User
 import com.dawson.aaaccount.bean.result.OperateResult
-import com.dawson.aaaccount.dao.GreenDaoUtil
-import com.dawson.aaaccount.dao.bean.DBUser
-import com.dawson.aaaccount.dao.bean.withUser
 import com.dawson.aaaccount.exception.QQLoginException
-import com.dawson.aaaccount.net.RetrofitHelper
-import com.dawson.aaaccount.net.UserService
 import com.dawson.aaaccount.util.ErrorCode
 import com.tencent.connect.UserInfo
 import com.tencent.tauth.IUiListener
@@ -148,8 +142,4 @@ class QQLoginTest(val activity: Activity) {
         info["figureurl_2"] = "http://qzapp.qlogo.cn/qzapp/1106203415/68801BC1A9DC8F1B968BE0E9AE21EA5B/100"
         return Observable.just(OperateResult(info.toMap()))
     }
-
-    fun logout() {
-    }
-
 }

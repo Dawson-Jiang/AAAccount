@@ -40,7 +40,7 @@
             android:typeface="monospace" />
 
         <TextView
-            android:id="@+id/tv_contact_qq"
+            android:id="@+id/tv_contact"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
@@ -50,7 +50,7 @@
             android:drawablePadding="8dp"
             android:drawableTint="@color/colorPrimary"
             android:lineSpacingMultiplier="1.5"
-            android:text="@string/str_about_contact_qq"
+            android:text="@string/str_about_contact"
             android:typeface="monospace" />
     </LinearLayout>
 

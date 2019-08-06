@@ -43,7 +43,7 @@ class FeedbackListActivity : BaseActivity() {
             }
             val feedback = feedbacks[position]
             view?.tv_title?.text = feedback.title
-            view?.tv_time?.text = feedback?.createTime?.format("yyyy.MM.dd")
+            view?.tv_time?.text = feedback.createTime?.format("yyyy.MM.dd")
             view?.tv_reply?.visibility = if (TextUtils.isEmpty(feedback.reply)) View.GONE else View.VISIBLE
             return view!!
         }

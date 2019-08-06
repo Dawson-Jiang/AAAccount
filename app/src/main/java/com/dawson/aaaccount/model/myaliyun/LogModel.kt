@@ -2,7 +2,7 @@ package com.dawson.aaaccount.model.myaliyun
 
 import android.content.Context
 import com.dawson.aaaccount.dao.DBSystemLogDao
-import com.dawson.aaaccount.dao.GreenDaoUtil
+import com.dawson.aaaccount.dao.utils.GreenDaoUtil
 import com.dawson.aaaccount.dao.bean.DBSystemLog
 import com.dawson.aaaccount.model.ILogModel
 import com.dawson.aaaccount.net.CommonService
@@ -22,7 +22,7 @@ class LogModel : ILogModel {
     private val service = RetrofitHelper.getService(CommonService::class.java)
 
     override fun uploadLog(context: Context) {
-        Observable.create<List<DBSystemLog>> { em ->
+        val dis = Observable.create<List<DBSystemLog>> { em ->
             val dao = GreenDaoUtil.daoSession!!.dbSystemLogDao
             val query = dao.queryBuilder()
             val calendar = Calendar.getInstance()
@@ -41,10 +41,10 @@ class LogModel : ILogModel {
                     for (log in logs) {
                         val avLog = HashMap<String, String>()
                         if (UserInstance.current_user != null)
-                            avLog.put("uid", UserInstance.current_user?.id!!)
-                        avLog.put("title", log.title)
-                        avLog.put("content", log.cotent)
-                        avLog.put("phone", info.toString())
+                            avLog["uid"] = UserInstance.current_user?.id!!
+                        avLog["title"] = log.title
+                        avLog["content"] = log.cotent
+                        avLog["phone"] = info.toString()
                         avLogs.add(avLog)
                     }
                     return@map avLogs

@@ -61,19 +61,17 @@ object Common {
      */
     fun showErrorInfo(context: Activity, errorCode: Int,
                       msg: String?, flag: Int) {
-        val errorMsg: String
         val errorMsgId = R.string.operate_fail
-        when (errorCode) {
-            ErrorCode.NET_TIMEOUT -> errorMsg = "网络异常"
-            ErrorCode.EMAIL_OR_PWD_WRONG -> errorMsg = "用户名或密码错误"
-            ErrorCode.EMAIL_EXIST -> errorMsg = "邮箱已存在"
-            ErrorCode.TOKEN_OVERDUE -> errorMsg = "登录过期"
-            ErrorCode.FAMILY_OR_PWD_WRONG -> errorMsg = "家庭不存在或者密码错误"
-            ErrorCode.FAMILY_MEMBER_EXIST -> errorMsg = "重复加入"
-            ErrorCode.TOKEN_OVERDUE -> return
-            ErrorCode.SYS_ERROR -> errorMsg = "系统错误"
-            ErrorCode.FAIL -> errorMsg = if (TextUtils.isEmpty(msg)) "系统错误" else msg!!
-            else -> errorMsg = if (TextUtils.isEmpty(msg)) "系统错误$errorCode"
+        val errorMsg = when (errorCode) {
+            ErrorCode.NET_TIMEOUT -> "网络异常"
+            ErrorCode.EMAIL_OR_PWD_WRONG -> "用户名或密码错误"
+            ErrorCode.EMAIL_EXIST -> "邮箱已存在"
+            ErrorCode.TOKEN_OVERDUE -> "登录过期"
+            ErrorCode.FAMILY_OR_PWD_WRONG -> "家庭不存在或者密码错误"
+            ErrorCode.FAMILY_MEMBER_EXIST -> "重复加入"
+            ErrorCode.SYS_ERROR -> "系统错误"
+            ErrorCode.FAIL -> if (TextUtils.isEmpty(msg)) "系统错误" else msg!!
+            else -> if (TextUtils.isEmpty(msg)) "系统错误$errorCode"
             else ("$msg:$errorCode")
         }
 

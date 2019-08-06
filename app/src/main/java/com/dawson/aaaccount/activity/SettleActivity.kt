@@ -44,8 +44,7 @@ class SettleActivity : BaseActivity() {
 
     override fun initCommonTitle() {
         super.initCommonTitle()
-//        title = if (flag == 0) "结算-${family?.name!!}" else "结算详情"
-
+        title = "结算"
         if (flag == 0)
             enableOperate("结算") {
                 if (settle == null || settle?.settleDetails == null || settle?.settleDetails?.size!! <= 0) {
@@ -216,7 +215,7 @@ class SettleActivity : BaseActivity() {
                 family = families[selectedFamilyIndex]
                 title = "结算-${family?.name}"
                 refresh()
-            }
+            } else finish()
         }
     }
 }

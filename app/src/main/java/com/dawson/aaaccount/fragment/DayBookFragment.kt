@@ -177,6 +177,7 @@ class DayBookFragment : BaseFragment() {
         rootView?.refRecord?.isRefreshing = true
         val fid = if (is_family) families[selectedFamilyIndex].id else ""
         dayBookModel[fid!!, currentPage + 1, limit]
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->
                     handleDayBook(result)
                 }, { _ ->

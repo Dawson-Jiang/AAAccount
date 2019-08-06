@@ -138,7 +138,7 @@ class SettleModel : ISettleModel {
                         return@map OperateResult(settle)
                     }
                     val settleDetails = ArrayList<Settle.SettleDetail>()
-                    family.members?.forEachIndexed { index, user ->
+                    family.members?.forEachIndexed { _, user ->
                         val settleDetail = Settle.SettleDetail()
                         settleDetail.user = user
                         settleDetails.add(settleDetail)
