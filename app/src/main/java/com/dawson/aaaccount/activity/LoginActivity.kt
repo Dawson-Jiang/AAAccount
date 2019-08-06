@@ -13,15 +13,14 @@ import com.dawson.aaaccount.bean.result.OperateResult
 import com.dawson.aaaccount.exception.QQLoginException
 import com.dawson.aaaccount.model.BaseModelFactory
 import com.dawson.aaaccount.model.IUserModel
-import com.dawson.aaaccount.util.AlertDialogHelper
-import com.dawson.aaaccount.util.Common
-import com.dawson.aaaccount.util.DLog
-import com.dawson.aaaccount.util.ErrorCode
+import com.dawson.aaaccount.util.*
 import com.tencent.tauth.Tencent
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.activity_login.iv_bg
+import kotlinx.android.synthetic.main.activity_welcome.*
 import java.net.SocketTimeoutException
 
 class LoginActivity : Activity() {
@@ -37,6 +36,7 @@ class LoginActivity : Activity() {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_login)
+        ImageLoadUtil.loadBlurImage(this, R.drawable.login_bg, iv_bg)
 
         btn_login.setOnClickListener { loginByPhone() }
         btn_send_vercode.setOnClickListener { sendCode() }
@@ -67,7 +67,7 @@ class LoginActivity : Activity() {
 //                .flatMap<OperateResult<Any>> {
 //                    userModel.sendLoginVerify(this@LoginActivity.applicationContext, phone)
 //                }
-        val dis =   userModel.sendLoginVerify(this@LoginActivity.applicationContext, phone)
+        val dis = userModel.sendLoginVerify(this@LoginActivity.applicationContext, phone)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->

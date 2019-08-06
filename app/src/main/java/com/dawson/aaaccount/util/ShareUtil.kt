@@ -67,7 +67,7 @@ object ShareUtil {
      * 发起QQ临时聊天
      */
     fun shareQQContact(activity: Activity, textView: TextView) {
-        textView.text = Html.fromHtml(activity.getString(R.string.str_about_contact_qq))
+        textView.text = Html.fromHtml(activity.getString(R.string.str_about_contact))
         textView.setOnClickListener { _ ->
             try {
                 val url = "mqqwpa://im/chat?chat_type=wpa&uin=3230443237"//uin是发送过去的qq号码

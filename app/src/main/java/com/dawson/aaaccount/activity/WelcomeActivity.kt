@@ -14,6 +14,7 @@ import com.dawson.aaaccount.model.BaseModelFactory
 import com.dawson.aaaccount.model.IUserModel
 import com.dawson.aaaccount.util.Common
 import com.dawson.aaaccount.util.DLog
+import com.dawson.aaaccount.util.ImageLoadUtil
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_welcome.*
@@ -26,12 +27,13 @@ class WelcomeActivity : Activity() {
     private var animationState = -1//-1 未开始 1开始 0结束
     private var hasInit = false
 
-    private var userModel: IUserModel =  BaseModelFactory.factory.createUserModel()
+    private var userModel: IUserModel = BaseModelFactory.factory.createUserModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_welcome)
+        ImageLoadUtil.loadBlurImage(this, R.drawable.login_bg, iv_bg)
 
         animationSet.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation) {
@@ -59,7 +61,7 @@ class WelcomeActivity : Activity() {
                 }, {
                     it.printStackTrace()
                     if (it !is UnknownHostException) DLog.error("initUser", it)
-                     Toast.makeText(this@WelcomeActivity, "启动失败", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@WelcomeActivity, "启动失败", Toast.LENGTH_SHORT).show()
                     finish()
                 })
     }
@@ -78,7 +80,8 @@ class WelcomeActivity : Activity() {
 
     }
 
-    @Synchronized private fun goTo() {
+    @Synchronized
+    private fun goTo() {
         if (animationState != 0 || !hasInit) return
         if (userModel.isLogin(this@WelcomeActivity.applicationContext)) {
             startActivity(Intent(this@WelcomeActivity, MainActivity::class.java))
