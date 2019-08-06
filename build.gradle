@@ -2,9 +2,6 @@
 buildscript {
     ext.kotlin_version = '1.3.31'
     repositories {
-//        jcenter()
-
-
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         maven { url 'http://maven.aliyun.com/nexus/content/repositories/releases/' }
         google()
@@ -17,13 +14,9 @@ buildscript {
         maven {
             url "https://plugins.gradle.org/m2/"
         }
-        maven {
-            url "http://maven.aliyun.com/nexus/content/groups/public"
-        }
-        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.4'
+        classpath 'com.android.tools.build:gradle:3.4.2'
         classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
@@ -31,9 +24,6 @@ buildscript {
 
 allprojects {
     repositories {
-//        jcenter()
-
-
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         maven { url 'http://maven.aliyun.com/nexus/content/repositories/releases/' }
         google()
@@ -50,5 +40,4 @@ allprojects {
 
 ext {
     supportLibVersion = '27.1.1'
-
 }

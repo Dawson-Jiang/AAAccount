@@ -10,8 +10,8 @@ android {
 
     defaultConfig {
         applicationId "com.dawson.aaaccount"
-        versionCode 48
-        versionName "4.8"
+        versionCode 50
+        versionName "4.10"
         minSdkVersion 24
         targetSdkVersion 26
         flavorDimensions "release"
@@ -96,23 +96,21 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 //    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 //    org.jetbrains.kotlin:kotlin-stdlib-jdk7
-    compile 'com.github.bumptech.glide:glide:4.9.0'
-    kapt 'com.github.bumptech.glide:compiler:4.9.0'
-    compile 'io.reactivex.rxjava2:rxandroid:2.1.0'
-    compile 'io.reactivex.rxjava2:rxjava:2.2.0'
+//    compile 'com.github.bumptech.glide:glide:4.9.0'
+//    kapt 'com.github.bumptech.glide:compiler:4.9.0'
+//    compile 'io.reactivex.rxjava2:rxandroid:2.1.0'
+//    compile 'io.reactivex.rxjava2:rxjava:2.2.0'
 //    debugCompile 'com.facebook.stetho:stetho:1.4.2'
 //    debugCompile 'com.facebook.stetho:stetho-okhttp3:1.4.2'
     compile 'com.android.support:multidex:1.0.3'
 
-    implementation 'com.tencent.bugly:crashreport:3.0.0'
+    implementation 'com.tencent.bugly:crashreport:3.0.1'
     implementation 'com.tencent.bugly:nativecrashreport:3.7.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.github.bumptech.glide:glide:4.7.1'
-    kapt 'com.github.bumptech.glide:compiler:4.7.1'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.2'
-    //    debugCompile 'com.facebook.stetho:stetho:1.4.2'
-    //    debugCompile 'com.facebook.stetho:stetho-okhttp3:1.4.2'
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    kapt 'com.github.bumptech.glide:compiler:4.9.0'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.0'
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
