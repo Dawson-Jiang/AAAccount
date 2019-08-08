@@ -32,7 +32,7 @@ object ImageLoadUtil {
         GlideWrapper.with(view).load(rsId)
 //                .centerCrop()
                 .placeholder(R.drawable.no_image)
-                .transform(GlideBlurformation(context, 25))
+                .transform(BlurTransformation( 5))
                 .error(R.drawable.no_image).into(view)
     }
 
@@ -45,12 +45,12 @@ object ImageLoadUtil {
 class MyAppGlideModule : AppGlideModule()
 
 
-class GlideBlurformation(context: Context, radius: Int) : BlurTransformation(context, radius) {
-    override fun transform(context: Context, resource: Resource<Bitmap>, outWidth: Int, outHeight: Int): Resource<Bitmap> {
-        return transform(resource, outWidth, outHeight)
-    }
-
-    override fun updateDiskCacheKey(messageDigest: MessageDigest) {
-
-    }
-}
+//class GlideBlurformation(context: Context, radius: Int) : BlurTransformation(context, radius) {
+//    override fun transform(context: Context, resource: Resource<Bitmap>, outWidth: Int, outHeight: Int): Resource<Bitmap> {
+//        return transform(resource, outWidth, outHeight)
+//    }
+//
+//    override fun updateDiskCacheKey(messageDigest: MessageDigest) {
+//
+//    }
+//}
