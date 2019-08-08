@@ -33,7 +33,6 @@ class WelcomeActivity : Activity() {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_welcome)
-        ImageLoadUtil.loadBlurImage(this, R.drawable.login_bg, iv_bg)
 
         animationSet.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation) {

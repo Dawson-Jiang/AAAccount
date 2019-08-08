@@ -36,7 +36,6 @@ class LoginActivity : Activity() {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_login)
-        ImageLoadUtil.loadBlurImage(this, R.drawable.login_bg, iv_bg)
 
         btn_login.setOnClickListener { loginByPhone() }
         btn_send_vercode.setOnClickListener { sendCode() }
